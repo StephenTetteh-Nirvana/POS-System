@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pos System</title>
+    <link rel="stylesheet" href="./css/main.css"/>
+</head>
+<body>
+
+      <main>
+          <aside class="sidebar">
+            <section class="logo-section">
+                <img src="./images/icons8-logo-100.png"/>
+                <h1>SD<span>POS</span></h1>
+            </section>
+            <section class="dashboard">
+              <ul>
+                <li class="active">
+                  <p><ion-icon class="menu" name="menu"></ion-icon></p>
+                  <p class="title">Menu</p>
+                </li>
+                <li>
+                  <p><ion-icon class="dashicon" name="grid"></ion-icon></ion-icon></p>
+                  <p class="title">Dashboard</p>
+                </li>
+                <li>
+                  <p><ion-icon class="orders" name="file-tray-full"></ion-icon></ion-icon></p>
+                  <p class="title">Orders</p>
+                </li>
+                <li>
+                  <p><ion-icon class="users" name="people"></ion-icon></p>
+                  <p class="title">Users</p>
+                </li>
+                <li>
+                  <p><ion-icon class="settings" name="settings"></ion-icon></p>
+                  <p class="title">Settings</p>
+                </li>
+                <li>
+                  <p><ion-icon class="log-out" name="log-out"></ion-icon></p>
+                  <p class="title">Log Out</p>
+                </li>
+              </ul>
+            </section>
+          </aside>
+
+          <section class="products-overview">
+            <div class="second-section">
+              <input type="text" placeholder="Search for products by name"/>
+              <button>
+                <ion-icon class="search" name="search-outline"></ion-icon>
+              </button>
+          </div>
+          </section>
+
+        <aside class="order-sidebar">
+          <section class="user-section">
+              <ion-icon class="user" name="person-circle"></ion-icon>
+              <div class="user-info">
+                <p class="username">Stephen</p>
+                <p class="role">Admin</p>
+              </div> 
+            </section>
+            <section class="order-section">
+              <h3>Orders</h3>
+            </section>
+            <section class="payment-section">
+              <h3>Payment Method</h3>
+              <ul>
+                <li>
+                  <p><ion-icon class="icon-cash" name="cash"></ion-icon></p>
+                  <p class="subtitle">Cash</p>
+                </li>
+                <li>
+                  <p><ion-icon class="icon-card" name="card"></ion-icon></p>
+                  <p class="subtitle">Card</p>
+                </li>
+                <li>
+                  <p><ion-icon class="icon-wallet" name="wallet"></ion-icon></p>
+                  <p class="subtitle">E-wallet</p>
+                </li>
+              </ul>
+              <button>Place Order</button>
+            </section>
+        </aside>
+      </main>
+    <script src="./index.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

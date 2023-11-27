@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+:root{
+    --box-shadow:rgba(0,0,0,0.16) 0px 1px 4px;
+}
+
+*{
+    margin:0px;
+    padding:0px;
+    font-family: 'Poppins','sans-serif';
+    list-style: none;
+}
+main{
+    display:grid;
+    grid-template-columns: 0.7fr 2fr 1fr;
+}
+.logo-section{
+    display:flex;
+    background-color:#2d2d2d;
+    color:white;
+    padding-left:20px;
+    font-size:25px;
+    border-bottom:1px solid grey;
+}
+.logo-section img{
+    width:40px;
+    height:50px;
+}
+.sidebar{
+    background-color:#2d2d2d;
+}
+.dashboard{
+    color:white;
+    min-height:100vh;
+    z-index:1000;
+}
+.dashboard ul{
+    margin-top:30px;
+    padding-left:10px;
+
+}
+.dashboard ul li{
+    display:flex;
+    padding:10px;
+    margin-right:10px;
+}
+.dashboard ul li.active{
+    cursor:pointer;
+    background-color: #FFFFFF;
+    color:black;
+}
+.dashboard ul li:hover{
+    cursor:pointer;
+    background-color: #FFFFFF;
+    color:black;
+}
+.title{
+    font-size:20px;
+    margin-left:10px;
+}
+.menu,.orders,.dashicon,.log-out,.users,.settings{
+    margin-top:6px;
+    font-size:20px;
+}
+
+                                         /* SECTION-TWO */
+.products-overview{
+    background-color:#FFFFFF;
+    margin-top:40px;
+}
+.second-section input{
+    padding:10px;
+    width:70%;
+    outline:none;
+    border:1px solid grey;
+    appearance: none;
+    margin-left:50px;
+}
+.second-section button{
+    border:none;
+    background: transparent;
+}
+.second-section button:active{
+    transform:scale(0.8);
+    transition:transform 300ms;
+}
+.second-section .search{
+     font-size:18px;
+     padding:15px;
+     transform:translate(15px,20px);
+     background-color: #F5F7FA;
+     border-radius:10px;
+     cursor:pointer;
+}
+
+                                        /* SECTION THREE */
+.order-sidebar{
+    background-color:#2d2d2d;
+    color:white;
+}
+.payment-section{
+    margin-top:100%;
+}
+.payment-section h3{
+    text-align: center;
+    font-size:30px;
+} 
+.icon-cash{
+    font-size:20px;
+}
+.icon-card{
+    font-size:20px;
+
+}
+.icon-wallet{
+    font-size:20px;
+}
+.payment-section ul{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-left:20px;
+}
+.payment-section ul li{
+    border:3px solid grey;
+    padding:10px 0px;
+    text-align:center;
+    width:100px;
+    border-radius:10px;
+    cursor:pointer;
+}
+.payment-section ul li:hover{
+    background-color: #FFFFFF;
+    border:none;
+    color:black;
+    transition: background-color 500ms;
+}
+.payment-section button{
+    background-color: #FFFFFF;
+    color:black;
+    font-size:18px;
+    border:none;
+    padding:12px 30px;
+    border-radius:5px;
+    margin-left:100px;
+    margin-top:20px;
+    cursor:pointer;
+}
