@@ -35,6 +35,16 @@ main{
     min-height:100vh;
     z-index:1000;
 }
+.time-display{
+    margin-top:30px;
+    padding-left:10px
+}
+.time-display .date{
+    font-size:16px;
+}
+.time-display .time{
+    font-size:30px;
+}
 .dashboard ul{
     margin-top:30px;
     padding-left:10px;
@@ -99,8 +109,90 @@ main{
     background-color:#2d2d2d;
     color:white;
 }
+.user-info{
+    display:flex;
+    margin-top:10px;
+    margin-left:10px;
+}
+.user-info .user{
+    font-size:30px;
+}
+.user-info p{
+    font-size:18px;
+    margin-top:10px;
+}
+.user-role{
+    margin-left:40px;
+    background-color:green;
+    color:#FFFFFF;
+    padding:7px;
+    max-width:60px;
+    cursor: pointer;
+    border-radius:20px;
+}
+.order-section{
+    position:relative;
+    padding:10px 0px;
+    min-height:3vh;
+}
+.order-section h3{
+    text-align:center;
+    font-size:25px;
+    border-bottom:1px solid grey;
+}
+.no-orders-alert{
+   position:absolute;
+   top:50%;
+   left:50%;
+   transform:translate(-50%,-50%);
+   margin-top:80px;
+}
+.no-orders-alert .no-order{
+    margin-left:50px;
+    color:red;
+    font-size:25px;
+}
+.order-summary{
+    margin-top:150px;
+    border-top:1px solid grey;
+}
+.total,.subtotal,.tax,.discount{
+    display: flex;
+    justify-content: space-between;
+    margin:10px 30px;
+}
+.total{
+    border-top:1px solid grey;
+}
+.total p{
+    font-size:25px;
+}
+.total span{
+    font-weight:bolder;
+    font-size:25px;
+}
+.customer-info{
+    display:flex;
+    flex-direction:column;
+    padding:20px;
+}
+.customer-info input{
+     background-color:#2d2d2d;
+     border:none;
+     border:1px solid grey;
+     padding:10px 15px;
+     margin-top:10px;
+     border-radius:5px;
+     outline:none;
+     appearance: none;
+     color:white;
+}
+.customer-info input::placeholder{
+    color:white;
+}
 .payment-section{
-    margin-top:100%;
+    margin-top:20px;
+    min-height:50vh;
 }
 .payment-section h3{
     text-align: center;
