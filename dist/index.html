@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pos System</title>
-    <link rel="stylesheet" href="./css/main.css"/>
+    <link rel="stylesheet" href="/src/css/main.css"/>
 </head>
 <body>
 
       <main>
           <aside class="sidebar">
             <section class="logo-section">
-                <img src="./images/icons8-logo-100.png"/>
+                <img src="/src/images/icons8-logo-100.png"/>
                 <h1>SD<span>POS</span></h1>
             </section>
             <section class="dashboard">
@@ -50,7 +50,7 @@
 
           <section class="products-overview">
             <div class="second-section">
-              <input type="text" placeholder="Search for products by name"/>
+              <input type="text" placeholder="Search for products by name" autocomplete="off"/>
               <button>
                 <ion-icon class="search" name="search-outline"></ion-icon>
               </button>
@@ -61,7 +61,7 @@
           <section class="user-section">
               <div class="user-info">
               <ion-icon class="user" name="person-circle"></ion-icon>
-                <p class="username">Good Morning,Stephen</p>
+                <p class="username"><span></span>Stephen</p>
               </div>
               <div class="user-role">
                 <p class="role">Admin</p>
@@ -89,9 +89,10 @@
                 </div>
             </section>
             <section class="customer-info">
-              <input type="text" placeholder="Customer Name"/>
-              <input type="text" placeholder="Customer Email"/>
-              <input type="date" placeholder="Date Of Order"/>
+              <input type="text" placeholder="Customer Name" required/>
+              <input type="text" placeholder="Customer Email" required/>
+              <input type="date" placeholder="Date Of Order" required/>
+              <input type="submit" value="Add to Order List"/>
             </section>
             <section class="payment-section">
               <h3>Payment Method</h3>
@@ -113,7 +114,7 @@
             </section>
         </aside>
       </main>
-    <script src="./index.js"></script>
+    <script src="index.bundle.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

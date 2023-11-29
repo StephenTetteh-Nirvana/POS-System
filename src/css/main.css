@@ -187,6 +187,13 @@ main{
      appearance: none;
      color:white;
 }
+.customer-info input[type="submit"]:hover{
+       background-color:#FFFFFF;
+       color:black;
+       font-weight:300;
+       cursor:pointer;
+       transition: background-color 500ms;
+}
 .customer-info input::placeholder{
     color:white;
 }
