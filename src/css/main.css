@@ -65,6 +65,10 @@ main{
     background-color: #FFFFFF;
     color:black;
 }
+.dashboard a{
+    color:white;
+    text-decoration: none;
+}
 .title{
     font-size:20px;
     margin-left:10px;

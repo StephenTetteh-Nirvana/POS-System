@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+:root{
+    --box-shadow:rgba(0,0,0,0.16) 0px 1px 4px;
+}
+*{
+    margin:0px;
+    padding:0px;
+    font-family: 'Poppins','sans-serif';
+    list-style: none;
+}
+main{
+    display:grid;
+    grid-template-columns: 0.7fr 3fr;
+    height: 100vh;
+    overflow: hidden;
+}
+.logo-section{
+    display:flex;
+    background-color:#2d2d2d;
+    color:white;
+    padding-left:20px;
+    font-size:25px;
+    border-bottom:1px solid grey;
+}
+.logo-section img{
+    width:40px;
+    height:50px;
+}
+.sidebar{
+    background-color:#2d2d2d;
+}
+.dashboard{
+    color:white;
+    z-index:1000;
+}
+.time-display{
+    margin-top:30px;
+    padding-left:10px
+}
+.time-display .date{
+    font-size:16px;
+}
+.time-display .time{
+    font-size:30px;
+}
+.dashboard ul{
+    margin-top:30px;
+    padding-left:10px;
+
+}
+.dashboard ul li{
+    display:flex;
+    padding:10px;
+    margin-right:10px;
+}
+.dashboard ul li.active{
+    cursor:pointer;
+    background-color: #FFFFFF;
+    color:black;
+}
+.dashboard ul li:hover{
+    cursor:pointer;
+    background-color: #FFFFFF;
+    color:black;
+}
+.dashboard a{
+    color:white;
+    text-decoration: none;
+}
+.title{
+    font-size:20px;
+    margin-left:10px;
+}
+.menu,.orders,.dashicon,.log-out,.users,.settings{
+    margin-top:6px;
+    font-size:20px;
+}
+
+.users-section{
+    background-color:#F5F7FA;
+    padding:30px;
+}
+.users-section h1{
+    border-bottom:1px solid grey;
+    margin-top:30px;
+    margin-left:30px;
+    font-size:30px;
+}
+.users-box{
+    background-color: #FFFFFF;
+    box-shadow: var(--box-shadow);
+    margin-left:30px;
+    min-height:20vh;
+    margin-top:20px;
+    border-radius:5px;
+}
+.users-box ul{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom:1px solid grey;
+}
+.users-box ul li:first-child{
+    padding-left:50px;
+}
+.user{
+    display:grid;
+    grid-template-columns: 0.8fr 1fr 1fr;
+    padding:10px 0px;
+    box-shadow: var(--box-shadow);
+    margin-top:15px;
+}
+.display-users li:first-child{
+    padding-left:50px;
+}
+.admin{
+    color:green;
+}
+.cashier{
+    color:yellow;
+}
+.user-delete{
+    font-size:20px;
+    color:red;
+    cursor:pointer;
+}
