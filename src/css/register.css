@@ -43,17 +43,18 @@ form input[type="text"]{
     margin-top:10px;
     padding-left:10px;
 }
-form select{
-    border:1px solid grey;
-    outline:none;
-    appearance:none;
-    padding:10px 30px;
-    border-radius:5px;
-    margin-top:10px;
-    padding-left:10px;
-    padding-right:30px;
-
-
+.error-display{
+    display:none;
+}
+.error{
+   font-size:14px;
+   color:red;
+   font-weight:bolder;
+}
+.error-icon{
+    font-size:16px;
+    color:red;
+    font-weight:bolder;
 }
 form input[type="password"]{
     border:1px solid grey;
@@ -93,3 +94,5 @@ form h4{
     margin:auto;
     margin-top:10px;
 }
+
+

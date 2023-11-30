@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="/src/css/register.css"/>
 </head>
 <body>
@@ -11,13 +11,18 @@
         <section>
             <form class="registerForm">
               <h3>Sign Up</h3>
-              <input type="text" placeholder="Username" name="username" autocomplete="off"/>
-              <input type="text" placeholder="Admin/Cashier" name="role" autocomplete="off"/>
-              <input type="text" placeholder="Email" name="email" autocomplete="off"/>
-              <input type="password" placeholder="Password" name="password" autocomplete="off"/>
+              <input type="text" placeholder="Username" name="username" autocomplete="off" required/>
+              <input type="text" placeholder="Admin/Cashier" name="status" autocomplete="off" required/>
+              <div class="error-display">
+                <ion-icon class="error-icon" name="alert-circle"></ion-icon>
+                <span class="error">Input Your Role(Admin/Cashier)</span>
+              </div>
+              <input type="text" placeholder="Email" name="email" autocomplete="off" required/>
+              <input type="password" placeholder="Password" name="password" autocomplete="off" required/>
               <input type="submit" value="Register"/>
               <h4>Already Have An Account?<span><a class="link-two" href="/src/pages/Login/login.html">Login</a></span></h4>
             </form>
+            
         </section>
     </main>
     <script src="/dist/register.bundle.js"></script>

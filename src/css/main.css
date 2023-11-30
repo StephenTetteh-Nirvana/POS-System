@@ -121,9 +121,18 @@ main{
     font-size:18px;
     margin-top:10px;
 }
-.user-role{
+.admin{
     margin-left:40px;
     background-color:green;
+    color:#FFFFFF;
+    padding:7px;
+    max-width:60px;
+    cursor: pointer;
+    border-radius:20px;
+}
+.cashier{
+    margin-left:40px;
+    background-color:rgb(214, 214, 48);
     color:#FFFFFF;
     padding:7px;
     max-width:60px;

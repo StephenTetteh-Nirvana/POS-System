@@ -1,10 +1,15 @@
-import { db } from "./firebase.js"
-import {collection,getDocs} from "firebase/firestore"
+import {onAuthStateChanged,signOut} from "firebase/auth"
+import {auth,db} from "/src/firebase"
+import { doc,getDoc } from "firebase/firestore"
 
-const timeDisplay = document.querySelector(".time-display")
+
 const date = document.querySelector(".date")
 const time = document.querySelector(".time")
-const username = document.querySelector(".username span")
+const username = document.querySelector(".username")
+const userRole = document.querySelector(".user-role")
+const role = document.querySelector(".role")
+const userStatus = document.querySelector(".user-status")
+const userLogout = document.querySelector("#logOut")
 
 document.addEventListener("DOMContentLoaded",function(){
     function updateClock(){
@@ -30,14 +35,63 @@ document.addEventListener("DOMContentLoaded",function(){
 
     }
     updateClock()
-    
     setInterval(updateClock,1000)
-})
-  const col = collection(db,"NAMES")
 
-getDocs(col).then(data =>{
-    data.docs.forEach((document)=>{
-           console.log(document.data())
+
+    async function fetchDocs(uid){
+        try{
+            const adminCollection = doc(db,"Admins",uid);
+            const cashierCollection = doc(db,"Cashiers",uid);
+            const adminDoc = await getDoc(adminCollection);
+            const cashierDoc = await getDoc(cashierCollection);
+            
+            if(adminDoc.exists()){
+              const user = adminDoc.data()
+              userRole.classList.add("admin")
+              role.innerText = user.Role;
+              username.innerText = user.Role;
+              userStatus.innerText = user.Username;
+            }else if(cashierDoc.exists()){
+              const user = cashierDoc.data()
+              userRole.classList.add("cashier")
+                role.innerText = user.Role;
+                username.innerText = user.Role;
+                userStatus.innerText = user.Username;
+            }
+            else{
+                console.log("user doc does not exist")
+            }
+
+        }
+        catch(error){
+            
+        }
+    }
+     
+        onAuthStateChanged(auth,(user)=>{
+        if(user){
+            const uid = user.uid;
+            fetchDocs(uid)
+            console.log(user.uid)
+        }else{
+            console.log("no-user")
+        }
+        })
+
+    fetchDocs() 
+})
+
+    function logOut(){
+         signOut(auth)
+       .then(()=>{
+        console.log("logged out")
+        window.location.href = "/src/pages/Login/login.html"
+       })
+       .catch((error)=>{
+          console.log(error)
+       })
+    }
+
+    userLogout.addEventListener("click",()=>{
+      logOut()
     })
-})
-
