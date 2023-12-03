@@ -88,11 +88,11 @@ main{
     margin-left:30px;
     font-size:30px;
 }
-.add-cashier-box{
+.find-cashier-box{
     margin-left:80%;
     margin-top:20px;
 }
-.add-cashier-box button{
+.find-cashier-box button{
     padding:10px;
     background-color:#2666CF;
     border:none;
@@ -100,18 +100,19 @@ main{
     color:white;
     cursor:pointer;
 }
-.add-cashier-box button:active{
+.find-cashier-box button:active{
     transform:scale(0.8);
     transition: transform 300ms;
 }
-.add-cashier{
-    font-size:18px;
+.search{
+    font-size:16px;
     color:white;
+    margin-right:5px;
 }
-.add-cashier-popup{
+.find-cashier-popup{
     display: none;
 }
-.add-cashier-heading{
+.find-cashier-heading{
     display:flex;
     justify-content: space-between;
 }
@@ -119,7 +120,7 @@ main{
     font-size:20px;
     cursor:pointer;
 }
-.add-cashier-popup form{
+.find-cashier-popup form{
     display:flex;
     flex-direction:column;
     gap:10px;

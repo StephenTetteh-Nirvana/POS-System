@@ -6,8 +6,8 @@ import {getDocs,deleteDoc,doc,collection} from "firebase/firestore"
 const date = document.querySelector(".date")
 const time = document.querySelector(".time")
 const userDisplay = document.querySelector(".display-users")
-const addCashier = document.querySelector(".add-cashier-box button")
-const popUp = document.querySelector(".add-cashier-popup")
+const findCashier = document.querySelector(".find-cashier-box button")
+const popUp = document.querySelector(".find-cashier-popup")
 const closePopUp = document.querySelector(".removePop")
 const form = document.querySelector(".form")
 
@@ -70,7 +70,7 @@ form.addEventListener("submit",(event)=>{
     event.preventDefault();
 })
 
-addCashier.addEventListener("click",()=>{
+findCashier.addEventListener("click",()=>{
     popUp.style.display = "block"
 })
 closePopUp.addEventListener("click",()=>{
