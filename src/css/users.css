@@ -88,17 +88,75 @@ main{
     margin-left:30px;
     font-size:30px;
 }
+.add-cashier-box{
+    margin-left:80%;
+    margin-top:20px;
+}
+.add-cashier-box button{
+    padding:10px;
+    background-color:#2666CF;
+    border:none;
+    border-radius:5px;
+    color:white;
+    cursor:pointer;
+}
+.add-cashier-box button:active{
+    transform:scale(0.8);
+    transition: transform 300ms;
+}
+.add-cashier{
+    font-size:18px;
+    color:white;
+}
+.add-cashier-popup{
+    display: none;
+}
+.add-cashier-heading{
+    display:flex;
+    justify-content: space-between;
+}
+.close{
+    font-size:20px;
+    cursor:pointer;
+}
+.add-cashier-popup form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:15px;
+    max-width:300px;
+    background-color: #FFFFFF;
+    margin:auto;
+    box-shadow: var(--box-shadow);
+}
+form input{
+    padding:10px;
+    outline:none;
+    appearance: none;
+    border:none;
+    border:1px solid grey;
+    border-radius:5px;
+}
+form input[type="submit"]{
+    background-color:#2666CF;
+    color:white;
+    font-size:18px;
+    font-weight:300;
+    border:none;
+    cursor:pointer;
+}
 .users-box{
     background-color: #FFFFFF;
     box-shadow: var(--box-shadow);
     margin-left:30px;
-    min-height:20vh;
+    min-height:30vh;
     margin-top:20px;
     border-radius:5px;
 }
 .users-box ul{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    padding-top:15px;
     border-bottom:1px solid grey;
 }
 .users-box ul li:first-child{
@@ -115,10 +173,12 @@ main{
     padding-left:50px;
 }
 .admin{
-    color:green;
+    color:#0cdd63;
+  font-weight:bolder;
 }
 .cashier{
-    color:yellow;
+    color:rgb(155, 155, 11);
+    font-weight:bolder;
 }
 .user-delete{
     font-size:20px;

@@ -75,6 +75,8 @@ document.addEventListener("DOMContentLoaded",function(){
             console.log(user.uid)
         }else{
             console.log("no-user")
+            window.location.href = "/src/pages/Login/login.html"
+
         }
         })
 
