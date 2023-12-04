@@ -1,6 +1,8 @@
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import {auth,db} from "/src/firebase"
-import { doc,getDoc } from "firebase/firestore"
+import { collection, doc,getDoc,getDocs} from "firebase/firestore"
+
+const fruits = [];
 
 
 const date = document.querySelector(".date")
@@ -10,6 +12,8 @@ const userRole = document.querySelector(".user-role")
 const role = document.querySelector(".role")
 const userStatus = document.querySelector(".user-status")
 const userLogout = document.querySelector("#logOut")
+const users = document.querySelector("#users")
+const fruitsDisplay = document.querySelector(".fruits-section")
 
 document.addEventListener("DOMContentLoaded",function(){
     function updateClock(){
@@ -25,7 +29,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
         if(ampm === 'AM'){
             username.innerText = "Good Morning,"
-        }else if(ampm === 'PM' && hours === 12 && 13 && 14 && 15){
+        }else if(ampm === 'PM' && hours >= 12 && hours <= 16){
             username.innerText = "Good Afternoon,"
             console.log("afternoon")
         }else{
@@ -36,6 +40,35 @@ document.addEventListener("DOMContentLoaded",function(){
     }
     updateClock()
     setInterval(updateClock,1000)
+
+   async function displayProducts(){
+           const fruitsCollection = collection(db,"Fruits")
+           const snapshot = await getDocs(fruitsCollection)
+           snapshot.forEach((fruit)=>{
+                const singleFruit = {
+                    name: fruit.data().Name,
+                    imagePath:fruit.data().Img,
+                    price:fruit.data().Price
+                }
+                fruits.push(singleFruit)
+                console.log(fruits)
+
+                fruitsDisplay.innerHTML += `<div class="fruit">
+                                                    <div class="fruit-image-box">
+                                                       <img class="fruit-img" src="${singleFruit.imagePath}"/>
+                                                    </div>
+                                                    <div class="fruit-info">
+                                                        <p class="fruit-name">${singleFruit.name}</p>
+                                                        <p class="fruit-price">${singleFruit.price}.00</p>
+                                                    </div>
+                                                    <div class="button-box">
+                                                    <button><ion-icon name="cart" class="cart"></ion-icon></button>
+                                                    </div>
+                                              </div>`
+          
+           })
+    }
+    displayProducts()
 
 
     async function fetchDocs(uid){
@@ -53,6 +86,9 @@ document.addEventListener("DOMContentLoaded",function(){
               userStatus.innerText = user.Username;
             }else if(cashierDoc.exists()){
               const user = cashierDoc.data()
+              if(user.Role === "Cashier"){
+                users.style.display = "none";
+              }
               userRole.classList.add("cashier")
                 role.innerText = user.Role;
                 username.innerText = user.Role;
@@ -82,6 +118,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
     fetchDocs() 
 })
+
 
     function logOut(){
          signOut(auth)

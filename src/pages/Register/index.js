@@ -24,7 +24,9 @@ const error = document.querySelector(".error-display")
                         if(registerForm.status.value === "Admin"){
                             setDoc(adminDoc,{
                                 Role: registerForm.status.value,
-                                Username: registerForm.username.value.trim()
+                                Username: registerForm.username.value.trim(),
+                                cart:[],
+                                order:[]
                             })
                             console.log("Admin created succesfully")
                             registerForm.reset()
@@ -43,7 +45,9 @@ const error = document.querySelector(".error-display")
                         if(registerForm.status.value === "Cashier"){
                             setDoc(cashierDoc,{
                                 Role:registerForm.status.value,
-                                Username: registerForm.username.value.trim()
+                                Username: registerForm.username.value.trim(),
+                                cart:[],
+                                order:[]
                             })
                             console.log("Cashier created succesfully")
                             registerForm.reset()

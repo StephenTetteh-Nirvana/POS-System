@@ -107,6 +107,67 @@ main{
      border-radius:10px;
      cursor:pointer;
 }
+.products-display{
+    min-height:100vh;
+}
+.product-heading{
+    background-color:#2d2d2d;
+    color: #FFFFFF;
+    margin-top:30px;
+    padding:10px;
+    margin-left:5px;
+    margin-right:5px;
+    font-size:30px;
+    letter-spacing:2px;
+
+}
+.fruits-section{
+    margin-top:10px; 
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+    column-gap:2px;
+}
+.fruits-section h1{
+    margin-left:30px;
+}
+.fruit{
+    height:230px;
+    width:150px;
+    box-shadow: var(--box-shadow);
+    border-radius:10px;
+    margin-top:20px;
+    margin-left:15px;
+    cursor:pointer;
+}
+.fruit-img{
+    width:150px;
+    height:120px;
+}
+.fruit-info{
+    text-align:center;
+}
+.fruit-info .fruit-name{
+    font-size:20px;
+    font-weight: bolder;
+}
+.fruit-info .fruit-price{
+    color:orangered;
+    font-size:18px;
+    font-weight: bold;
+}
+.button-box button{
+    background:transparent;
+    border:none;
+    appearance: none;
+    margin-left:40%;
+    margin-top:6px;
+}
+.button-box button .cart{
+     color:orangered;
+     font-size:30px;
+     cursor:pointer;
+}
+
 
                                         /* SECTION THREE */
 .order-sidebar{
