@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+:root{
+    --box-shadow:rgba(0,0,0,0.16) 0px 1px 4px;
+}
+
+*{
+    margin:0px;
+    padding:0px;
+    font-family: 'Poppins','sans-serif';
+    list-style: none;
+}
+main{
+    display:grid;
+    grid-template-columns: 0.5fr 2fr;
+}
+.logo-section{
+    display:flex;
+    background-color:#2d2d2d;
+    color:white;
+    padding-left:20px;
+    font-size:25px;
+    border-bottom:1px solid grey;
+}
+.logo-section img{
+    width:40px;
+    height:50px;
+}
+.sidebar{
+    background-color:#2d2d2d;
+}
+.dashboard{
+    color:white;
+    min-height:100vh;
+    z-index:1000;
+}
+.time-display{
+    margin-top:30px;
+    padding-left:10px
+}
+.time-display .date{
+    font-size:16px;
+}
+.time-display .time{
+    font-size:30px;
+}
+.dashboard ul{
+    margin-top:30px;
+    padding-left:10px;
+
+}
+.dashboard ul li{
+    display:flex;
+    padding:10px;
+    margin-right:10px;
+}
+.dashboard ul li.active{
+    cursor:pointer;
+    background-color: #FFFFFF;
+    color:black;
+}
+.dashboard ul li:hover{
+    cursor:pointer;
+    background-color: #FFFFFF;
+    color:black;
+}
+.dashboard a{
+    color:white;
+    text-decoration: none;
+}
+.title{
+    font-size:20px;
+    margin-left:10px;
+}
+.menu,.orders,.dashicon,.log-out,.users,.settings{
+    margin-top:6px;
+    font-size:20px;
+}
+.activity-section{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    background-color:#F5F7FA;
+}
+.total-orders-box,.total-amount-box,.total-sales-box{
+    height:260px;
+    width:340px;
+    background-color:#FFFFFF;
+    box-shadow: var(--box-shadow);
+    margin-top:50px;
+    border-radius:5px;
+    color:white;
+
+}
+.total-orders-box{
+    width:320px;
+    margin-left:20px;
+    background-color: #2666CF;
+}
+.total-amount-box{
+    background-color:#49f390;
+}
+.total-sales-box{
+    background-color: #ffb4b4;
+}
+.icon-box{
+    margin-left:20px;
+    margin-top:20px;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background-color:white;
+}
+.icon-box .icon{
+    font-size:25px;
+    color:white;
+    margin-left:10px;
+    margin-top:10px;
+    color:black;
+}
+.text-info{
+    margin-top:100px;
+    margin-left:20px;
+}
+.info{
+  font-size:15px;
+}
+.subinfo{
+    font-size:30px;
+}

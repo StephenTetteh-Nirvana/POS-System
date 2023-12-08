@@ -206,8 +206,8 @@ main{
 }
 .order-section{
     position:relative;
-    padding:10px 0px;
-    min-height:3vh;
+    padding-top:10px;
+    min-height:10vh;
 }
 .order-section h3{
     text-align:center;
@@ -219,15 +219,84 @@ main{
    top:50%;
    left:50%;
    transform:translate(-50%,-50%);
-   margin-top:80px;
+   margin-top:50px;
 }
 .no-orders-alert .no-order{
     margin-left:50px;
     color:red;
     font-size:25px;
 }
+.clear-all-orders{
+    background:transparent;
+    background-color:red;
+    color:white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:78%;
+    cursor:pointer;
+    border:none;
+    margin-top:10px;
+    display:none;
+}
+.order{
+    display: flex;
+    justify-content: space-between;
+    border:1px solid grey;
+    margin-top:10px;
+    width:85%;
+    margin-left:20px;
+    border-radius:5px;
+    padding:10px;
+}
+.order-first-section{
+    display:flex;
+}
+.order-image-box img{
+    border-radius:10px;
+   width:60px;
+   height:60px;
+}
+.order-info{
+    margin-left:10px;
+}
+.order-info .order-name{
+    font-size:20px;
+}
+.order-quantity-box{
+    display:flex;
+    margin-top:5px;
+}
+.order-quantity-box button{
+    background:transparent;
+    background-color:#121212;
+    color:white;
+    border:none;
+    padding:2px 10px;
+    border-radius:5px;
+    cursor:pointer;
+}
+.order-add-button{
+    margin-left:15px;
+}
+.order-quantity-box p {
+    font-size:20px;
+    margin-left:15px;
+}
+.order-price-box .order-price{
+    font-size:20px;
+}
+.order-second-section button{
+    background:transparent;
+    border:none;
+    margin-top:10px;
+    cursor:pointer;
+}
+.order-second-section button .order-delete{
+    color:red;
+    font-size:20px;
+}
 .order-summary{
-    margin-top:150px;
+    margin-top:50px;
     border-top:1px solid grey;
 }
 .total,.subtotal,.tax,.discount{
@@ -318,4 +387,37 @@ main{
     margin-left:100px;
     margin-top:20px;
     cursor:pointer;
+}
+
+.loader-box{
+    background-color:#2d2d2d2d;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    border-radius: 10px;
+    height:120px;
+    width:130px;
+    backdrop-filter: blur(20px);
+    display:none;
+}
+
+.loader{
+    border:7px solid white;
+    border-top:7px solid #2666CF;
+    margin:25px auto;
+    height:50px;
+    width:50px;
+    transform:rotate(0deg);
+    border-radius:50%;
+    animation:rotate 1s linear infinite;
+} 
+
+@keyframes rotate{
+    0%{
+        transform:rotate(0deg)
+    }
+    100%{
+        transform:rotate(360deg)
+    }
 }

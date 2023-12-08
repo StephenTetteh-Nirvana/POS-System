@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard</title>
+    <link rel="stylesheet" href="/src/css/dashboard.css"/>
+</head>
+<body>
+    <main>
+        <aside class="sidebar">
+            <section class="logo-section">
+                <img src="/src/images/icons8-logo-100.png"/>
+                <h1>SD<span>POS</span></h1>
+            </section>
+            <section class="dashboard">
+              <div class="time-display">
+                <p class="date"></p>
+                <p class="time"></p>
+              </div>
+              <ul>
+                <a href="/dist/index.html">
+                    <li>
+                        <p><ion-icon class="menu" name="menu"></ion-icon></p>
+                        <p class="title">Menu</p>
+                      </li>
+                </a>
+                  <li class="active">
+                    <p><ion-icon class="dashicon" name="grid"></ion-icon></ion-icon></p>
+                    <p class="title">Dashboard</p>
+                  </li>
+                <li>
+                  <p><ion-icon class="orders" name="file-tray-full"></ion-icon></ion-icon></p>
+                  <p class="title">Orders</p>
+                </li>
+                <a href="/src/pages/Users/users.html">
+                <li id="users">
+                  <p><ion-icon class="users" name="people"></ion-icon></p>
+                    <p class="title">Users</p>
+                </li>
+                </a>
+                <li>
+                  <p><ion-icon class="settings" name="settings"></ion-icon></p>
+                  <p class="title">Settings</p>
+                </li>
+                <li id="logOut">
+                  <p><ion-icon class="log-out" name="log-out"></ion-icon></p>
+                  <p class="title">Log Out</p>
+                </li>
+              </ul>
+            </section>
+          </aside>
+
+          <section class="activity-section">
+            <div class="total-orders-box">
+                <p class="icon-box"><ion-icon name="receipt" class="icon"></ion-icon></p>
+                <div class="text-info">
+                    <p class="info">Income</p>
+                    <p class="subinfo">$1200.00</p>
+                </div>
+            </div>
+            <div class="total-amount-box">
+                <p class="icon-box"><ion-icon name="cash" class="icon"></ion-icon></p>
+                <div class="text-info">
+                    <p class="info">Amount Earned</p>
+                    <p class="subinfo">$500.00</p>
+                </div>
+            </div>
+            <div class="total-sales-box">
+                <p class="icon-box"><ion-icon name="layers" class="icon"></ion-icon></p>
+                <div class="text-info">
+                    <p class="info">Today's Sales</p>
+                    <p class="subinfo">$1200.00</p>
+                </div>
+            </div>
+          </section>
+    </main>
+    
+<script src="/dist/dashboard.bundle.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

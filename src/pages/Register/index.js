@@ -4,6 +4,7 @@ import { collection, setDoc, doc } from "firebase/firestore"
 import Swal from "sweetalert2"
 
 const registerForm = document.querySelector(".registerForm")
+const loader = document.querySelector(".loader-box")
 
 
 const error = document.querySelector(".error-display")
@@ -12,6 +13,7 @@ const error = document.querySelector(".error-display")
         error.style.display = "block";
     }else{
         try{
+            loader.style.display = "block";
             await createUserWithEmailAndPassword(auth,registerForm.email.value,registerForm.password.value)
             .then(()=>{
              onAuthStateChanged(auth,(user)=>{
@@ -70,6 +72,7 @@ const error = document.querySelector(".error-display")
             })
            .catch((error)=>{
             console.log(error)
+            loader.style.display = "none"
             if(error.code === "auth/invalid-email"){
                 Swal.fire({
                     icon: "error",
@@ -99,8 +102,10 @@ const error = document.querySelector(".error-display")
             }
             else {
               (error.code==='auth/network-request-failed')
-              showError.value = true;
-            errMsg.value='Please check your internet connection'
+              Swal.fire({
+                icon: "error",
+                title: "Check Your Internet Connection",
+                });
             }
             
            })

@@ -3,6 +3,7 @@ import {auth,db} from "/src/firebase"
 import { collection, doc,getDoc,getDocs, updateDoc} from "firebase/firestore"
 
 const fruits = [];
+const cart = [];
 
 
 const date = document.querySelector(".date")
@@ -14,6 +15,10 @@ const userStatus = document.querySelector(".user-status")
 const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
 const fruitsDisplay = document.querySelector(".fruits-section")
+const loader = document.querySelector(".loader-box")
+const noOrders = document.querySelector(".no-orders-alert")
+const orders = document.querySelector(".orders-alert")
+const clearAllOrders = document.querySelector(".clear-all-orders")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -55,6 +60,7 @@ document.addEventListener("DOMContentLoaded",function(){
               userStatus.innerText = user.Username;
             }else if(cashierDoc.exists()){
               const user = cashierDoc.data()
+              console.log("cashier logged in",uid)
               if(user.Role === "Cashier"){
                 users.style.display = "none";
               }
@@ -77,6 +83,7 @@ document.addEventListener("DOMContentLoaded",function(){
         if(user){
             const uid = user.uid;
             fetchDocs(uid)
+            loadCart(uid)
         }else{
             console.log("no-user")
             window.location.href = "/src/pages/Login/login.html"
@@ -124,24 +131,38 @@ async function displayFruits(){
 }
 
 async function addToCart(uid,fruit){
+    loader.style.display = "block" 
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
     const cashierDoc = await getDoc(cashierCollection);
 
-   if(adminDoc.exists()){
-    const cartArray = adminDoc.data().cart;
-    cartArray.push(fruit)
-    await updateDoc(cashierCollection,{cart:cartArray})
-    console.log("updated")
-    console.log(cartArray)
-   }else if(cashierDoc.exists()){
-    const cartArray = cashierDoc.data().cart;
-    cartArray.push(fruit)
-    await updateDoc(cashierCollection,{cart:cartArray})
-    console.log("updated")
-    console.log(cartArray)
-   }
+    try{  
+        if(adminDoc.exists()){
+            const cartArray = adminDoc.data().cart;
+            cartArray.push(fruit)
+            await updateDoc(adminCollection,{cart:cartArray})
+            .then(()=>{
+                window.location.reload()
+                loader.style.display = "none" 
+                console.log("updated")
+                console.log(cartArray)
+            })
+        }else if(cashierDoc.exists()){
+            const cartArray = cashierDoc.data().cart;
+            cartArray.push(fruit)
+            await updateDoc(cashierCollection,{cart:cartArray})
+            .then(()=>{
+                loader.style.display = "none" 
+                console.log("updated")
+                console.log(cartArray)
+            })
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
+
 }
 
 fruitsDisplay.addEventListener("click",(event)=>{
@@ -152,8 +173,8 @@ fruitsDisplay.addEventListener("click",(event)=>{
             Name:eachFruit.parentElement.dataset.name,
             Price:eachFruit.parentElement.dataset.price,
             Image:eachFruit.parentElement.dataset.image,
+            quantity:1
         }
-        console.log(fruit)
         onAuthStateChanged(auth,(user)=>{
             if(user){
                 const uid = user.uid;
@@ -164,6 +185,75 @@ fruitsDisplay.addEventListener("click",(event)=>{
 
     }
  })
+
+
+
+  async function loadCart(uid){
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+      
+    try{
+        if(adminDoc.exists()){
+            const cartData = adminDoc.data().cart;
+            if(cartData !== ''){
+                noOrders.style.display = "none";
+                clearAllOrders.style.display = "block";
+                cartData.forEach((item)=>{
+                    const eachItem = {
+                        id:item.Id,
+                        name:item.Name,
+                        price:item.Price,
+                        image:item.Image,
+                        quantity:item.quantity
+                    }
+                    cart.push(eachItem);
+                    console.log(cart);
+               
+                    orders.innerHTML += `<div class="order">
+                                            <div class="order-first-section">
+                                                <div class="order-image-box">
+                                                   <img src="${eachItem.image}"/>
+                                                </div>
+                                           
+                                                <div class="order-info">
+                                                    <p class="order-name">${eachItem.name}</p>
+                                                    <div class="order-quantity-box">
+                                                        <div><button class="order-subtract-button">-</button></div>
+                                                        <div><p>${eachItem.quantity}</p></div>
+                                                        <div><button class="order-add-button">+</button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="order-second-section">
+                                                <div class="order-price-box">
+                                                <p class="order-price">$${eachItem.price}.00</p>
+                                                </div>
+                                                <button><ion-icon name="trash-bin-outline" class="order-delete"></ion-icon></button>
+                                            </div>
+                                        </div>`
+                 })
+          
+            }else{
+                noOrders.style.display = "block";
+                console.log("empty cart")
+            }
+             
+
+        }else if(cashierDoc.exists()){
+            const cart = cashierDoc.data().cart
+            console.log(cart)
+
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
+ }
+
+
 
 
 

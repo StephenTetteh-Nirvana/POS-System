@@ -3,8 +3,10 @@ import {auth} from "/src/firebase.js"
 import Swal from 'sweetalert2';
 
 const form = document.querySelector(".form");
+const loader = document.querySelector(".loader-box")
 
 function signIn(){
+    loader.style.display = "block";
     signInWithEmailAndPassword(auth,form.email.value,form.password.value)
     .then(()=>{
         console.log("success")
@@ -21,6 +23,7 @@ function signIn(){
     })
     .catch((error)=>{
         console.log(error.code)
+        loader.style.display = "none"
         if (error.code === 'auth/invalid-email') {
             Swal.fire({
             icon: "error",

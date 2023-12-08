@@ -24,10 +24,12 @@
                   <p><ion-icon class="menu" name="menu"></ion-icon></p>
                   <p class="title">Menu</p>
                 </li>
-                <li>
-                  <p><ion-icon class="dashicon" name="grid"></ion-icon></ion-icon></p>
-                  <p class="title">Dashboard</p>
-                </li>
+                <a href="/src/pages/Dashboard/dashboard.html">
+                  <li>
+                    <p><ion-icon class="dashicon" name="grid"></ion-icon></ion-icon></p>
+                    <p class="title">Dashboard</p>
+                  </li>
+                </a>
                 <li>
                   <p><ion-icon class="orders" name="file-tray-full"></ion-icon></ion-icon></p>
                   <p class="title">Orders</p>
@@ -81,6 +83,9 @@
                 <ion-icon class="no-order" name="close-circle-outline"></ion-icon>
                 <h1>No Orders Yet</h1>
               </div>
+              <div class="orders-alert">
+                <button class="clear-all-orders">Clear All</button>
+              </div>
             </section>
             <section class="order-summary">
                 <div class="subtotal">
@@ -120,6 +125,10 @@
               <button>Place Order</button>
             </section>
         </aside>
+
+        <div class="loader-box">
+          <div class="loader"></div>
+        </div>
       </main>
     <script src="index.bundle.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
