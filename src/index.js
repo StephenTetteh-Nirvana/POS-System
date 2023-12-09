@@ -19,6 +19,7 @@ const loader = document.querySelector(".loader-box")
 const noOrders = document.querySelector(".no-orders-alert")
 const orders = document.querySelector(".orders-alert")
 const clearAllOrders = document.querySelector(".clear-all-orders")
+const loadingOrder = document.querySelector(".loading-order-box")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -132,6 +133,7 @@ async function displayFruits(){
 
 async function addToCart(uid,fruit){
     loader.style.display = "block" 
+    fruitsDisplay.style.opacity = "0.5"
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -220,9 +222,9 @@ fruitsDisplay.addEventListener("click",(event)=>{
                                                 <div class="order-info">
                                                     <p class="order-name">${eachItem.name}</p>
                                                     <div class="order-quantity-box">
-                                                        <div><button class="order-subtract-button">-</button></div>
+                                                        <div data-id="${eachItem.id}"><button class="order-subtract-button">-</button></div>
                                                         <div><p>${eachItem.quantity}</p></div>
-                                                        <div><button class="order-add-button">+</button></div>
+                                                        <div data-id="${eachItem.id}"><button class="order-add-button">+</button></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -249,9 +251,133 @@ fruitsDisplay.addEventListener("click",(event)=>{
         }
     }
     catch(error){
-        console.log(error)
+        console.log("err",error.code)
     }
  }
+
+ async function increaseQuantity(uid,documentId){
+    loadingOrder.style.display = "block";
+    orders.style.opacity = "0.5";
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+
+    if(adminDoc.exists()){
+        const cartData = adminDoc.data().cart;
+        cartData.forEach((product)=>{
+            try{
+                if(product.Id === documentId){
+                    console.log(product.quantity)
+                   product.quantity += 1;
+                   console.log(product.quantity)
+                }
+            }
+            catch(error){
+                console.log(error)
+            }
+          
+        })
+        await updateDoc(adminCollection,{
+            cart : cartData
+           })
+        console.log("increased quantity")
+        window.location.reload()
+    }else if(cashierDoc.exists()){
+        cartData.forEach((product)=>{
+            try{
+                if(product.Id === documentId){
+                    console.log(product.quantity)
+                   product.quantity += 1;
+                   console.log(product.quantity)
+                }
+            }
+            catch(error){
+                console.log(error)
+            }
+           
+        })
+        await updateDoc(cashierCollection,{
+            cart : cartData
+           })
+        console.log("decreased quantity")
+        window.location.reload()
+    }
+ }
+
+ async function decreaseQuantity(uid,documentId){
+    loadingOrder.style.display = "block";
+    orders.style.opacity = "0.5";
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+
+    if(adminDoc.exists()){
+        const cartData = adminDoc.data().cart;
+        cartData.forEach((product)=>{
+            try{
+                if(product.Id === documentId){
+                    console.log(product.quantity)
+                   product.quantity -= 1;
+                   console.log(product.quantity)
+                }
+            }
+            catch(error){
+                console.log(error)
+            }
+            
+        })
+        await updateDoc(adminCollection,{
+            cart : cartData
+           })
+        console.log("decreased quantity")
+        window.location.reload()
+    }else if(cashierDoc.exists()){
+        const cartData = cashierDoc.data().cart;
+        cartData.forEach((product)=>{
+            try{
+                if(product.Id === documentId){
+                    console.log(product.quantity)
+                   product.quantity -= 1;
+                   console.log(product.quantity)
+                }
+            }
+            catch(error){
+                console.log(error)
+            }
+           
+        })
+        await updateDoc(cashierCollection,{
+            cart : cartData
+           })
+        console.log("decreased quantity")
+        window.location.reload()
+    }
+ }
+
+ orders.addEventListener("click",(event)=>{
+    if(event.target.classList.contains("order-add-button")){
+        const documentId = event.target.parentElement.dataset.id;
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                const uid = user.uid;
+                increaseQuantity(uid,documentId)
+            }
+        })
+    }else if(event.target.classList.contains("order-subtract-button")){
+        console.log(event.target)
+        const documentId = event.target.parentElement.dataset.id;
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                const uid = user.uid;
+                decreaseQuantity(uid,documentId)
+            }
+        })
+    }
+    
+   
+ })
 
 
 

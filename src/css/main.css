@@ -421,3 +421,35 @@ main{
         transform:rotate(360deg)
     }
 }
+
+.loading-order-box{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    border-radius: 10px;
+    height:120px;
+    width:130px;
+    backdrop-filter: blur(20px);
+    display:none;
+}
+
+.loading-order{
+    border:7px solid #F5F7FA;
+    border-top:7px solid #2666CF;
+    margin:25px auto;
+    height:50px;
+    width:50px;
+    transform:rotate(0deg);
+    border-radius:50%;
+    animation:rotate 1s linear infinite;
+} 
+
+@keyframes rotate{
+    0%{
+        transform:rotate(0deg)
+    }
+    100%{
+        transform:rotate(360deg)
+    }
+}
