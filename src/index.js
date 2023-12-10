@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded",function(){
         if(user){
             const uid = user.uid;
             fetchDocs(uid)
+            checkCart(uid)
             loadCart(uid)
         }else{
             console.log("no-user")
@@ -93,11 +94,11 @@ document.addEventListener("DOMContentLoaded",function(){
         })
 
     fetchDocs() 
-
-
     displayFruits()
        
 })
+
+ 
 
 async function displayFruits(){
     const fruitsCollection = collection(db,"Fruits")
@@ -155,6 +156,7 @@ async function addToCart(uid,fruit){
             cartArray.push(fruit)
             await updateDoc(cashierCollection,{cart:cartArray})
             .then(()=>{
+                window.location.reload()
                 loader.style.display = "none" 
                 console.log("updated")
                 console.log(cartArray)
@@ -189,6 +191,35 @@ fruitsDisplay.addEventListener("click",(event)=>{
  })
 
 
+ async function checkCart(uid){
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+
+    if(adminDoc.exists()){
+        const cartData = adminDoc.data().cart;
+        if(cartData.length === 0){
+            orders.style.display = "none";
+            noOrders.style.display = "block";
+            console.log("cart is empty")
+        }
+        else(
+            console.log("cart full",cartData)
+        )
+    }else if(cashierDoc.exists()){
+        const cartData = cashierDoc.data().cart;
+        if(cartData.length === 0){
+            orders.style.display = "none";
+            noOrders.style.display = "block";
+            console.log("cart is empty")
+        }
+        else(
+            console.log("cart full",cartData)
+        )
+    }
+}
+
 
   async function loadCart(uid){
     const adminCollection = doc(db,"Admins",uid);
@@ -199,7 +230,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
     try{
         if(adminDoc.exists()){
             const cartData = adminDoc.data().cart;
-            if(cartData !== ''){
+            if(cartData.length > 0){
                 noOrders.style.display = "none";
                 clearAllOrders.style.display = "block";
                 cartData.forEach((item)=>{
@@ -233,7 +264,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
                                                 <div class="order-price-box">
                                                 <p class="order-price">$${eachItem.price}.00</p>
                                                 </div>
-                                                <button><ion-icon name="trash-bin-outline" class="order-delete"></ion-icon></button>
+                                                <button data-id="${eachItem.id}"><ion-icon name="trash-bin-outline" class="order-delete"></ion-icon></button>
                                             </div>
                                         </div>`
                  })
@@ -245,15 +276,145 @@ fruitsDisplay.addEventListener("click",(event)=>{
              
 
         }else if(cashierDoc.exists()){
-            const cart = cashierDoc.data().cart
-            console.log(cart)
+            const cartData = cashierDoc.data().cart
+            if(cartData.length > 0){
+                noOrders.style.display = "none";
+                clearAllOrders.style.display = "block";
+                cartData.forEach((item)=>{
+                    const eachItem = {
+                        id:item.Id,
+                        name:item.Name,
+                        price:item.Price,
+                        image:item.Image,
+                        quantity:item.quantity
+                    }
+                    cart.push(eachItem);
+                    console.log(cart);
+               
+                    orders.innerHTML += `<div class="order">
+                                            <div class="order-first-section">
+                                                <div class="order-image-box">
+                                                   <img src="${eachItem.image}"/>
+                                                </div>
+                                           
+                                                <div class="order-info">
+                                                    <p class="order-name">${eachItem.name}</p>
+                                                    <div class="order-quantity-box">
+                                                        <div data-id="${eachItem.id}"><button class="order-subtract-button">-</button></div>
+                                                        <div><p>${eachItem.quantity}</p></div>
+                                                        <div data-id="${eachItem.id}"><button class="order-add-button">+</button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                            <div class="order-second-section">
+                                                <div class="order-price-box">
+                                                <p class="order-price">$${eachItem.price}.00</p>
+                                                </div>
+                                                <button data-id="${eachItem.id}"><ion-icon name="trash-bin-outline" class="order-delete"></ion-icon></button>
+                                            </div>
+                                        </div>`
+                 })
+          
+            }
+         
         }
     }
     catch(error){
         console.log("err",error.code)
     }
  }
+
+ async function deleteAllOrders(uid){
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+ 
+
+    if(adminDoc.exists()){
+        loadingOrder.style.display = "block";
+        orders.style.opacity = "0.5";
+        console.log("all cleared")
+        await updateDoc(adminCollection,{
+            cart:[]
+        })
+        window.location.reload()
+        console.log("all cleared")
+    }else if(cashierDoc.exists()){
+        loadingOrder.style.display = "block";
+        orders.style.opacity = "0.5";
+        console.log("all cleared")
+        await updateDoc(cashierCollection,{
+            cart:[]
+        })
+        window.location.reload()
+   console.log("all cleared")
+
+    }
+ }
+ orders.addEventListener("click",(event)=>{
+    if(event.target.classList.contains("clear-all-orders")){
+        onAuthStateChanged(auth,(user)=>{
+            const uid = user.uid;
+            deleteAllOrders(uid)
+        })
+       
+    }
+  
+ })
+
+ async function deleteFromCart(uid,docId){
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+
+    if (adminDoc.exists()) {
+        const cartData = adminDoc.data().cart;
+        const updatedCartData = cartData.filter((product) => product.Id !== docId);
+    
+        await updateDoc(adminCollection, {
+            cart: updatedCartData
+        });
+        console.log("Cart updated successfully");
+        console.log(cartData)
+    }
+    else if(cashierDoc.exists()){
+        const cartData = cashierDoc.data().cart;
+        const updatedCartData = cartData.filter((product) => product.Id !== docId);
+    
+        await updateDoc(cashierCollection, {
+            cart: updatedCartData
+        });
+        console.log("Cart updated successfully");
+        console.log(cartData)
+    }
+      
+    }
+
+    function deleteFromCartDOM(event,docId){
+           if(docId){
+            const orderElement = event.target.closest(".order");
+            if (orderElement) {
+                orderElement.remove();
+            }
+           }
+    }
+
+ orders.addEventListener("click",(event)=>{
+    if(event.target.classList.contains("order-delete")){
+        const docId = event.target.parentElement.dataset.id;
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                const uid = user.uid;
+                deleteFromCartDOM(event,docId)
+                deleteFromCart(uid,docId)
+            }
+        })
+
+    }
+ })
 
  async function increaseQuantity(uid,documentId){
     loadingOrder.style.display = "block";
@@ -284,6 +445,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
         console.log("increased quantity")
         window.location.reload()
     }else if(cashierDoc.exists()){
+        const cartData = cashierDoc.data().cart;
         cartData.forEach((product)=>{
             try{
                 if(product.Id === documentId){

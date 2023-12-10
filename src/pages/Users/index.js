@@ -1,6 +1,6 @@
-import {onAuthStateChanged } from "firebase/auth"
+import {onAuthStateChanged,signOut } from "firebase/auth"
 import {db,auth} from "/src/firebase"
-import {getDocs,deleteDoc,doc,collection} from "firebase/firestore"
+import {getDocs,deleteDoc,doc,collection,getDoc} from "firebase/firestore"
 
 
 const date = document.querySelector(".date")
@@ -10,6 +10,7 @@ const findCashier = document.querySelector(".find-cashier-box button")
 const popUp = document.querySelector(".find-cashier-popup")
 const closePopUp = document.querySelector(".removePop")
 const form = document.querySelector(".form")
+const userLogout = document.querySelector("#logOut")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -26,6 +27,30 @@ document.addEventListener("DOMContentLoaded",function(){
     }
     updateClock()
     setInterval(updateClock,1000)
+
+   async function returnToHome(uid){
+        const adminCollection = doc(db,"Admins",uid);
+        const adminDoc = await getDoc(adminCollection);
+        const cashierCollection = doc(db,"Cashiers",uid);
+        const cashierDoc = await getDoc(cashierCollection);
+        if(cashierDoc.exists()){
+            window.location.href = "/dist/index.html";
+        }else if(adminDoc.exists()){
+            console.log("admin is allowed")
+        }
+        else{
+            window.location.href = "/dist/index.html";
+             
+        }
+    }
+    onAuthStateChanged(auth,(user)=>{
+        if(user){
+            const uid = user.uid;
+          returnToHome(uid)
+        }
+         
+    })
+
 
     async function displayUsers() {
         try {
@@ -115,3 +140,19 @@ closePopUp.addEventListener("click",()=>{
             }
             
         })
+
+
+        function logOut(){
+            signOut(auth)
+          .then(()=>{
+           console.log("logged out")
+           window.location.href = "/src/pages/Login/login.html"
+          })
+          .catch((error)=>{
+             console.log(error)
+          })
+       }
+   
+       userLogout.addEventListener("click",()=>{
+         logOut()
+       })
