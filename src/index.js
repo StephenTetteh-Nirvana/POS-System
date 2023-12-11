@@ -20,6 +20,7 @@ const noOrders = document.querySelector(".no-orders-alert")
 const orders = document.querySelector(".orders-alert")
 const clearAllOrders = document.querySelector(".clear-all-orders")
 const loadingOrder = document.querySelector(".loading-order-box")
+const Total = document.querySelector(".total span")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -86,17 +87,51 @@ document.addEventListener("DOMContentLoaded",function(){
             fetchDocs(uid)
             checkCart(uid)
             loadCart(uid)
+            totalAmount(uid)
         }else{
             console.log("no-user")
             window.location.href = "/src/pages/Login/login.html"
 
         }
-        })
-
-    fetchDocs() 
+        }) 
     displayFruits()
+
        
 })
+
+
+async function totalAmount(uid){
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
+
+    if(adminDoc.exists()){
+        const cartData = adminDoc.data().cart;
+        let sum = 0;
+        cartData.forEach((product)=>{
+            const price = product.Price;
+            const quantity = product.quantity;
+            const total = price*quantity;
+            sum += total; 
+        })
+        console.log(sum)
+        Total.innerText = `$${sum}.00`;
+    }else if(cashierDoc.exists()){
+        const cartData = cashierDoc.data().cart;
+        let sum = 0;
+        cartData.forEach((product)=>{
+            const price = product.Price;
+            const quantity = product.quantity;
+            const total = price*quantity;
+            sum += total; 
+        })
+        console.log(sum)
+        Total.innerText = `$${sum}.00`;
+
+    }
+    
+ }
 
  
 
@@ -540,6 +575,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
     
    
  })
+
 
 
 

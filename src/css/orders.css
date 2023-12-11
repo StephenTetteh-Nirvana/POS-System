@@ -4,7 +4,6 @@
 :root{
     --box-shadow:rgba(0,0,0,0.16) 0px 1px 4px;
 }
-
 *{
     margin:0px;
     padding:0px;
@@ -13,7 +12,9 @@
 }
 main{
     display:grid;
-    grid-template-columns: 0.5fr 2fr;
+    grid-template-columns: 0.7fr 3fr;
+    height: 100vh;
+    overflow: hidden;
 }
 .logo-section{
     display:flex;
@@ -33,7 +34,6 @@ main{
 .dashboard{
     color:white;
     z-index:1000;
-    min-height: 100vh;
 }
 .time-display{
     margin-top:30px;
@@ -76,55 +76,4 @@ main{
 .menu,.orders,.dashicon,.log-out,.users,.settings{
     margin-top:6px;
     font-size:20px;
-}
-.activity-section{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    background-color:#F5F7FA;
-}
-.total-orders-box,.total-amount-box,.total-sales-box{
-    height:260px;
-    width:340px;
-    background-color:#FFFFFF;
-    box-shadow: var(--box-shadow);
-    margin-top:50px;
-    border-radius:5px;
-    color:white;
-
-}
-.total-orders-box{
-    width:320px;
-    margin-left:20px;
-    background-color: #2666CF;
-}
-.total-amount-box{
-    background-color:#49f390;
-}
-.total-sales-box{
-    background-color: #ffb4b4;
-}
-.icon-box{
-    margin-left:20px;
-    margin-top:20px;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    background-color:white;
-}
-.icon-box .icon{
-    font-size:25px;
-    color:white;
-    margin-left:10px;
-    margin-top:10px;
-    color:black;
-}
-.text-info{
-    margin-top:100px;
-    margin-left:20px;
-}
-.info{
-  font-size:15px;
-}
-.subinfo{
-    font-size:30px;
 }

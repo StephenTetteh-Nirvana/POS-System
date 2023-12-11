@@ -21,7 +21,10 @@ main{
     color:white;
     padding-left:20px;
     font-size:25px;
+    width:230px;
     border-bottom:1px solid grey;
+    position:fixed;
+    left:0;
 }
 .logo-section img{
     width:40px;
@@ -32,11 +35,14 @@ main{
 }
 .dashboard{
     color:white;
-    min-height:100vh;
+    /* min-height:100vh; */
     z-index:1000;
+    position:fixed;
+    left:0;
+    width:255px;
 }
 .time-display{
-    margin-top:30px;
+    margin-top:70px;
     padding-left:10px
 }
 .time-display .date{
@@ -299,20 +305,20 @@ main{
     margin-top:50px;
     border-top:1px solid grey;
 }
-.total,.subtotal,.tax,.discount{
+.total{
     display: flex;
     justify-content: space-between;
-    margin:10px 30px;
-}
-.total{
-    border-top:1px solid grey;
+    padding:10px;
+    border-bottom:1px solid grey;
 }
 .total p{
     font-size:25px;
+    margin-left:10px;
 }
 .total span{
     font-weight:bolder;
     font-size:25px;
+    margin-right:20px;
 }
 .customer-info{
     display:flex;
@@ -342,7 +348,6 @@ main{
 }
 .payment-section{
     margin-top:20px;
-    min-height:50vh;
 }
 .payment-section h3{
     text-align: center;

@@ -30,10 +30,12 @@
                     <p class="title">Dashboard</p>
                   </li>
                 </a>
-                <li>
-                  <p><ion-icon class="orders" name="file-tray-full"></ion-icon></ion-icon></p>
-                  <p class="title">Orders</p>
-                </li>
+                <a href="/src/pages/Orders/orders.html">
+                  <li>
+                    <p><ion-icon class="orders" name="file-tray-full"></ion-icon></ion-icon></p>
+                    <p class="title">Orders</p>
+                  </li>
+                </a>
                 <a href="/src/pages/Users/users.html">
                 <li id="users">
                   <p><ion-icon class="users" name="people"></ion-icon></p>
@@ -91,23 +93,9 @@
               </div>
             </section>
             <section class="order-summary">
-                <div class="subtotal">
-                  <p>SubTotal</p><span>$200</span>
-                </div>
-                <div class="tax">
-                  <p>Tax</p><span>$1</span>
-                </div>
-                <div class="discount">
-                  <p>Discount</p><span>20%</span>
-                </div>
                 <div class="total">
-                   <p>Total</p><span>$ 201</span>
+                   <p>Total</p><span></span>
                 </div>
-            </section>
-            <section class="customer-info">
-              <input type="text" placeholder="Customer Name" required/>
-              <input type="text" placeholder="Customer Email" required/>
-              <input type="submit" value="Add to Order List"/>
             </section>
             <section class="payment-section">
               <h3>Payment Method</h3>
@@ -125,7 +113,11 @@
                   <p class="subtitle">E-wallet</p>
                 </li>
               </ul>
-              <button>Place Order</button>
+            </section>
+            <section class="customer-info">
+              <input type="text" placeholder="Customer Name" required/>
+              <input type="text" placeholder="Customer Email" required/>
+              <input type="submit" value="Complete Order"/>
             </section>
         </aside>
 
