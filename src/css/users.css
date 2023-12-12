@@ -186,3 +186,13 @@ form input[type="submit"]{
     color:red;
     cursor:pointer;
 }
+.loader-box{
+    position:absolute;
+    top:45%;
+    left:60%;
+    transform:translate(-50%,-50%);
+    display:none;
+}
+.loader-box h1{
+    font-size:30px;
+}

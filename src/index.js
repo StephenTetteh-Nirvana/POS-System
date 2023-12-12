@@ -301,7 +301,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
         }else if(cashierDoc.exists()){
             const cartData = cashierDoc.data().cart
             if(cartData.length > 0){
-                orders.innerHTML = ''
+                orders.innerHTML = '';
                 noOrders.style.display = "none";
                 clearAllOrders.style.display = "block";
                 cartData.forEach((item)=>{
@@ -337,6 +337,11 @@ fruitsDisplay.addEventListener("click",(event)=>{
                                         </div>`
                  })
           
+            }else{
+                clearAllOrders.style.display = "none"
+                noOrders.style.display = "block";
+                orders.innerHTML = ""
+                console.log("empty cart")
             }
          
         }

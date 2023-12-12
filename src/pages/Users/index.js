@@ -11,6 +11,7 @@ const popUp = document.querySelector(".find-cashier-popup")
 const closePopUp = document.querySelector(".removePop")
 const form = document.querySelector(".form")
 const userLogout = document.querySelector("#logOut")
+const loadingUsers = document.querySelector(".loader-box")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -53,6 +54,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
 
     async function displayUsers() {
+        loadingUsers.style.display = "block"
         try {
             const adminDoc = collection(db, "Admins");
             const cashierDoc = collection(db, "Cashiers");
@@ -61,6 +63,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
             admin.docs.forEach((document) => {
                 if(document.data().Role === "Admin"){
+                    loadingUsers.style.display = "none"
                     userDisplay.innerHTML += `<div class="display-users">
                                                     <li class="user ">
                                                         <p>${document.data().Username}</p>
@@ -72,6 +75,7 @@ document.addEventListener("DOMContentLoaded",function(){
             });
             cashier.docs.forEach((document) => {
                 if(document.data().Role === "Cashier"){
+                    loadingUsers.style.display = "none"
                     userDisplay.innerHTML += `<div class="display-users" >
                                                     <li class="user">
                                                         <p>${document.data().Username}</p>
