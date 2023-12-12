@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded",function(){
         if(user){
             const uid = user.uid;
             fetchDocs(uid)
-            checkCart(uid)
             loadCart(uid)
             totalAmount(uid)
         }else{
@@ -190,10 +189,10 @@ async function addToCart(uid,fruit){
                     showConfirmButton: false,
                     timer: 1500
                   });
-                  await totalAmount(uid)
-                  await loadCart(uid)
-                console.log("updated")
+                console.log("updated succesfully")
                 console.log(cartArray)
+                await loadCart(uid)
+                await totalAmount(uid)
         }else if(cashierDoc.exists()){
             const cartArray = cashierDoc.data().cart;
             cartArray.push(fruit)
@@ -207,8 +206,8 @@ async function addToCart(uid,fruit){
                 showConfirmButton: false,
                 timer: 1500
               });
-              await totalAmount(uid)
               await loadCart(uid)
+              await totalAmount(uid)
             console.log("updated")
             console.log(cartArray)
         }
@@ -233,6 +232,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
             if(user){
                 const uid = user.uid;
                 addToCart(uid,fruit)
+                loadCart(uid)
             }
          
         })
@@ -241,37 +241,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
  })
 
 
- async function checkCart(uid){
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
 
-    if(adminDoc.exists()){
-        const cartData = adminDoc.data().cart;
-        if(cartData.length === 0){
-            orders.style.display = "none";
-            clearAllOrders.style.display = "none"
-            noOrders.style.display = "block";
-            console.log("cart is empty")
-        }
-        else(
-            console.log("cart full",cartData)
-        )
-        await loadCart(uid)
-    }else if(cashierDoc.exists()){
-        const cartData = cashierDoc.data().cart;
-        if(cartData.length === 0){
-            orders.style.display = "none";
-            noOrders.style.display = "block";
-            console.log("cart is empty")
-        }
-       
-        else(
-            console.log("cart full",cartData)
-        )
-    }
-}
 
 
   async function loadCart(uid){
@@ -285,9 +255,8 @@ fruitsDisplay.addEventListener("click",(event)=>{
             const cartData = adminDoc.data().cart;
             if(cartData.length > 0){
                 orders.innerHTML = '';
-            noOrders.style.display = "none";
-            clearAllOrders.style.display = "block";
-
+                noOrders.style.display = "none";
+                clearAllOrders.style.display = "block";
                 cartData.forEach((item)=>{
                     const eachItem = {
                         id:item.Id,
@@ -324,6 +293,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
           
             }else{
                 noOrders.style.display = "block";
+                orders.innerHTML = ""
                 console.log("empty cart")
             }
              
@@ -377,6 +347,8 @@ fruitsDisplay.addEventListener("click",(event)=>{
  }
 
  async function deleteAllOrders(uid){
+    loadingOrder.style.display = "block";
+    orders.style.opacity = "0.5";
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -384,17 +356,14 @@ fruitsDisplay.addEventListener("click",(event)=>{
  
 
     if(adminDoc.exists()){
-        loadingOrder.style.display = "block";
-        orders.style.opacity = "0.5";
         console.log("all cleared")
         await updateDoc(adminCollection,{
             cart:[]
         })
         loadingOrder.style.display = "none";
         orders.style.opacity = "1";
+        await loadCart(uid)
         await totalAmount(uid)
-        await checkCart(uid)
-       await loadCart(uid)
         console.log("all cleared")
     }else if(cashierDoc.exists()){
         loadingOrder.style.display = "block";
@@ -405,8 +374,9 @@ fruitsDisplay.addEventListener("click",(event)=>{
         })
         loadingOrder.style.display = "none";
         orders.style.opacity = "1";
-       await loadCart(uid)
-   console.log("all cleared")
+        await loadCart(uid)
+        await totalAmount(uid)
+        console.log("all cleared")
 
     }
  }
