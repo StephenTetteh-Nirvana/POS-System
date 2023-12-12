@@ -1,6 +1,7 @@
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import {auth,db} from "/src/firebase"
 import { collection, doc,getDoc,getDocs, updateDoc} from "firebase/firestore"
+import Swal from "sweetalert2"
 
 const fruits = [];
 const cart = [];
@@ -180,22 +181,36 @@ async function addToCart(uid,fruit){
             const cartArray = adminDoc.data().cart;
             cartArray.push(fruit)
             await updateDoc(adminCollection,{cart:cartArray})
-            .then(()=>{
-                window.location.reload()
                 loader.style.display = "none" 
+                fruitsDisplay.style.opacity = "1"
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Product added to cart successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                  await totalAmount(uid)
+                  await loadCart(uid)
                 console.log("updated")
                 console.log(cartArray)
-            })
         }else if(cashierDoc.exists()){
             const cartArray = cashierDoc.data().cart;
             cartArray.push(fruit)
             await updateDoc(cashierCollection,{cart:cartArray})
-            .then(()=>{
-                window.location.reload()
-                loader.style.display = "none" 
-                console.log("updated")
-                console.log(cartArray)
-            })
+            loader.style.display = "none" 
+            fruitsDisplay.style.opacity = "1"
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Product added to cart successfully",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              await totalAmount(uid)
+              await loadCart(uid)
+            console.log("updated")
+            console.log(cartArray)
         }
     }
     catch(error){
@@ -236,12 +251,14 @@ fruitsDisplay.addEventListener("click",(event)=>{
         const cartData = adminDoc.data().cart;
         if(cartData.length === 0){
             orders.style.display = "none";
+            clearAllOrders.style.display = "none"
             noOrders.style.display = "block";
             console.log("cart is empty")
         }
         else(
             console.log("cart full",cartData)
         )
+        await loadCart(uid)
     }else if(cashierDoc.exists()){
         const cartData = cashierDoc.data().cart;
         if(cartData.length === 0){
@@ -249,6 +266,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
             noOrders.style.display = "block";
             console.log("cart is empty")
         }
+       
         else(
             console.log("cart full",cartData)
         )
@@ -266,8 +284,10 @@ fruitsDisplay.addEventListener("click",(event)=>{
         if(adminDoc.exists()){
             const cartData = adminDoc.data().cart;
             if(cartData.length > 0){
-                noOrders.style.display = "none";
-                clearAllOrders.style.display = "block";
+                orders.innerHTML = '';
+            noOrders.style.display = "none";
+            clearAllOrders.style.display = "block";
+
                 cartData.forEach((item)=>{
                     const eachItem = {
                         id:item.Id,
@@ -276,9 +296,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
                         image:item.Image,
                         quantity:item.quantity
                     }
-                    cart.push(eachItem);
-                    console.log(cart);
-               
+                  
                     orders.innerHTML += `<div class="order">
                                             <div class="order-first-section">
                                                 <div class="order-image-box">
@@ -313,6 +331,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
         }else if(cashierDoc.exists()){
             const cartData = cashierDoc.data().cart
             if(cartData.length > 0){
+                orders.innerHTML = ''
                 noOrders.style.display = "none";
                 clearAllOrders.style.display = "block";
                 cartData.forEach((item)=>{
@@ -323,9 +342,6 @@ fruitsDisplay.addEventListener("click",(event)=>{
                         image:item.Image,
                         quantity:item.quantity
                     }
-                    cart.push(eachItem);
-                    console.log(cart);
-               
                     orders.innerHTML += `<div class="order">
                                             <div class="order-first-section">
                                                 <div class="order-image-box">
@@ -374,7 +390,11 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(adminCollection,{
             cart:[]
         })
-        window.location.reload()
+        loadingOrder.style.display = "none";
+        orders.style.opacity = "1";
+        await totalAmount(uid)
+        await checkCart(uid)
+       await loadCart(uid)
         console.log("all cleared")
     }else if(cashierDoc.exists()){
         loadingOrder.style.display = "block";
@@ -383,23 +403,23 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(cashierCollection,{
             cart:[]
         })
-        window.location.reload()
+        loadingOrder.style.display = "none";
+        orders.style.opacity = "1";
+       await loadCart(uid)
    console.log("all cleared")
 
     }
  }
- orders.addEventListener("click",(event)=>{
-    if(event.target.classList.contains("clear-all-orders")){
+ clearAllOrders.addEventListener("click",()=>{
         onAuthStateChanged(auth,(user)=>{
             const uid = user.uid;
             deleteAllOrders(uid)
         })
-       
-    }
-  
  })
 
  async function deleteFromCart(uid,docId){
+    loadingOrder.style.display = "block";
+    orders.style.opacity = "0.5";
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -412,6 +432,17 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(adminCollection, {
             cart: updatedCartData
         });
+        loadingOrder.style.display = "none";
+        orders.style.opacity = "1";
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Product removed from cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          await totalAmount(uid)
+        await loadCart(uid)
         console.log("Cart updated successfully");
         console.log(cartData)
     }
@@ -422,19 +453,21 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(cashierCollection, {
             cart: updatedCartData
         });
+        loadingOrder.style.display = "none";
+        orders.style.opacity = "1";
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Product removed from cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          await totalAmount(uid)
+        await loadCart(uid)
         console.log("Cart updated successfully");
         console.log(cartData)
     }
       
-    }
-
-    function deleteFromCartDOM(event,docId){
-           if(docId){
-            const orderElement = event.target.closest(".order");
-            if (orderElement) {
-                orderElement.remove();
-            }
-           }
     }
 
  orders.addEventListener("click",(event)=>{
@@ -443,7 +476,6 @@ fruitsDisplay.addEventListener("click",(event)=>{
         onAuthStateChanged(auth,(user)=>{
             if(user){
                 const uid = user.uid;
-                deleteFromCartDOM(event,docId)
                 deleteFromCart(uid,docId)
             }
         })
@@ -468,6 +500,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
                    product.quantity += 1;
                    console.log(product.quantity)
                 }
+            
             }
             catch(error){
                 console.log(error)
@@ -477,8 +510,11 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(adminCollection,{
             cart : cartData
            })
+        await totalAmount(uid)
+        await loadCart(uid)
+        loadingOrder.style.display = "none";
+        orders.style.opacity = "1";
         console.log("increased quantity")
-        window.location.reload()
     }else if(cashierDoc.exists()){
         const cartData = cashierDoc.data().cart;
         cartData.forEach((product)=>{
@@ -497,8 +533,11 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(cashierCollection,{
             cart : cartData
            })
+           await totalAmount(uid)
+           await loadCart(uid)
+           loadingOrder.style.display = "none";
+           orders.style.opacity = "1";
         console.log("decreased quantity")
-        window.location.reload()
     }
  }
 
@@ -528,8 +567,12 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(adminCollection,{
             cart : cartData
            })
+           await totalAmount(uid)
+           await loadCart(uid)
+           loadingOrder.style.display = "none";
+           orders.style.opacity = "1";
+           console.log("increased quantity")
         console.log("decreased quantity")
-        window.location.reload()
     }else if(cashierDoc.exists()){
         const cartData = cashierDoc.data().cart;
         cartData.forEach((product)=>{
@@ -548,8 +591,12 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(cashierCollection,{
             cart : cartData
            })
+           await totalAmount(uid)
+           await loadCart(uid)
+           loadingOrder.style.display = "none";
+           orders.style.opacity = "1";
+           console.log("increased quantity")
         console.log("decreased quantity")
-        window.location.reload()
     }
  }
 
