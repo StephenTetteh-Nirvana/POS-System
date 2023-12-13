@@ -5,6 +5,7 @@ import Swal from "sweetalert2"
 
 const fruits = [];
 const cart = [];
+let order = []
 
 
 const date = document.querySelector(".date")
@@ -22,6 +23,8 @@ const orders = document.querySelector(".orders-alert")
 const clearAllOrders = document.querySelector(".clear-all-orders")
 const loadingOrder = document.querySelector(".loading-order-box")
 const Total = document.querySelector(".total span")
+const customerForm = document.querySelector(".customer-info")
+const loadingCustomer = document.querySelector(".customer-loader-box")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -598,11 +601,54 @@ fruitsDisplay.addEventListener("click",(event)=>{
    
  })
 
+ async function addCustomer(uid){
+    loadingCustomer.style.display = "block"
+    const adminCollection = doc(db,"Admins",uid);
+    const cashierCollection = doc(db,"Cashiers",uid);
+    const adminDoc = await getDoc(adminCollection);
+    const cashierDoc = await getDoc(cashierCollection);
 
+    if(adminDoc.exists()){
+        const cartData = adminDoc.data().cart;
+        const orderData = adminDoc.data().order;
+       await orderData.push(...cartData)
+        await updateDoc(adminCollection,{
+        cart:[],
+        order:orderData,
+         CustomerName: customerForm.customerName.value,
+         CustomerPhone: customerForm.customerPhone.value,
+        })
+        customerForm.reset()
+        loadCart(uid)
+        totalAmount(uid)
+        console.log(cartData)
+        console.log(orderData)
+        loadingCustomer.style.display = "none"
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Order Completed",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        console.log("updated")
 
+    }else if(cashierDoc.exists()){
+        console.log("exists cashier")
 
+    }
+ }
 
-
+ customerForm.addEventListener("submit",(event)=>{
+   event.preventDefault();
+   onAuthStateChanged(auth,(user)=>{
+    if(user){
+        const uid = user.uid
+        addCustomer(uid)
+    }
+   })
+  
+ })
 
 
     function logOut(){

@@ -77,3 +77,31 @@ main{
     margin-top:6px;
     font-size:20px;
 }
+.orders-section{
+    background-color:#F5F7FA;
+    padding:30px;
+}
+.orders-section h1{
+    border-bottom:1px solid grey;
+    margin-top:30px;
+    margin-left:30px;
+    font-size:30px;
+}
+.order-details-box{
+    background-color: #FFFFFF;
+    box-shadow: var(--box-shadow);
+    margin-left:30px;
+    min-height:30vh;
+    margin-top:20px;
+    border-radius:5px;
+}
+.order-details-box ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding-top:10px;
+    border-bottom:1px solid grey;
+}
+.order-details-box ul li{
+    text-align:center;
+    height:100%;
+}
