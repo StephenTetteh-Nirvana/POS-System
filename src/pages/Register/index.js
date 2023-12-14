@@ -111,51 +111,9 @@ const error = document.querySelector(".error-display")
          
  }
 
- async function createCustomerCollection(uid){
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
-    try{
-        if(adminDoc.exists()){
-            const customerCollection = collection(adminCollection,"Customers");
-            addDoc(customerCollection,{
-                CustomerName:"",
-                CustomerPhone:""
-            })
-            console.log("inside admin")
-            console.log("customer created successfully")
-        }else if(cashierDoc.exists()){
-            const customerCollection = collection(cashierCollection,"Customers");
-            addDoc(customerCollection,{
-                CustomerName:"",
-                CustomerPhone:""
-            })
-            console.log("inside cashier")
-            console.log("customer created successfully")
-        
-    }
-}
-    catch(error){
-       console.log(error)
-    }
-
-  }
-
-        
-   
-
 registerForm.addEventListener("submit",(event)=>{
     event.preventDefault()
     registerUser()
-
-    onAuthStateChanged(auth,(user)=>{
-        if(user){
-            const uid = user.uid;
-            createCustomerCollection(uid)
-        }
-    })
-  
 })
 
 

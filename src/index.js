@@ -1,6 +1,6 @@
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import {auth,db} from "/src/firebase"
-import { collection, doc,getDoc,getDocs, updateDoc} from "firebase/firestore"
+import { collection, doc,getDoc,getDocs, updateDoc,addDoc, documentId} from "firebase/firestore"
 import Swal from "sweetalert2"
 
 const fruits = [];
@@ -601,50 +601,109 @@ fruitsDisplay.addEventListener("click",(event)=>{
    
  })
 
- async function addCustomer(uid){
-    loadingCustomer.style.display = "block"
+ async function createCustomerCollection(uid){
+    loadingCustomer.style.display = "block";
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
     const cashierDoc = await getDoc(cashierCollection);
-
-    if(adminDoc.exists()){
-        const cartData = adminDoc.data().cart;
-        const orderData = adminDoc.data().order;
-       await orderData.push(...cartData)
-        await updateDoc(adminCollection,{
-        cart:[],
-        order:orderData,
-         CustomerName: customerForm.customerName.value,
-         CustomerPhone: customerForm.customerPhone.value,
-        })
-        customerForm.reset()
-        loadCart(uid)
-        totalAmount(uid)
-        console.log(cartData)
-        console.log(orderData)
-        loadingCustomer.style.display = "none"
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Order Completed",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        console.log("updated")
-
-    }else if(cashierDoc.exists()){
-        console.log("exists cashier")
-
+    try{
+        if(adminDoc.exists()){
+            const cartData = adminDoc.data().cart;
+            const customerCollection = collection(adminCollection,"Customers");
+            const customerDocRef =  await addDoc(customerCollection,{
+                CustomerName: customerForm.customerName.value,
+                CustomerPhone: customerForm.customerPhone.value,
+                order:[]
+            })
+            console.log("customer created successfully")
+            await updateAdminCustomer(customerDocRef,cartData,adminCollection)
+            await loadCart(uid)
+            await totalAmount(uid)
+            loadingCustomer.style.display = "none"
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Order Completed",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            console.log("order array updated")
+   
+          
+        }else if(cashierDoc.exists()){
+            const cartData = cashierDoc.data().cart;
+            const customerCollection = collection(cashierCollection,"Customers");
+            const customerDocRef =  await addDoc(customerCollection,{
+                CustomerName: customerForm.customerName.value,
+                CustomerPhone: customerForm.customerPhone.value,
+                order:[]
+            })
+            console.log("customer created successfully")
+            await updateCashierCustomer(customerDocRef,cartData,cashierCollection)
+            await loadCart(uid)
+            await totalAmount(uid)
+            loadingCustomer.style.display = "none"
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Order Completed",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            console.log("order array updated")
+        
     }
- }
+}
+    catch(error){
+       console.log(error)
+    }
+
+  }
+
+  async function updateAdminCustomer(customerDocRef,cartData,adminCollection){
+       const displayCustomer = await getDoc(customerDocRef)
+       if(displayCustomer.exists()){
+           const orderData = displayCustomer.data().order;
+           await orderData.push(...cartData)
+           await updateDoc(customerDocRef,{
+              order:orderData
+           })
+           console.log("order array update")
+           console.log(orderData)
+
+           await updateDoc(adminCollection,{
+            cart:[]
+           })
+           console.log("cart has been updated succesfully")
+
+       }
+    }
+
+    async function updateCashierCustomer(customerDocRef,cartData,cashierCollection){
+        const displayCustomer = await getDoc(customerDocRef)
+        if(displayCustomer.exists()){
+            const orderData = displayCustomer.data().order;
+            await orderData.push(...cartData)
+            await updateDoc(customerDocRef,{
+               order:orderData
+            })
+            console.log("order array update")
+            console.log(orderData)
+ 
+            await updateDoc(cashierCollection,{
+             cart:[]
+            })
+            console.log("cart has been updated succesfully")
+        }
+     }
 
  customerForm.addEventListener("submit",(event)=>{
    event.preventDefault();
    onAuthStateChanged(auth,(user)=>{
     if(user){
         const uid = user.uid
-        addCustomer(uid)
+        createCustomerCollection(uid)
     }
    })
   
