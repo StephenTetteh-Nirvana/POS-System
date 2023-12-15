@@ -1,6 +1,6 @@
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import {auth,db} from "/src/firebase"
-import { collection, doc,getDoc,getDocs, updateDoc,addDoc, documentId} from "firebase/firestore"
+import { collection, doc,getDoc,getDocs, updateDoc,addDoc} from "firebase/firestore"
 import Swal from "sweetalert2"
 
 const fruits = [];
@@ -618,6 +618,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
             })
             console.log("customer created successfully")
             await updateAdminCustomer(customerDocRef,cartData,adminCollection)
+            customerForm.reset()
             await loadCart(uid)
             await totalAmount(uid)
             loadingCustomer.style.display = "none"
@@ -641,6 +642,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
             })
             console.log("customer created successfully")
             await updateCashierCustomer(customerDocRef,cartData,cashierCollection)
+            customerForm.reset()
             await loadCart(uid)
             await totalAmount(uid)
             loadingCustomer.style.display = "none"

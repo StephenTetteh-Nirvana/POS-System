@@ -30,7 +30,7 @@ main{
 }
 .sidebar{
     background-color:#2d2d2d;
-    z-index:1000;
+    z-index:100;
 }
 .dashboard{
     color:white;
@@ -104,4 +104,109 @@ main{
 .order-details-box ul li{
     text-align:center;
     height:100%;
+}
+.customer-info{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding:10px;
+    border-bottom:1px solid grey;
+    margin-top:10px;
+}
+.customer-info li{
+    text-align:center;
+}
+.status{
+    font-weight:bolder;
+    color:green;
+}
+.customer-info button{
+    width:50%;
+    margin-left:60px;
+    border:none;
+    background-color: #2666CF;
+    color:white;
+    border-radius:5px;
+    padding:5px;
+    cursor:pointer;
+}
+.customer-info button:active{
+   transform: scale(0.9);
+   transition: transform 300ms;
+}
+.popup-order-summary{
+    position:absolute;
+    left:0;
+    top:0;
+    display:none;
+    width:100%;
+    height:100vh;
+    z-index:9999;
+    background:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75));
+}
+.popup-box{
+    position:absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color:#FFFFFF;
+    box-shadow: var(--box-shadow);
+    width:70%;
+    min-height:20vh;
+    margin-left:100px;
+}
+.popup-heading{
+    display:flex;
+    justify-content: space-between;
+    padding:10px;
+}
+.popup-heading h1{
+    font-size:30px;
+    margin-left:30px;
+}
+.popup-heading .close{
+    font-size:35px;
+    margin-right:20px;
+}
+.order{
+    display:flex;
+    justify-content: space-around;
+    border-top:1px solid grey;
+}
+
+.order-image-box img{
+    width:100px;
+    height:100px;
+}
+.bottom-section{
+    display:flex;
+    justify-content:space-between;
+    border-top:1px solid grey;
+    padding:10px;
+    display:none;
+}
+.bottom-section h2{
+    margin-left:30px;
+}
+.print-box{
+    margin-right:30px;
+}
+.bottom-section button{
+    background-color:#2666CF;
+    color:white;
+    border:none;
+    font-size:17px;
+    border-radius:5px;
+    padding:5px 40px;
+    cursor: pointer;
+}
+.loader-box{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:100%;
+    display:none;
+}
+.loader-box h1{
+    margin-left:50%;
 }
