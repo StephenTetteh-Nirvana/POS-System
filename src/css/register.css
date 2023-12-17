@@ -65,6 +65,15 @@ form input[type="password"]{
     margin-top:10px;
     padding-left:10px;
 }
+.eye-box{
+    position:absolute;
+    top:64%;
+    left:83%;
+    cursor: pointer;
+}
+.eye{
+    font-size:20px;
+}
 .link-one{
     text-decoration: none;
     font-weight: bold;

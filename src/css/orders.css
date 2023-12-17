@@ -94,6 +94,7 @@ main{
     min-height:30vh;
     margin-top:20px;
     border-radius:5px;
+    position:relative;
 }
 .order-details-box ul {
     display: grid;
@@ -104,6 +105,16 @@ main{
 .order-details-box ul li{
     text-align:center;
     height:100%;
+}
+.customer-loader-box{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    display:none;
+}
+.customer-loader-box h1{
+    border:none;
 }
 .customer-info{
     display: grid;
@@ -117,7 +128,23 @@ main{
 }
 .status{
     font-weight:bolder;
-    color:green;
+    color:white;
+    background-color: green;
+    border-radius:10px;
+    padding:5px;
+    margin-left:5px;
+    font-size:13px;
+    letter-spacing: 1px;
+}
+.cashier-status{
+    font-weight:bolder;
+    color:white;
+    background-color: rgb(214, 214, 48);
+    border-radius:10px;
+    padding:5px;
+    margin-left:5px;
+    font-size:13px;
+    letter-spacing: 1px;
 }
 .customer-info button{
     width:50%;
@@ -163,9 +190,31 @@ main{
     font-size:30px;
     margin-left:30px;
 }
-.popup-heading .close{
+.navigation-box{
+    display:flex;
+}
+.navigation-box button{
+    background-color:#2666CF;
+    color:white;
+    border:none;
+    font-size:17px;
+    border-radius:5px;
+    padding:5px 40px;
+    cursor: pointer;
+    margin-right:40px;
+    position:relative;
+}
+.navigation-box .print{
+    font-size:20px;
+    position:absolute;
+    left:15px;
+    top:13px;
+}
+.navigation-box .close{
     font-size:35px;
     margin-right:20px;
+    color:red;
+    cursor:pointer;
 }
 .order{
     display:flex;
@@ -178,27 +227,15 @@ main{
     height:100px;
 }
 .bottom-section{
-    display:flex;
-    justify-content:space-between;
     border-top:1px solid grey;
     padding:10px;
     display:none;
 }
 .bottom-section h2{
     margin-left:30px;
+    text-align:center;
 }
-.print-box{
-    margin-right:30px;
-}
-.bottom-section button{
-    background-color:#2666CF;
-    color:white;
-    border:none;
-    font-size:17px;
-    border-radius:5px;
-    padding:5px 40px;
-    cursor: pointer;
-}
+
 .loader-box{
     position:absolute;
     top:50%;
