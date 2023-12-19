@@ -5,6 +5,7 @@ import { doc,getDoc} from "firebase/firestore"
 const date = document.querySelector(".date")
 const time = document.querySelector(".time")
 const userLogout = document.querySelector("#logOut")
+const users = document.querySelector("#users")
 
 
 

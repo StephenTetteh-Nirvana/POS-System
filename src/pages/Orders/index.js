@@ -11,6 +11,7 @@ const PopUpOrders = document.querySelector(".order-summary-order")
 const loader = document.querySelector(".loader-box")
 const bottomInfo = document.querySelector(".bottom-section")
 const customerLoader = document.querySelector(".customer-loader-box")
+const users = document.querySelector("#users")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -28,10 +29,33 @@ document.addEventListener("DOMContentLoaded",function(){
     updateClock()
     setInterval(updateClock,1000)
 
+    async function fetchDocs(uid){
+        try{
+            const cashierCollection = doc(db,"Cashiers",uid);
+            const cashierDoc = await getDoc(cashierCollection);
+            
+        
+           if(cashierDoc.exists()){
+              const user = cashierDoc.data()
+              if(user.Role === "Cashier"){
+                users.style.display = "none";
+              }
+            }
+            else{
+                console.log("user doc does not exist")
+            }
+
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+
     onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
             displayCustomers(uid)
+            fetchDocs(uid)
             
         }
     })

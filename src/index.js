@@ -25,7 +25,7 @@ const loadingOrder = document.querySelector(".loading-order-box")
 const Total = document.querySelector(".total span")
 const customerForm = document.querySelector(".customer-info")
 const loadingCustomer = document.querySelector(".customer-loader-box")
-
+const Payment = document.querySelector(".payment-section")
 
 document.addEventListener("DOMContentLoaded",function(){
     function updateClock(){
@@ -101,6 +101,21 @@ document.addEventListener("DOMContentLoaded",function(){
 
        
 })
+
+Payment.addEventListener("click", (event) => {
+    const liTag = event.target.closest("li");
+    const ul = liTag.parentElement;
+    ul.querySelectorAll("li").forEach((li) => {
+        li.classList.remove("active");
+    });
+    liTag.classList.add("active");
+});
+
+function resetLi(){
+    Payment.querySelectorAll("li").forEach((li) => {
+        li.classList.remove("active");
+    });
+}
 
 
 async function totalAmount(uid){
@@ -610,7 +625,19 @@ fruitsDisplay.addEventListener("click",(event)=>{
     try{
         if(adminDoc.exists()){
             const cartData = adminDoc.data().cart;
-            const customerCollection = collection(adminCollection,"Customers");
+            if(cartData.length === 0){
+                loadingCustomer.style.display = "none"
+                customerForm.reset()
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "No Item Added",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            }
+            else{
+                const customerCollection = collection(adminCollection,"Customers");
             const customerDocRef =  await addDoc(customerCollection,{
                 CustomerName: customerForm.customerName.value,
                 CustomerPhone: customerForm.customerPhone.value,
@@ -621,6 +648,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
             customerForm.reset()
             await loadCart(uid)
             await totalAmount(uid)
+            resetLi()
             loadingCustomer.style.display = "none"
             Swal.fire({
                 position: "center",
@@ -630,10 +658,21 @@ fruitsDisplay.addEventListener("click",(event)=>{
                 timer: 1500
               });
             console.log("order array updated")
-   
-          
+            }
         }else if(cashierDoc.exists()){
             const cartData = cashierDoc.data().cart;
+            if(cartData.length === 0){
+                loadingCustomer.style.display = "none"
+                customerForm.reset()
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "No Item Added",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            } 
+            else{
             const customerCollection = collection(cashierCollection,"Customers");
             const customerDocRef =  await addDoc(customerCollection,{
                 CustomerName: customerForm.customerName.value,
@@ -645,6 +684,7 @@ fruitsDisplay.addEventListener("click",(event)=>{
             customerForm.reset()
             await loadCart(uid)
             await totalAmount(uid)
+            resetLi()
             loadingCustomer.style.display = "none"
             Swal.fire({
                 position: "center",
@@ -654,6 +694,9 @@ fruitsDisplay.addEventListener("click",(event)=>{
                 timer: 1500
               });
             console.log("order array updated")
+            }
+
+
         
     }
 }
