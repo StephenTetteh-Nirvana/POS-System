@@ -7,11 +7,11 @@ module.exports = {
      users: './src/pages/Users/index.js',
      orders:'./src/pages/Orders/index.js',
      dashboard: './src/pages/Dashboard/index.js',
-     index: './src/index.js'
+     index: './src/index.js',
     },
     output: {
         filename: '[name].bundle.js',
         path:path.resolve(__dirname,'dist'),
     },
-    mode:'production',
+    mode:'development',
 }
