@@ -9,8 +9,7 @@ const users = document.querySelector("#users")
 const products = document.querySelector(".products-container")
 const displayProducts = document.querySelector(".products-display")
 const heading = document.querySelector("#in-stock-heading")
-const stockButtonOne = document.querySelector(".in-stock")
-const stockButtonTwo = document.querySelector(".out-of-stock")
+const adminInvoice = document.querySelector(".admin-invoices")
 
 
 
@@ -74,7 +73,7 @@ async function retrieveProducts(){
                                          <div>
                                          <p>${product.name}</p>
                                          </div>
-                                            <div>
+                                            <div class="stock-box">
                                             <p>${product.stock}</p>
                                             </div>
                                                 <div class="price-box">
@@ -108,12 +107,36 @@ async function retrieveInvoices(){
         const customerCollection = collection(customerDocRef, "Customers");
         const customerDocs = await getDocs(customerCollection);
         await retrieveCustomers(customerDocs)
+
+       
+    })
+    cashierDoc.forEach(async (document)=>{
+        const Id = document.id;
+        const customerDocRef = doc(db, "Cashiers",Id);
+        const customerCollection = collection(customerDocRef, "Customers");
+        const customerDocs = await getDocs(customerCollection);
+        await retrieveCustomers(customerDocs)
     })
 }
 
 async function retrieveCustomers(customerDocs){
     customerDocs.forEach((customer)=>{
-        console.log(customer.data().order)
+        const orderData = customer.data().order
+        orderData.map((arr)=>{
+            const Info = {
+                name:arr.Name,
+                price:arr.Price,
+                quantity:arr.quantity
+            }
+            console.log(Info)
+            adminInvoice.innerHTML += `<div class="invoice">
+            <p>${Info.name}</p>
+            <p>${customer.data().CustomerName}</p>
+            <p>${customer.data().CustomerPhone}</p>
+            </div>`
+        })
+
+
     })
 }
 
