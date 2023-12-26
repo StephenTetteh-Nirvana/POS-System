@@ -14,5 +14,18 @@ module.exports = {
         filename: '[name].bundle.js',
         path:path.resolve(__dirname,'dist'),
     },
-    mode:"development"
+    optimization: {
+        splitChunks: {
+          chunks: 'all',
+          minSize: 100,
+          cacheGroups: {
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunk:'all'
+            },
+          },
+        },
+      },
+    mode:"production"
 }

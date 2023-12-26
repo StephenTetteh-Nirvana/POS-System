@@ -14,6 +14,7 @@
 main{
     display:grid;
     grid-template-columns: 0.5fr 2fr;
+    background-color: #F5F7FA;
 }
 .logo-section{
     display:flex;
@@ -89,19 +90,13 @@ main{
     box-shadow: var(--box-shadow);
     margin-top:50px;
     border-radius:5px;
+    background-color:#2d2d2d;
     color:white;
 
 }
 .total-orders-box{
     width:320px;
     margin-left:20px;
-    background-color: #2666CF;
-}
-.total-amount-box{
-    background-color:#49f390;
-}
-.total-sales-box{
-    background-color: #ffb4b4;
 }
 .icon-box{
     margin-left:20px;
@@ -127,4 +122,98 @@ main{
 }
 .subinfo{
     font-size:30px;
+}
+.display-info-container{
+   display:flex;
+
+    margin-left:20px;
+    margin-top:20px;
+}
+.sales-container{
+    border:1px solid #dce0e7;
+    width:300px;
+    min-height:300px;
+    border-radius:5px;
+    background-color: #FFFFFF;
+    box-shadow:var(--box-shadow);
+}
+.sales-container h1{
+    text-align:center;
+    text-decoration: underline;
+    font-size:25px;
+    margin-top:10px;
+}
+.sales-container .button-container{
+    margin-top:10px;
+    text-align:center;
+}
+.all-sales-button,.cashiers-button{
+    padding:5px 20px;
+    border:1px solid #dce0e7;
+    color:black;
+    border-radius:5px;
+    cursor:pointer;
+}
+.all-sales-button{
+    background-color: #2666CF;
+    color:white;
+
+}
+.sales-container button:hover{
+    background-color: #2666CF;
+    color:white;
+    border:none;
+}
+.products-container{
+    margin-left:30px;
+    width:700px;
+    min-height:20vh;
+    border:1px solid #dce0e7;
+    background-color: #FFFFFF;
+    box-shadow:var(--box-shadow);
+}
+.products-heading{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 20px;
+}
+.products-heading h1{
+    font-size:25px;
+}
+.products-buttons .in-stock,.products-buttons .out-of-stock{
+    padding:8px 20px;
+    cursor:pointer;
+    background:transparent;
+    color:black;
+    border:1px solid #dce0e7;
+    border-radius:3px;
+}
+.products-buttons button:hover{
+    background-color: #2666CF;
+    color:white;
+}
+.products-buttons .in-stock{
+    background-color: #2666CF;
+    color:white;
+}
+.active{
+    background-color: #2666CF;
+    color:white;
+}
+.products-container #in-stock-heading{
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr;
+    border-bottom:1px solid #dce0e7;
+    margin-left:20px;
+    width:95%;
+}
+.product{
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr;
+    margin-left:20px;
+    padding:5px 0px;
+ 
+}
+.price-box{
+    margin-left:-10px;
 }
