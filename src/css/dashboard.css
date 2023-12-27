@@ -135,7 +135,7 @@ main{
 .sales-container{
     border:1px solid #dce0e7;
     width:97%;
-    min-height:25vh;
+    min-height:15vh;
     margin-left:20px;
     margin-top:20px;
     border-radius:5px;
@@ -160,7 +160,7 @@ main{
     margin-top:10px;
     text-align:center;
 }
-.all-sales-button,.cashiers-button{
+.all-sales-button,.cashiers-button,.view-sales-button{
     padding:5px 20px;
     border:1px solid #dce0e7;
     color:black;
@@ -175,6 +175,16 @@ main{
     background-color: rgb(214, 214, 48);
     color:white;
     border:none;
+}
+.view-sales-button:hover{
+    background-color: #2666CF;
+    color:#FFFFFF;
+}
+.sales{
+    display:none;
+}
+#sales-heading{
+   visibility: hidden;
 }
 .sales-loader{
    display:none;
@@ -199,6 +209,9 @@ main{
     background-color: #FFFFFF;
     box-shadow:var(--box-shadow);
 }
+.products-display{
+    display:none;
+}
 .products-heading{
     display:flex;
     justify-content:space-between;
@@ -207,7 +220,7 @@ main{
 .products-heading h1{
     font-size:25px;
 }
-.products-buttons .in-stock,.products-buttons .out-of-stock{
+.products-buttons .in-stock,.products-buttons .out-of-stock,.view-products-button{
     padding:8px 20px;
     cursor:pointer;
     background:transparent;

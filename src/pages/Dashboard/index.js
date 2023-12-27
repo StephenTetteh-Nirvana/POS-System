@@ -9,7 +9,9 @@ const users = document.querySelector("#users")
 const products = document.querySelector(".products-container")
 const displayProducts = document.querySelector(".products-display")
 const heading = document.querySelector("#in-stock-heading")
+const salesContainer = document.querySelector(".sales-container")
 const sales = document.querySelector(".sales")
+const salesHeading = document.querySelector("#sales-heading")
 const salesLoader = document.querySelector(".sales-loader")
 const productsLoader = document.querySelector(".products-loader")
 
@@ -100,6 +102,17 @@ products.addEventListener("click",(event)=>{
     heading.style.visibility = "visible";
     displayProducts.style.display = "none"
    }
+   if(event.target.classList.contains("view-products-button")){
+        if (event.target.innerText === "View Products"){
+            event.target.innerText = "Hide Products"
+            displayProducts.style.display = "block"
+            productsHeading.style.visibility = "visible";
+        }else if(event.target.innerText === "Hide Products"){
+        event.target.innerText = "View Products"
+        displayProducts.style.display = "none"
+        productsHeading.style.visibility = "hidden";
+        }
+   }
 })
 
 async function retrieveCustomers(){
@@ -155,6 +168,22 @@ async function retrieveSales(customerDocs){
 
     })
 }
+
+salesContainer.addEventListener("click",(event)=>{
+    if(event.target.classList.contains("view-sales-button")){
+       if (event.target.innerText === "View Sales"){
+          event.target.innerText = "Hide Sales"
+          sales.style.display = "block"
+          salesHeading.style.visibility = "visible";
+       }else if(event.target.innerText === "Hide Sales"){
+        event.target.innerText = "View Sales"
+        sales.style.display = "none"
+        salesHeading.style.visibility = "hidden";
+
+       }
+    }
+})
+
 
 function logOut(){
     signOut(auth)
