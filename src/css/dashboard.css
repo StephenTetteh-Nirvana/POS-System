@@ -180,12 +180,6 @@ main{
     background-color: #2666CF;
     color:#FFFFFF;
 }
-.sales{
-    display:none;
-}
-#sales-heading{
-   visibility: hidden;
-}
 .sales-loader{
    display:none;
 }
@@ -208,9 +202,6 @@ main{
     border:1px solid #dce0e7;
     background-color: #FFFFFF;
     box-shadow:var(--box-shadow);
-}
-.products-display{
-    display:none;
 }
 .products-heading{
     display:flex;
@@ -235,6 +226,9 @@ main{
 .products-buttons .in-stock{
     background-color: #2666CF;
     color:white;
+}
+.products-butttons .out-of-stock{
+    visibility:hidden;
 }
 .active{
     background-color: #2666CF;

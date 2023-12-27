@@ -7,6 +7,8 @@ const time = document.querySelector(".time")
 const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
 const products = document.querySelector(".products-container")
+const InstockButton = document.querySelector(".in-stock")
+const OutstockButton = document.querySelector(".out-of-stock")
 const displayProducts = document.querySelector(".products-display")
 const heading = document.querySelector("#in-stock-heading")
 const salesContainer = document.querySelector(".sales-container")
@@ -95,22 +97,24 @@ async function retrieveProducts(){
 products.addEventListener("click",(event)=>{
    if(event.target.classList.contains("in-stock")){
     console.log(event.target)
-    heading.style.visibility = "visible";
     displayProducts.style.display = "block";
    }else if(event.target.classList.contains("out-of-stock")){
     console.log(event.target)
-    heading.style.visibility = "visible";
-    displayProducts.style.display = "none"
+    displayProducts.style.visibility = "none"
    }
    if(event.target.classList.contains("view-products-button")){
-        if (event.target.innerText === "View Products"){
-            event.target.innerText = "Hide Products"
-            displayProducts.style.display = "block"
-            productsHeading.style.visibility = "visible";
-        }else if(event.target.innerText === "Hide Products"){
-        event.target.innerText = "View Products"
-        displayProducts.style.display = "none"
-        productsHeading.style.visibility = "hidden";
+        if (event.target.innerText === "Hide Products"){
+            event.target.innerText = "View Products"
+            displayProducts.style.display = "none"
+            heading.style.visibility = "hidden"
+            InstockButton.style.visibility = "hidden"
+            OutstockButton.style.visibility = "hidden"
+        }else if(event.target.innerText === "View Products"){
+        event.target.innerText = "Hide Products"
+        displayProducts.style.display = "block"
+        heading.style.visibility = "visible"
+        InstockButton.style.visibility = "visible"
+        OutstockButton.style.visibility = "visible"
         }
    }
 })
@@ -171,14 +175,14 @@ async function retrieveSales(customerDocs){
 
 salesContainer.addEventListener("click",(event)=>{
     if(event.target.classList.contains("view-sales-button")){
-       if (event.target.innerText === "View Sales"){
-          event.target.innerText = "Hide Sales"
-          sales.style.display = "block"
-          salesHeading.style.visibility = "visible";
-       }else if(event.target.innerText === "Hide Sales"){
-        event.target.innerText = "View Sales"
-        sales.style.display = "none"
-        salesHeading.style.visibility = "hidden";
+       if (event.target.innerText === "Hide Sales"){
+          event.target.innerText = "View Sales"
+          sales.style.display = "none"
+          salesHeading.style.visibility = "hidden";
+       }else if(event.target.innerText === "View Sales"){
+        event.target.innerText = "Hide Sales"
+        sales.style.display = "block"
+        salesHeading.style.visibility = "visible";
 
        }
     }
