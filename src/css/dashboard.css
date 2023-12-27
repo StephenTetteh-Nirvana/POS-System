@@ -16,6 +16,9 @@ main{
     grid-template-columns: 0.5fr 2fr;
     background-color: #F5F7FA;
 }
+.container{
+    padding-bottom:50px;
+}
 .logo-section{
     display:flex;
     background-color:#2d2d2d;
@@ -78,9 +81,6 @@ main{
     margin-top:6px;
     font-size:20px;
 }
-.container{
-    padding-bottom:50px;
-}
 .activity-section{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
@@ -127,14 +127,17 @@ main{
     font-size:30px;
 }
 .display-info-container{
-   display:flex;
-
+   display:grid;
+   grid-template-columns:1fr 1fr;
     margin-left:20px;
     margin-top:20px;
 }
 .sales-container{
     border:1px solid #dce0e7;
-    width:300px;
+    width:97%;
+    min-height:25vh;
+    margin-left:20px;
+    margin-top:20px;
     border-radius:5px;
     background-color: #FFFFFF;
     box-shadow:var(--box-shadow);
@@ -145,18 +148,26 @@ main{
     font-size:25px;
     margin-top:10px;
 }
+.sales-container ul{
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    border-bottom:1px solid black;
+    margin-left:20px;
+    margin-top:10px;
+    width:95%;
+}
 .sales-container .button-container{
     margin-top:10px;
     text-align:center;
 }
-.admin-sales-button,.cashiers-button{
+.all-sales-button,.cashiers-button{
     padding:5px 20px;
     border:1px solid #dce0e7;
     color:black;
     border-radius:5px;
     cursor:pointer;
 }
-.admin-sales-button{
+.all-sales-button{
     background-color: green;
     color:white;
 }
@@ -165,13 +176,25 @@ main{
     color:white;
     border:none;
 }
-.invoice{
-    display:flex;
+.sales-loader{
+   display:none;
+}
+.sales-loader h1{
+    text-decoration:none;
+    font-size:25px;
+}
+.sale{
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    margin-left:20px;
+    padding:10px 0px;
+    border-bottom:1px solid #dce0e7;
 }
 .products-container{
-    margin-left:30px;
-    width:700px;
+    margin-left:20px;
+    margin-top:20px;
     min-height:20vh;
+    width:97%;
     border:1px solid #dce0e7;
     background-color: #FFFFFF;
     box-shadow:var(--box-shadow);
@@ -214,6 +237,14 @@ main{
 .products-container #in-stock-heading li{
     font-weight:bolder;
 }
+.products-loader{
+    display:none;
+ }
+ .products-loader h1{
+     text-decoration:none;
+     font-size:25px;
+     text-align:center;
+ }
 .product{
     display: grid;
     grid-template-columns:1fr 1fr 1fr;

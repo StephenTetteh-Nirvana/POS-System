@@ -9,7 +9,10 @@ const users = document.querySelector("#users")
 const products = document.querySelector(".products-container")
 const displayProducts = document.querySelector(".products-display")
 const heading = document.querySelector("#in-stock-heading")
-const adminInvoice = document.querySelector(".admin-invoices")
+const sales = document.querySelector(".sales")
+const salesLoader = document.querySelector(".sales-loader")
+const productsLoader = document.querySelector(".products-loader")
+
 
 
 
@@ -53,13 +56,14 @@ document.addEventListener("DOMContentLoaded",function(){
             const uid = user.uid;
             fetchDocs(uid)
             retrieveProducts()
-            retrieveInvoices()
+            retrieveCustomers()
         }
     })
 })
 
 
 async function retrieveProducts(){
+    productsLoader.style.display = "block"
     const fruitsCollection = collection(db,"Fruits")
     const docRef = await getDocs(fruitsCollection)
     docRef.forEach((doc)=>{
@@ -68,6 +72,7 @@ async function retrieveProducts(){
             price:doc.data().Price,
             stock:doc.data().Stock
         }
+        productsLoader.style.display = "none"
         displayProducts.innerHTML += `
         <div class="product">
                                          <div>
@@ -80,6 +85,7 @@ async function retrieveProducts(){
                                                 <p>$${product.price}.00</p>
                                                 </div>
                                       </div>`
+  
     })
 }
 
@@ -96,7 +102,8 @@ products.addEventListener("click",(event)=>{
    }
 })
 
-async function retrieveInvoices(){
+async function retrieveCustomers(){
+    salesLoader.style.display = "block";
     const adminCollection = collection(db,"Admins")
     const cashierCollection = collection(db,"Cashiers")
     const adminDoc = await getDocs(adminCollection)
@@ -106,8 +113,8 @@ async function retrieveInvoices(){
         const customerDocRef = doc(db, "Admins",Id);
         const customerCollection = collection(customerDocRef, "Customers");
         const customerDocs = await getDocs(customerCollection);
-        await retrieveCustomers(customerDocs)
-
+        salesLoader.style.display = "none";
+        await retrieveSales(customerDocs)
        
     })
     cashierDoc.forEach(async (document)=>{
@@ -115,25 +122,34 @@ async function retrieveInvoices(){
         const customerDocRef = doc(db, "Cashiers",Id);
         const customerCollection = collection(customerDocRef, "Customers");
         const customerDocs = await getDocs(customerCollection);
-        await retrieveCustomers(customerDocs)
+        await retrieveSales(customerDocs)
     })
 }
 
-async function retrieveCustomers(customerDocs){
+async function retrieveSales(customerDocs){
     customerDocs.forEach((customer)=>{
         const orderData = customer.data().order
-        orderData.map((arr)=>{
+        console.log(orderData)
+        orderData.forEach((arr)=>{
             const Info = {
                 name:arr.Name,
                 price:arr.Price,
                 quantity:arr.quantity
             }
-            console.log(Info)
-            adminInvoice.innerHTML += `<div class="invoice">
-            <p>${Info.name}</p>
-            <p>${customer.data().CustomerName}</p>
-            <p>${customer.data().CustomerPhone}</p>
-            </div>`
+            sales.innerHTML += `<div class="sale">
+                                       <div>
+                                          <p>1</p>
+                                        </div>
+                                            <div>
+                                              <p>${Info.name}</p>
+                                            </div>
+                                                <div>
+                                                  <p>$${Info.price}.00</p>
+                                                </div>
+                                                    <div>
+                                                    <p>${Info.quantity}</p>
+                                                     </div>
+                                </div>`
         })
 
 

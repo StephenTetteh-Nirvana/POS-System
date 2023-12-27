@@ -200,7 +200,7 @@ main{
     border:none;
     font-size:17px;
     border-radius:5px;
-    padding:5px 40px;
+    padding:5px 30px;
     cursor: pointer;
     margin-right:40px;
     position:relative;
@@ -208,7 +208,7 @@ main{
 .navigation-box .print{
     font-size:20px;
     position:absolute;
-    left:15px;
+    left:8px;
     top:13px;
 }
 .navigation-box .close{
@@ -230,7 +230,9 @@ main{
 .bottom-section{
     border-top:1px solid grey;
     padding:10px;
-    display:none;
+    visibility:hidden;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
 }
 .bottom-section h2{
     margin-left:30px;

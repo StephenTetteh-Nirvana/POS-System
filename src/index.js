@@ -503,8 +503,8 @@ fruitsDisplay.addEventListener("click",(event)=>{
         await updateDoc(adminCollection,{
             cart : cartData
            })
-        await totalAmount(uid)
         await loadCart(uid)
+        await totalAmount(uid)
         loadingOrder.style.display = "none";
         orders.style.opacity = "1";
         console.log("increased quantity")

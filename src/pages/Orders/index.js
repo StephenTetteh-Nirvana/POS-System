@@ -10,6 +10,7 @@ const PopUp = document.querySelector(".popup-order-summary")
 const PopUpOrders = document.querySelector(".order-summary-order")
 const loader = document.querySelector(".loader-box")
 const bottomInfo = document.querySelector(".bottom-section")
+const print = document.querySelector(".print-button")
 const customerLoader = document.querySelector(".customer-loader-box")
 const users = document.querySelector("#users")
 
@@ -127,6 +128,9 @@ Info.addEventListener("click",(event)=>{
 PopUp.addEventListener("click",(event)=>{
     if(event.target.classList.contains("close")){
         PopUp.style.display = "none"
+    }else if(event.target.classList.contains("print-button")){
+        window.print()
+        console.log(event.target)
     }
 })
 
@@ -173,7 +177,7 @@ async function displayOrders(uid,documentId){
 
                                             </div>`
                     loader.style.display = "none"
-                    bottomInfo.style.display = "block"
+                    bottomInfo.style.visibility = "visible"
                 
             })
            }else{
@@ -217,7 +221,8 @@ async function displayOrders(uid,documentId){
 
                                             </div>`
                     loader.style.display = "none"
-                    bottomInfo.style.display = "block"
+                    bottomInfo.style.visibility = "visible"
+
                 
             })
            }else{
