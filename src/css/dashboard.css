@@ -81,56 +81,58 @@ main{
     margin-top:6px;
     font-size:20px;
 }
-.activity-section{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    background-color:#F5F7FA;
-}
-.total-orders-box,.total-amount-box,.total-sales-box{
-    height:260px;
-    width:340px;
+.user-description{
     background-color:#FFFFFF;
     box-shadow: var(--box-shadow);
-    margin-top:50px;
-    border-radius:5px;
-    background-color:#2d2d2d;
-    color:white;
-
-}
-.total-orders-box{
-    width:320px;
-    margin-left:20px;
-}
-.icon-box{
-    margin-left:20px;
-    margin-top:20px;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    background-color:white;
-}
-.icon-box .icon{
-    font-size:25px;
-    color:white;
-    margin-left:10px;
+    padding:10px;
     margin-top:10px;
+    margin-left:10px;
+}
+.user-description h1{
+    font-size: 25px;
     color:black;
 }
+.activity-section{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    background-color:#F5F7FA;
+    margin-top:40px;
+}
+.total-orders-box,.total-customers-box,.total-invoice-box{
+    background-color: #FFFFFF;
+    box-shadow: var(--box-shadow);
+    height:220px;
+    width:200px;
+    display:flex;
+}
+.total-orders-box{
+    margin-left:20px;
+}
+.orders-icon,.customers-icon,.invoice-icon{
+    font-size:40px;
+}
+.orders-icon{
+    color:rgb(240, 240, 24);
+}
+.customers-icon{
+    color:#2666CF;
+}
+.invoice-icon{
+    color:orangered;
+}
 .text-info{
-    margin-top:100px;
-    margin-left:20px;
+    display:flex;
+    flex-direction:column;
+    margin:auto;
+    justify-content: center;
+    align-items: center;
 }
-.info{
-  font-size:15px;
+.text-info h1{
+    margin-top:10px;
+    font-size:25px;
 }
-.subinfo{
-    font-size:30px;
-}
-.display-info-container{
-   display:grid;
-   grid-template-columns:1fr 1fr;
-    margin-left:20px;
-    margin-top:20px;
+.text-info p{
+    font-weight: bolder;
 }
 .sales-container{
     border:1px solid #dce0e7;
