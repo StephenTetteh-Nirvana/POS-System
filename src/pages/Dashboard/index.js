@@ -12,6 +12,7 @@ const OutstockButton = document.querySelector(".out-of-stock")
 const displayProducts = document.querySelector(".products-display")
 const heading = document.querySelector("#in-stock-heading")
 const productsLoader = document.querySelector(".products-loader")
+const cashierBox = document.querySelector(".best-cashiers-box")
 
 
 
@@ -56,9 +57,49 @@ document.addEventListener("DOMContentLoaded",function(){
             const uid = user.uid;
             fetchDocs(uid)
             retrieveProducts()
+            retrieveCashiers()
         }
     })
 })
+
+
+async function retrieveCashiers(){
+     const cashierCollection = collection(db,"Cashiers")
+     const colRef = await getDocs(cashierCollection)
+     colRef.forEach(async (document)=>{
+        const Id = document.id;
+        const customerCollection = collection(doc(db, "Cashiers", Id), "Customers");
+        const docRef = await getDocs(customerCollection);
+        await loadCashiers(Id,docRef)
+         })
+}
+
+async function loadCashiers(Id, docRef) {
+    const highestNumber = 1;
+
+    let data = [];
+
+    data.push(docRef.size)
+     console.log(data)
+
+    if (docRef.size > highestNumber) {
+        const colRef = doc(db, "Cashiers", Id);
+        const colDoc = await getDoc(colRef);
+
+        cashierBox.innerHTML += `<div class="best-cashier">
+                                    <div class="selling-cashier-firstBox">
+                                        <p><ion-icon class="cashier-icon" name="person-circle"></ion-icon></p>
+                                        <div class="firstBox-info">
+                                            <p class="name">${colDoc.data().Username}</p>
+                                            <p class="customer">No. Of Customers : ${docRef.size}</p>
+                                        </div>
+                                    </div>
+                                    <div class="selling-cashier-secondBox">
+                                        <p><ion-icon class="highest-cashier" name="swap-vertical"></ion-icon></p>
+                                    </div>
+                                </div>`;
+    }
+}
 
 
 async function retrieveProducts(){

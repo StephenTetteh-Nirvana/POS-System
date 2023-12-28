@@ -177,18 +177,52 @@ main{
     margin-top:20px;
     min-height:30vh;
 }
-.today-sales-box{
+.top-cashiers-box{
     width:300px;
     margin-left:20px;
     min-height:40vh;
     background-color:#FFFFFF;
     box-shadow: var(--box-shadow);
 }
-.today-sales-box h1{
+.top-cashiers-box h1{
     text-align:center;
     margin-top:10px;
     font-size:25px;
     text-decoration: underline;
+}
+.best-cashiers-box{
+    margin-top:10px;
+}
+.best-cashier{
+    display:flex;
+    justify-content: space-between;
+    border-bottom:1px solid #dce0e7;
+    cursor: pointer;
+    padding-top:5px;
+}
+.best-cashier:hover{
+    background-color: #dce0e7;
+}
+.selling-cashier-firstBox{
+    display:flex;
+    margin-left:10px;
+}
+.selling-cashier-firstBox .cashier-icon{
+    font-size:50px;
+}
+.firstBox-info .name{
+    font-size:16px;
+}
+.firstBox-info .customer{
+    font-size:13px;
+}
+.selling-cashier-secondBox p{
+    margin-right:20px;
+    margin-top:10px;
+}
+.selling-cashier-secondBox .highest-cashier{
+   font-size:25px;
+   color:#16c77a;
 }
 .top-selling-box{
     width:98%;
