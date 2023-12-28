@@ -11,10 +11,6 @@ const InstockButton = document.querySelector(".in-stock")
 const OutstockButton = document.querySelector(".out-of-stock")
 const displayProducts = document.querySelector(".products-display")
 const heading = document.querySelector("#in-stock-heading")
-const salesContainer = document.querySelector(".sales-container")
-const sales = document.querySelector(".sales")
-const salesHeading = document.querySelector("#sales-heading")
-const salesLoader = document.querySelector(".sales-loader")
 const productsLoader = document.querySelector(".products-loader")
 
 
@@ -60,7 +56,6 @@ document.addEventListener("DOMContentLoaded",function(){
             const uid = user.uid;
             fetchDocs(uid)
             retrieveProducts()
-            retrieveCustomers()
         }
     })
 })
@@ -83,7 +78,7 @@ async function retrieveProducts(){
                                          <p>${product.name}</p>
                                          </div>
                                             <div class="stock-box">
-                                            <p>${product.stock}</p>
+                                            <p>x ${product.stock}</p>
                                             </div>
                                                 <div class="price-box">
                                                 <p>$${product.price}.00</p>
@@ -118,76 +113,6 @@ products.addEventListener("click",(event)=>{
         }
    }
 })
-
-async function retrieveCustomers(){
-    salesLoader.style.display = "block";
-    const adminCollection = collection(db,"Admins")
-    const cashierCollection = collection(db,"Cashiers")
-    const adminDoc = await getDocs(adminCollection)
-    const cashierDoc = await getDocs(cashierCollection)
-    adminDoc.forEach(async (document)=>{
-        const Id = document.id;
-        const customerDocRef = doc(db, "Admins",Id);
-        const customerCollection = collection(customerDocRef, "Customers");
-        const customerDocs = await getDocs(customerCollection);
-        salesLoader.style.display = "none";
-        await retrieveSales(customerDocs)
-       
-    })
-    cashierDoc.forEach(async (document)=>{
-        const Id = document.id;
-        const customerDocRef = doc(db, "Cashiers",Id);
-        const customerCollection = collection(customerDocRef, "Customers");
-        const customerDocs = await getDocs(customerCollection);
-        await retrieveSales(customerDocs)
-    })
-}
-
-async function retrieveSales(customerDocs){
-    customerDocs.forEach((customer)=>{
-        const orderData = customer.data().order
-        console.log(orderData)
-        orderData.forEach((arr)=>{
-            const Info = {
-                name:arr.Name,
-                price:arr.Price,
-                quantity:arr.quantity
-            }
-            sales.innerHTML += `<div class="sale">
-                                       <div>
-                                          <p>1</p>
-                                        </div>
-                                            <div>
-                                              <p>${Info.name}</p>
-                                            </div>
-                                                <div>
-                                                  <p>$${Info.price}.00</p>
-                                                </div>
-                                                    <div>
-                                                    <p>${Info.quantity}</p>
-                                                     </div>
-                                </div>`
-        })
-
-
-    })
-}
-
-salesContainer.addEventListener("click",(event)=>{
-    if(event.target.classList.contains("view-sales-button")){
-       if (event.target.innerText === "Hide Sales"){
-          event.target.innerText = "View Sales"
-          sales.style.display = "none"
-          salesHeading.style.visibility = "hidden";
-       }else if(event.target.innerText === "View Sales"){
-        event.target.innerText = "Hide Sales"
-        sales.style.display = "block"
-        salesHeading.style.visibility = "visible";
-
-       }
-    }
-})
-
 
 function logOut(){
     signOut(auth)

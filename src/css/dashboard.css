@@ -84,7 +84,7 @@ main{
 .user-description{
     background-color:#FFFFFF;
     box-shadow: var(--box-shadow);
-    padding:10px;
+    padding:15px;
     margin-top:10px;
     margin-left:10px;
 }
@@ -94,7 +94,7 @@ main{
 }
 .activity-section{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1.5fr;
     background-color:#F5F7FA;
     margin-top:40px;
 }
@@ -107,6 +107,9 @@ main{
 }
 .total-orders-box{
     margin-left:20px;
+}
+.total-invoice-box{
+    margin-left:-20px;
 }
 .orders-icon,.customers-icon,.invoice-icon{
     font-size:40px;
@@ -134,68 +137,72 @@ main{
 .text-info p{
     font-weight: bolder;
 }
-.sales-container{
-    border:1px solid #dce0e7;
-    width:97%;
-    min-height:15vh;
-    margin-left:20px;
-    margin-top:20px;
-    border-radius:5px;
+.statistics-box{
+    width:300px;
+    height:260px;
     background-color: #FFFFFF;
-    box-shadow:var(--box-shadow);
+    box-shadow: var(--box-shadow);
+    margin-left:-20px;
 }
-.sales-container h1{
+.statistics-box h1{
     text-align:center;
+    font-size:20px;
+    margin-top:10px;
+}
+.statistics-box p{
+    margin:20px;
+    padding:10px 20px;
+    box-shadow: var(--box-shadow);
+    font-size:18px;
+    border-radius:2px;
+    text-align:center;
+}
+
+.statistics-box p.balance{
+   background-color:#fff2dd92;
+   border-right:10px solid #F6C065;
+}
+.statistics-box p.income{
+    background-color:#e7fff1ad;
+    border-right:10px solid #16c77a;
+}
+.statistics-box p.expense{
+    background-color:#ffeef0bb;
+    border-right:10px solid #EB596E;
+}
+
+.stats-section{
+    display:grid;
+    grid-template-columns: 1fr 2fr;
+    margin-top:20px;
+    min-height:30vh;
+}
+.today-sales-box{
+    width:300px;
+    margin-left:20px;
+    min-height:40vh;
+    background-color:#FFFFFF;
+    box-shadow: var(--box-shadow);
+}
+.today-sales-box h1{
+    text-align:center;
+    margin-top:10px;
+    font-size:25px;
     text-decoration: underline;
+}
+.top-selling-box{
+    width:98%;
+    min-height:30vh;
+    background-color:#FFFFFF;
+    box-shadow: var(--box-shadow);
+}
+.top-selling-box h1{
+    font-weight: lighter;
     font-size:25px;
-    margin-top:10px;
+    background-color: #dce0e7;
+    padding:10px;
 }
-.sales-container ul{
-    display: grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
-    border-bottom:1px solid black;
-    margin-left:20px;
-    margin-top:10px;
-    width:95%;
-}
-.sales-container .button-container{
-    margin-top:10px;
-    text-align:center;
-}
-.all-sales-button,.cashiers-button,.view-sales-button{
-    padding:5px 20px;
-    border:1px solid #dce0e7;
-    color:black;
-    border-radius:5px;
-    cursor:pointer;
-}
-.all-sales-button{
-    background-color: green;
-    color:white;
-}
-.cashiers-button:hover{
-    background-color: rgb(214, 214, 48);
-    color:white;
-    border:none;
-}
-.view-sales-button:hover{
-    background-color: #2666CF;
-    color:#FFFFFF;
-}
-.sales-loader{
-   display:none;
-}
-.sales-loader h1{
-    text-decoration:none;
-    font-size:25px;
-}
-.sale{
-    display: grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
-    margin-left:20px;
-    padding:10px 0px;
-    border-bottom:1px solid #dce0e7;
-}
+
 .products-container{
     margin-left:20px;
     margin-top:20px;
@@ -261,8 +268,11 @@ main{
     padding:10px 0px;
     border-bottom:1px solid #dce0e7;
 }
+.stock-box{
+    margin-left:-10px;
+}
 .stock-box p{
-    color:green;
+   font-weight:bolder;
 }
 .price-box{
     margin-left:-10px;
