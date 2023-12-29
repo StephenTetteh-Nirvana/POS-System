@@ -13,6 +13,7 @@ const bottomInfo = document.querySelector(".bottom-section")
 const grandTotal = document.querySelector("#grand-total")
 const customerLoader = document.querySelector(".customer-loader-box")
 const users = document.querySelector("#users")
+const dashboard = document.querySelector("#dashboard")
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded",function(){
               const user = cashierDoc.data()
               if(user.Role === "Cashier"){
                 users.style.display = "none";
+                dashboard.style.display = "none";
               }
             }
             else{
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded",function(){
         }
     }
 
+ 
     onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
