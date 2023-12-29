@@ -165,11 +165,11 @@ main{
     position:absolute;
     left:0;
     top:0;
-    display:none;
     width:100%;
     height:100vh;
     z-index:9999;
     background:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75));
+    display:none;
 }
 .popup-box{
     position:absolute;
@@ -186,6 +186,7 @@ main{
     display:flex;
     justify-content: space-between;
     padding:10px;
+    border-bottom:2px solid black;
 }
 .popup-heading h1{
     font-size:30px;
@@ -217,31 +218,70 @@ main{
     color:red;
     cursor:pointer;
 }
-.order{
-    display:flex;
-    justify-content: space-around;
-    border-top:1px solid grey;
+.billing-info{
+    margin-top:10px;
+    margin-left:20px;
 }
-
-.order-image-box img{
-    width:100px;
-    height:100px;
+.popup-box ul{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    border-bottom:1px solid #dce0e7;
+    margin-top:20px;
+    padding:10px;
+    background-color: #2666CF;
+    color:white;
+}
+#index{
+    margin-left:20px;
+}
+.popup-box ul li{
+    font-weight:bolder;
+    font-size:18px;
+}
+.invoice{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:10px 0px;
+    border-bottom:1px solid #dce0e7;
+}
+.order-index h3,.order-name h3,.order-quantity h3,.order-price h3,.order-total h3{
+      font-size:16px;
+      font-weight:lighter;
+}
+.order-index h3{
+    margin-left:30px;
 }
 .bottom-section{
     border-top:1px solid grey;
     padding:10px;
     visibility:hidden;
     display:grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2,1fr);
 }
 .bottom-section h2{
     margin-left:30px;
     text-align:center;
 }
+.payment-box p {
+    font-weight:bold;
+}
+.payment-box p span{
+    font-weight:lighter;
+}
+.grand-total-box{
+    display:flex;
+    justify-content: space-between;
+    background-color:#000;
+    color:white;
+    padding:10px;
+}
+.grand-total h3{
+    font-size:30px;
+}
 
 .loader-box{
     position:absolute;
-    top:50%;
+    top:67%;
     left:50%;
     transform:translate(-50%,-50%);
     width:100%;

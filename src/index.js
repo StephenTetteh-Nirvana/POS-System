@@ -16,6 +16,7 @@ const role = document.querySelector(".role")
 const userStatus = document.querySelector(".user-status")
 const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
+const dashboard = document.querySelector("#dashboard")
 const fruitsDisplay = document.querySelector(".fruits-section")
 const loader = document.querySelector(".loader-box")
 const noOrders = document.querySelector(".no-orders-alert")
@@ -69,6 +70,7 @@ document.addEventListener("DOMContentLoaded",function(){
               console.log("cashier logged in",uid)
               if(user.Role === "Cashier"){
                 users.style.display = "none";
+                dashboard.style.display = "none"
               }
               userRole.classList.add("cashier")
                 role.innerText = user.Role;

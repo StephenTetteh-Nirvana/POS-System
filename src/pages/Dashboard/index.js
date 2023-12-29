@@ -51,10 +51,26 @@ document.addEventListener("DOMContentLoaded",function(){
             console.log(error)
         }
     }
+
+    async function returnToHome(uid){
+        const adminCollection = doc(db,"Admins",uid);
+        const adminDoc = await getDoc(adminCollection);
+        const cashierCollection = doc(db,"Cashiers",uid);
+        const cashierDoc = await getDoc(cashierCollection);
+        if(cashierDoc.exists()){
+            window.location.href = "/dist/index.html";
+        }else if(adminDoc.exists()){
+            console.log("admin is allowed")
+        }
+        else{
+            window.location.href = "/dist/index.html";
+        }
+    }
      
         onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
+            returnToHome(uid)
             fetchDocs(uid)
             retrieveProducts()
             retrieveCashiers()
@@ -76,11 +92,6 @@ async function retrieveCashiers(){
 
 async function loadCashiers(Id, docRef) {
     const highestNumber = 1;
-
-    let data = [];
-
-    data.push(docRef.size)
-     console.log(data)
 
     if (docRef.size > highestNumber) {
         const colRef = doc(db, "Cashiers", Id);

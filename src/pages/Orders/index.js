@@ -10,7 +10,7 @@ const PopUp = document.querySelector(".popup-order-summary")
 const PopUpOrders = document.querySelector(".order-summary-order")
 const loader = document.querySelector(".loader-box")
 const bottomInfo = document.querySelector(".bottom-section")
-const print = document.querySelector(".print-button")
+const grandTotal = document.querySelector("#grand-total")
 const customerLoader = document.querySelector(".customer-loader-box")
 const users = document.querySelector("#users")
 
@@ -128,6 +128,7 @@ Info.addEventListener("click",(event)=>{
 PopUp.addEventListener("click",(event)=>{
     if(event.target.classList.contains("close")){
         PopUp.style.display = "none"
+        window.location.reload()
     }else if(event.target.classList.contains("print-button")){
         window.print()
         console.log(event.target)
@@ -146,38 +147,48 @@ async function displayOrders(uid,documentId){
     if(adminDoc.exists()){
         const customerCollection = collection(adminCollection,"Customers");
         const snapshot = await getDocs(customerCollection)
+        let sum = 0;
         snapshot.forEach((customer) => {
            if(customer.id === documentId){
             console.log("id match")
             const orderData = customer.data().order;
-            orderData.forEach((order) => {
+            orderData.forEach((order,index) => {
                 const orderItem = {
                     name:order.Name,
                     price:order.Price,
                     image:order.Image,
                     quantity:order.quantity
                 }
-                console.log(orderItem.image)
-                PopUpOrders.innerHTML += `<div class="order">
-
-                                            <div class="order-image-box">
-                                            <img src="${orderItem.image}"/>
+                const total = orderItem.quantity * orderItem.price;
+                sum += total; 
+                PopUpOrders.innerHTML += `<div class="invoice">
+                                                
+                                            <div class="order-index">
+                                            <h3>${index}</h3>
                                             </div>
-                                                <div>
+
+                                                <div class="order-name">
                                                 <h3>${orderItem.name}</h3>
                                                 </div>
 
-                                                    <div>
-                                                    <h3>${orderItem.quantity} piece(s)</h3>
+                                                    <div class="order-quantity">
+                                                    <h3>X ${orderItem.quantity}</h3>
                                                     </div>
 
-                                                        <div>
-                                                        <h3>${orderItem.price}.00</h3>
+                                                        <div class="order-price">
+                                                        <h3>$${orderItem.price}.00</h3>
+                                                        </div>
+
+                                                        
+                                                        <div class="order-total">
+                                                        <h3>$${total}.00</h3>
                                                         </div>
 
                                             </div>`
                     loader.style.display = "none"
                     bottomInfo.style.visibility = "visible"
+                    grandTotal.innerText = `$ ${sum}.00`;
+                    console.log(sum)
                 
             })
            }else{
@@ -201,29 +212,33 @@ async function displayOrders(uid,documentId){
                     image:order.Image,
                     quantity:order.quantity
                 }
-                console.log(orderItem.image)
-                PopUpOrders.innerHTML += `<div class="order">
-
-                                            <div class="order-image-box">
-                                            <img src="${orderItem.image}"/>
+                const total = orderItem.quantity * orderItem.price;
+                PopUpOrders.innerHTML += `<div class="invoice">
+                                                
+                                            <div class="order-index">
+                                            <h3>${index}</h3>
                                             </div>
-                                                <div>
+
+                                                <div class="order-name">
                                                 <h3>${orderItem.name}</h3>
                                                 </div>
 
-                                                    <div>
-                                                    <h3>${orderItem.quantity} piece(s)</h3>
+                                                    <div class="order-quantity">
+                                                    <h3>X ${orderItem.quantity}</h3>
                                                     </div>
 
-                                                        <div>
-                                                        <h3>${orderItem.price}.00</h3>
+                                                        <div class="order-price">
+                                                        <h3>$${orderItem.price}.00</h3>
+                                                        </div>
+
+                                                        
+                                                        <div class="order-total">
+                                                        <h3>$${total}.00</h3>
                                                         </div>
 
                                             </div>`
                     loader.style.display = "none"
                     bottomInfo.style.visibility = "visible"
-
-                
             })
            }else{
             console.log("no match:",customer.id)

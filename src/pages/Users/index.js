@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded",function(){
         }
         else{
             window.location.href = "/dist/index.html";
-             
         }
     }
     onAuthStateChanged(auth,(user)=>{
