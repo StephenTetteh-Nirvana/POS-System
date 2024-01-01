@@ -57,8 +57,8 @@
           <section class="products-overview">
             <div class="second-section">
               <input type="text" placeholder="Search for products by name" autocomplete="off"/>
-              <button>
-                <ion-icon class="search" name="search-outline"></ion-icon>
+              <button class="hamburger">
+                <div class="bar"></div>
               </button>
           </div>
           <div class="products-display">
@@ -67,7 +67,15 @@
             <div class="setQuantity-container"></div>
           </div>
           </section>
+      </main>
+   
 
+      <div class="order-container">
+        <div class="order-close">
+          <button>
+            <ion-icon class="close-icon" name="close-outline"></ion-icon>
+          </button>
+        </div>
         <aside class="order-sidebar">
           <section class="user-section">
               <div class="user-info">
@@ -120,18 +128,19 @@
                 <input type="text" placeholder="Customer Phone Number" required name="customerPhone" autocomplete="off"/>
                 <input type="submit" value="Complete Order"/>
               </form>
-
+  
               <div class="customer-loader-box">
                 <div class="customer-loader"></div>
               </div>
              
             </section>
         </aside>
+      </div>
+ 
 
-        <div class="loader-box">
-          <div class="loader"></div>
-        </div>
-      </main>
+      <div class="loader-box">
+        <div class="loader"></div>
+      </div>
     <script src="index.bundle.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

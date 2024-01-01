@@ -7,7 +7,9 @@ const fruits = [];
 const cart = [];
 let order = []
 
-
+const searchSection = document.querySelector(".second-section")
+const orderContainer = document.querySelector(".order-container")
+const orderSidebar = document.querySelector(".order-sidebar")
 const date = document.querySelector(".date")
 const time = document.querySelector(".time")
 const username = document.querySelector(".username")
@@ -102,6 +104,21 @@ document.addEventListener("DOMContentLoaded",function(){
     displayFruits()
 
        
+})
+
+searchSection.addEventListener("click",(e)=>{
+   if(e.target.classList.contains("hamburger")){
+      orderSidebar.classList.add("order-active");
+      orderContainer.classList.add("hamburger-active");
+   
+   }
+})
+
+orderContainer.addEventListener("click",(e)=>{
+    if(e.target.classList.contains("close-icon")){
+        orderSidebar.classList.remove("order-active");
+        orderContainer.classList.remove("hamburger-active");
+    }
 })
 
 Payment.addEventListener("click", (event) => {
