@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded",function(){
 })
 
 searchSection.addEventListener("click",(e)=>{
-   if(e.target.classList.contains("hamburger")){
+   if(e.target.classList.contains("hamburger") || e.target.classList.contains("bar")){
       orderSidebar.classList.add("order-active");
       orderContainer.classList.add("hamburger-active");
    
