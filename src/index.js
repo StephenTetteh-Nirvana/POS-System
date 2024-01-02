@@ -183,30 +183,82 @@ async function displayFruits(){
              price:fruit.data().Price
          }
          fruits.push(singleFruit)
-         fruitsDisplay.innerHTML += `<div class="fruit">
+         fruitsDisplay.innerHTML += `<div class="fruit" data-name="${singleFruit.name}" data-image="${singleFruit.imagePath}" data-price="${singleFruit.price}" data-id="${singleFruit.id}">
                                              <div class="fruit-image-box">
                                                 <img class="fruit-img" src="${singleFruit.imagePath}"/>
                                              </div>
-                                             <div class="fruit-info">
-                                                 <p class="fruit-name">${singleFruit.name}</p>
-                                                 <p class="fruit-price">${singleFruit.price}.00</p>
+                                             <div class="fruit-info-section">
+                                                <div class="fruit-info">
+                                                <p class="fruit-name">${singleFruit.name}</p>
+                                                <p class="fruit-price">${singleFruit.price}.00</p>
+                                                </div>
+                                                <div class="initial-quantity-box">
+                                                  <button class="quantity-subtract">-</button>
+                                                  <input type="text" value=1 id="quantityInput"  data-id="${singleFruit.id}"/>
+                                                  <button class="quantity-add" data-id="${singleFruit.id}">+</button>
+                                                </div>
                                              </div>
-                                             <div class="button-box">
-                                             <button class="btn" data-name="${singleFruit.name}" data-image="${singleFruit.imagePath}" data-price="${singleFruit.price}" data-id="${singleFruit.id}"><ion-icon name="cart" class="cart"></ion-icon></button>
-                                             </div>
+                                            
                                        </div>`
                                        
 
-    })
+    }) 
 
-  
+    const fruitBox = document.querySelectorAll('.fruit');
 
-   
+fruitBox.forEach((eachFruit) => {
+  eachFruit.addEventListener('click', (event) => {
+    if(event.target.classList.contains("quantity-subtract")){
+        console.log(event.target)
+    }else if(event.target.classList.contains("quantity-add")){
+        const currentId = event.target.dataset.id;
+        fruitBox.forEach((fruitQuantity)=>{
+           if(currentId === fruitQuantity.dataset.id){
+            const inputField = fruitQuantity.querySelector('#quantityInput');
+                        let quantityConvert = Number(inputField.value)
+                        quantityConvert += 1;
+                        inputField.value = quantityConvert;
+                        console.log(currentId,quantityConvert)
+           }
+        })
+    }else if (event.target.id === "quantityInput") {
+        console.log(event.target);
+      }
+    else{
+        const parentFruit = event.currentTarget;
+        console.log(parentFruit)
+
+        const eachFruit = event.currentTarget;
+        const fruit = {
+            Id:eachFruit.dataset.id,
+            Name:eachFruit.dataset.name,
+            Price:eachFruit.dataset.price,
+            Image:eachFruit.dataset.image,
+            quantity:1
+        }
+
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                const uid = user.uid;
+                addToCart(uid,fruit)
+                loadCart(uid)
+            }
+         
+        })
+    }
+  });
+});
 }
 
+
 async function addToCart(uid,fruit){
-    loader.style.display = "block" 
-    fruitsDisplay.style.opacity = "0.5"
+    Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Product added to cart successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -217,15 +269,6 @@ async function addToCart(uid,fruit){
             const cartArray = adminDoc.data().cart;
             cartArray.push(fruit)
             await updateDoc(adminCollection,{cart:cartArray})
-                loader.style.display = "none" 
-                fruitsDisplay.style.opacity = "1"
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Product added to cart successfully",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
                 console.log("updated succesfully")
                 console.log(cartArray)
                 await loadCart(uid)
@@ -254,32 +297,6 @@ async function addToCart(uid,fruit){
     }
 
 }
-
-fruitsDisplay.addEventListener("click",(event)=>{
-    if(event.target.classList.contains("cart")){
-        const eachFruit = event.target;
-        const fruit = {
-            Id:eachFruit.parentElement.dataset.id,
-            Name:eachFruit.parentElement.dataset.name,
-            Price:eachFruit.parentElement.dataset.price,
-            Image:eachFruit.parentElement.dataset.image,
-            quantity:1
-        }
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                const uid = user.uid;
-                addToCart(uid,fruit)
-                loadCart(uid)
-            }
-         
-        })
-
-    }
- })
-
-
-
-
 
   async function loadCart(uid){
     const adminCollection = doc(db,"Admins",uid);
