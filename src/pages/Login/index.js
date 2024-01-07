@@ -4,12 +4,16 @@ import Swal from 'sweetalert2';
 
 const form = document.querySelector(".form");
 const loader = document.querySelector(".loader-box")
+const password = document.querySelector("#password")
 
 function signIn(){
     loader.style.display = "block";
-    signInWithEmailAndPassword(auth,form.email.value,form.password.value)
+    const oldValue = form.email.value;
+    const newValue = oldValue + '@gmail.com';
+    signInWithEmailAndPassword(auth,newValue,form.password.value)
     .then(()=>{
         console.log("success")
+        console.log(form.email.value)
         Swal.fire({
             position: "center",
             icon: "success",
@@ -69,4 +73,11 @@ function signIn(){
 form.addEventListener("submit",(event)=>{
     event.preventDefault()
       signIn()
+})
+
+form.addEventListener("click",(event)=>{
+     if(event.target.classList.contains("eye")){
+         const checker = password.type === 'password' ? password.type = "text" : password.type = "password"
+         console.log(checker)
+     }
 })

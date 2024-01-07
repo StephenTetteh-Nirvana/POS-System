@@ -6,15 +6,20 @@ import Swal from "sweetalert2"
 const registerForm = document.querySelector(".registerForm")
 const loader = document.querySelector(".loader-box")
 const error = document.querySelector(".error-display")
+const password = document.querySelector("#password")
 
 
   async function registerUser(){
     if (registerForm.status.value !== "Admin" && registerForm.status.value !== "Cashier") {
         error.style.display = "block";
+        registerForm.status.style.border = "1px solid red"
     }else{
         try{
+            const oldValue = registerForm.username.value;
+            const newValue = oldValue + '@gmail.com';
             loader.style.display = "block";
-            await createUserWithEmailAndPassword(auth,registerForm.email.value,registerForm.password.value)
+            console.log(newValue)
+            await createUserWithEmailAndPassword(auth,newValue,registerForm.password.value)
             onAuthStateChanged(auth,(user)=>{
                 if(user){
                     const uid = user.uid;
@@ -114,6 +119,13 @@ const error = document.querySelector(".error-display")
 registerForm.addEventListener("submit",(event)=>{
     event.preventDefault()
     registerUser()
+})
+
+registerForm.addEventListener("click",(event)=>{
+    if(event.target.classList.contains("eye")){
+        const checker = password.type === 'password' ? password.type = "text" : password.type = "password"
+        console.log(checker)
+    }
 })
 
 

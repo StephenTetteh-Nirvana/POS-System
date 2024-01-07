@@ -221,9 +221,7 @@ fruitBox.forEach((eachFruit) => {
                         console.log(currentId,quantityConvert)
            }
         })
-    }else if (event.target.id === "quantityInput") {
-        console.log(event.target);
-      }
+    }
     else{
         const parentFruit = event.currentTarget;
         console.log(parentFruit)
@@ -234,7 +232,6 @@ fruitBox.forEach((eachFruit) => {
             Name:eachFruit.dataset.name,
             Price:eachFruit.dataset.price,
             Image:eachFruit.dataset.image,
-            quantity:1
         }
 
         onAuthStateChanged(auth,(user)=>{
@@ -257,7 +254,7 @@ async function addToCart(uid,fruit){
         icon: "success",
         title: "Product added to cart successfully",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1000
       });
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
