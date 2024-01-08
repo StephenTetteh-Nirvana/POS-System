@@ -8,6 +8,7 @@ module.exports = {
      users: './src/pages/Users/index.js',
      orders:'./src/pages/Orders/index.js',
      dashboard: './src/pages/Dashboard/index.js',
+     products: './src/pages/Products/index.js',
      index: './src/index.js',
     },
     output: {

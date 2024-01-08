@@ -521,21 +521,23 @@ main{
     font-size:20px;
 
 }
-.icon-wallet{
-    font-size:20px;
-}
 .payment-section ul{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display:flex;
+    justify-content: space-between;
     margin-left:20px;
+    margin-top:10px;
 }
 .payment-section ul li{
-    border:3px solid grey;
-    padding:10px 0px;
-    text-align:center;
-    width:100px;
+    border:1px solid grey;
+    margin:auto;
+    padding: 10px 20px;
     border-radius:10px;
     cursor:pointer;
+    display:flex;
+}
+.payment-section ul li p:nth-child(2){
+    font-size:18px;
+    margin-left:5px;
 }
 .active{
     background-color: #FFFFFF;
@@ -553,7 +555,6 @@ main{
     color:black;
     font-size:18px;
     border:none;
-    padding:12px 30px;
     border-radius:5px;
     margin-left:100px;
     margin-top:20px;

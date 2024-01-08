@@ -6,12 +6,6 @@ const date = document.querySelector(".date")
 const time = document.querySelector(".time")
 const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
-const products = document.querySelector(".products-container")
-const InstockButton = document.querySelector(".in-stock")
-const OutstockButton = document.querySelector(".out-of-stock")
-const displayProducts = document.querySelector(".products-display")
-const heading = document.querySelector("#in-stock-heading")
-const productsLoader = document.querySelector(".products-loader")
 const cashierBox = document.querySelector(".best-cashiers-box")
 
 
@@ -82,16 +76,37 @@ document.addEventListener("DOMContentLoaded",function(){
 async function retrieveCashiers(){
      const cashierCollection = collection(db,"Cashiers")
      const colRef = await getDocs(cashierCollection)
+     let data = []
      colRef.forEach(async (document)=>{
         const Id = document.id;
         const customerCollection = collection(doc(db, "Cashiers", Id), "Customers");
         const docRef = await getDocs(customerCollection);
+        console.log(Id,docRef.size)
+
+        data.push({
+            id:Id,
+            customers:docRef.size
+        })
+
+        data.sort((a, b) => a.customers - b.customers);
+
+console.log(data);
+      
         await loadCashiers(Id,docRef)
          })
 }
 
-async function loadCashiers(Id, docRef) {
+async function loadCashiers(Id, docRef,data) {
     const highestNumber = 1;
+
+
+    
+    // console.log(data)
+
+    // const highestOrder = data.sort((a,b)=>{
+    //     return a.order - b.order
+    // })
+    // console.log("highest",highestOrder)
 
     if (docRef.size > highestNumber) {
         const colRef = doc(db, "Cashiers", Id);
@@ -102,7 +117,7 @@ async function loadCashiers(Id, docRef) {
                                         <p><ion-icon class="cashier-icon" name="person-circle"></ion-icon></p>
                                         <div class="firstBox-info">
                                             <p class="name">${colDoc.data().Username}</p>
-                                            <p class="customer">No. Of Customers : ${docRef.size}</p>
+                                            <p class="customer">No. Of Orders : ${docRef.size}</p>
                                         </div>
                                     </div>
                                     <div class="selling-cashier-secondBox">
@@ -112,59 +127,6 @@ async function loadCashiers(Id, docRef) {
     }
 }
 
-
-async function retrieveProducts(){
-    productsLoader.style.display = "block"
-    const fruitsCollection = collection(db,"Fruits")
-    const docRef = await getDocs(fruitsCollection)
-    docRef.forEach((doc)=>{
-        const product = {
-            name:doc.data().Name,
-            price:doc.data().Price,
-            stock:doc.data().Stock
-        }
-        productsLoader.style.display = "none"
-        displayProducts.innerHTML += `
-        <div class="product">
-                                         <div>
-                                         <p>${product.name}</p>
-                                         </div>
-                                            <div class="stock-box">
-                                            <p>x ${product.stock}</p>
-                                            </div>
-                                                <div class="price-box">
-                                                <p>$${product.price}.00</p>
-                                                </div>
-                                      </div>`
-  
-    })
-}
-
-
-products.addEventListener("click",(event)=>{
-   if(event.target.classList.contains("in-stock")){
-    console.log(event.target)
-    displayProducts.style.display = "block";
-   }else if(event.target.classList.contains("out-of-stock")){
-    console.log(event.target)
-    displayProducts.style.visibility = "none"
-   }
-   if(event.target.classList.contains("view-products-button")){
-        if (event.target.innerText === "Hide Products"){
-            event.target.innerText = "View Products"
-            displayProducts.style.display = "none"
-            heading.style.visibility = "hidden"
-            InstockButton.style.visibility = "hidden"
-            OutstockButton.style.visibility = "hidden"
-        }else if(event.target.innerText === "View Products"){
-        event.target.innerText = "Hide Products"
-        displayProducts.style.display = "block"
-        heading.style.visibility = "visible"
-        InstockButton.style.visibility = "visible"
-        OutstockButton.style.visibility = "visible"
-        }
-   }
-})
 
 function logOut(){
     signOut(auth)
