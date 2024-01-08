@@ -6,12 +6,14 @@ import { collection, doc,getDoc,getDocs} from "firebase/firestore"
 const products = document.querySelector(".products-container")
 const InstockButton = document.querySelector(".in-stock")
 const OutstockButton = document.querySelector(".out-of-stock")
+const buttonsBox = document.querySelector(".products-buttons")
 const displayInstock = document.querySelector(".products-inStock")
 const displayOutofStock = document.querySelector(".products-OutofStock")
 const productsLoader = document.querySelector(".products-loader")
 const date = document.querySelector(".date")
 const time = document.querySelector(".time")
 const userLogout = document.querySelector("#logOut")
+const categoryBox = document.querySelector(".category-box")
 
 
 
@@ -58,6 +60,21 @@ document.addEventListener("DOMContentLoaded",function(){
 })
 
 
+buttonsBox.addEventListener("click",(e)=>{
+    if(e.target.classList.contains("filter-button")){
+        if(categoryBox.classList.contains("active-categoryBox")){
+            categoryBox.classList.remove("active-categoryBox");
+            e.target.innerText = "Choose Category"
+        }else{
+            categoryBox.classList.add("active-categoryBox");
+            e.target.innerText = "Hide Category"
+
+        }
+       
+    }
+})
+
+
 
 async function ProductsInStock(){
     productsLoader.style.display = "block"
@@ -72,7 +89,6 @@ async function ProductsInStock(){
         }
         productsLoader.style.display = "none"
         displayInstock.style.display = "block";
-        displayOutofStock.style.display = "none"
         displayInstock.innerHTML += `
                                         <div class="product">
                                          <div>
@@ -100,8 +116,6 @@ async function ProductsOutOfStock(){
             stock:doc.data().Stock
         }
         productsLoader.style.display = "none"
-        displayInstock.style.display = "none"
-        displayOutofStock.style.display = "block"
         displayOutofStock.innerHTML += `
                                         <div class="product">
                                          <div>

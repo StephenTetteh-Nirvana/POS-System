@@ -96,6 +96,7 @@ main{
     display:flex;
     justify-content:space-between;
     padding:10px 20px;
+    z-index:1000;
 }
 .products-heading h1{
     font-size:25px;
@@ -109,6 +110,35 @@ main{
 .active-item{
     background-color:#2666CF;
     color:white;
+}
+.category-box{
+    height:50px;
+  margin-top:-50px;
+    visibility: hidden;
+    opacity:0;
+}
+.category-box ul{
+   display:flex;
+   justify-content: space-around;
+   padding:5px;
+}
+.category-box ul > li{
+    border:1px solid grey;
+    padding:5px 20px;
+    text-align:center;
+    border-radius:5px;
+}
+.category-box ul > li:hover{
+    cursor:pointer;
+    background-color:orangered;
+    border:none;
+    color:white;
+}
+.active-categoryBox{
+  margin-top:0px;
+    opacity: 1;
+    transition:all 0.5s;
+    visibility: visible;
 }
 .products-container #in-stock-heading{
     display: grid;
