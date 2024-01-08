@@ -92,9 +92,10 @@ document.addEventListener("DOMContentLoaded",function(){
         onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
-            fetchDocs(uid)
             loadCart(uid)
             totalAmount(uid)
+            fetchDocs(uid)
+          
         }else{
             console.log("no-user")
             window.location.href = "/src/pages/Login/login.html"
@@ -193,8 +194,8 @@ async function displayFruits(){
                                                 <p class="fruit-price">${singleFruit.price}.00</p>
                                                 </div>
                                                 <div class="initial-quantity-box">
-                                                  <button class="quantity-subtract">-</button>
-                                                  <input type="text" value=1 id="quantityInput"  data-id="${singleFruit.id}"/>
+                                                  <button class="quantity-subtract" data-id="${singleFruit.id}">-</button>
+                                                  <input type="text" value=1 id="quantityInput"  data-id="${singleFruit.id}" readonly/>
                                                   <button class="quantity-add" data-id="${singleFruit.id}">+</button>
                                                 </div>
                                              </div>
@@ -209,7 +210,18 @@ async function displayFruits(){
 fruitBox.forEach((eachFruit) => {
   eachFruit.addEventListener('click', (event) => {
     if(event.target.classList.contains("quantity-subtract")){
-        console.log(event.target)
+        const currentId = event.target.dataset.id;
+        fruitBox.forEach((fruitQuantity)=>{
+           if(currentId === fruitQuantity.dataset.id){
+            const inputField = fruitQuantity.querySelector('#quantityInput');
+                   if(inputField.value > 1){
+                        let quantityConvert = Number(inputField.value)
+                        quantityConvert -= 1;
+                        inputField.value = quantityConvert;
+                        console.log(currentId,quantityConvert)
+                   }    
+           }
+        })
     }else if(event.target.classList.contains("quantity-add")){
         const currentId = event.target.dataset.id;
         fruitBox.forEach((fruitQuantity)=>{
@@ -223,25 +235,30 @@ fruitBox.forEach((eachFruit) => {
         })
     }
     else{
-        const parentFruit = event.currentTarget;
-        console.log(parentFruit)
-
         const eachFruit = event.currentTarget;
-        const fruit = {
-            Id:eachFruit.dataset.id,
-            Name:eachFruit.dataset.name,
-            Price:eachFruit.dataset.price,
-            Image:eachFruit.dataset.image,
-        }
+        const currentId = event.currentTarget.dataset.id;
+        fruitBox.forEach(async(fruitQuantity)=>{
+            if(currentId === fruitQuantity.dataset.id){
+             const inputField = fruitQuantity.querySelector('#quantityInput');
 
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                const uid = user.uid;
-                addToCart(uid,fruit)
-                loadCart(uid)
+             const fruit = {
+                Id:eachFruit.dataset.id,
+                Name:eachFruit.dataset.name,
+                Price:eachFruit.dataset.price,
+                Image:eachFruit.dataset.image,
+                quantity:inputField.value
             }
-         
-        })
+
+            
+            onAuthStateChanged(auth,(user)=>{
+                if(user){
+                    const uid = user.uid;
+                    addToCart(uid,fruit)
+                    loadCart(uid)
+                }
+            })
+           }
+         })  
     }
   });
 });
