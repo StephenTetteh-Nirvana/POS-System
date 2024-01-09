@@ -233,10 +233,10 @@ fruitBox.forEach((eachFruit) => {
                         console.log(currentId,quantityConvert)
            }
         })
-    }
-    else{
+    }else{
         const eachFruit = event.currentTarget;
         const currentId = event.currentTarget.dataset.id;
+
         fruitBox.forEach(async(fruitQuantity)=>{
             if(currentId === fruitQuantity.dataset.id){
              const inputField = fruitQuantity.querySelector('#quantityInput');
@@ -324,7 +324,7 @@ async function addToCart(uid,fruit){
             if(cartData.length > 0){
                 orders.innerHTML = '';
                 noOrders.style.display = "none";
-                clearAllOrders.style.display = "block";
+                orders.style.display = "block"
                 cartData.forEach((item)=>{
                     const eachItem = {
                         id:item.Id,
@@ -335,27 +335,12 @@ async function addToCart(uid,fruit){
                     }
                   
                     orders.innerHTML += `<div class="order">
-                                            <div class="order-first-section">
-                                                <div class="order-image-box">
-                                                   <img src="${eachItem.image}"/>
-                                                </div>
-                                           
-                                                <div class="order-info">
-                                                    <p class="order-name">${eachItem.name}</p>
-                                                    <div class="order-quantity-box">
-                                                        <div data-id="${eachItem.id}"><button class="order-subtract-button">-</button></div>
-                                                        <div><p>${eachItem.quantity}</p></div>
-                                                        <div data-id="${eachItem.id}"><button class="order-add-button">+</button></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="order-second-section">
-                                                <div class="order-price-box">
-                                                <p class="order-price">$${eachItem.price}.00</p>
-                                                </div>
-                                                <button data-id="${eachItem.id}"><ion-icon name="trash-bin-outline" class="order-delete"></ion-icon></button>
-                                            </div>
+                                            <p class="order-name">${eachItem.name}</p>
+                                            <p>X ${eachItem.quantity}</p>
+                                            <p class="order-price">$${eachItem.price}.00</p>
+                                            <button data-id="${eachItem.id}">
+                                            <ion-icon name="close-circle" class="order-delete"></ion-icon>
+                                            </button>
                                         </div>`
                  })
           
@@ -371,7 +356,7 @@ async function addToCart(uid,fruit){
             if(cartData.length > 0){
                 orders.innerHTML = '';
                 noOrders.style.display = "none";
-                clearAllOrders.style.display = "block";
+                orders.style.display = "block"
                 cartData.forEach((item)=>{
                     const eachItem = {
                         id:item.Id,

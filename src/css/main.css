@@ -13,7 +13,7 @@
 }
 main{
     display:grid;
-    grid-template-columns: 0.7fr 3.7fr;
+    grid-template-columns: 0.5fr 3fr;
 }
 .logo-section{
     display:flex;
@@ -324,7 +324,7 @@ main{
 }
 .order-sidebar{
     position:fixed;
-    right:-100%;
+    right:0%;
     top:0;
     height:100vh;
     width:350px;
@@ -370,10 +370,14 @@ main{
     padding-top:10px;
     min-height:10vh;
 }
-.order-section h3{
-    text-align:center;
-    font-size:25px;
+.current-order-box{
+    display:flex;
+    justify-content: space-between;
     border-bottom:1px solid grey;
+}
+.order-section h3{
+    font-size:25px;
+    margin-left:10px;
 }
 .no-orders-alert{
    position:absolute;
@@ -391,73 +395,56 @@ main{
     background:transparent;
     background-color:red;
     color:white;
-    padding:7px;
     border-radius:5px;
-    margin-left:78%;
+    padding:5px;
     cursor:pointer;
     border:none;
-    margin-top:10px;
+    margin-right:10px;
+    margin-bottom:5px;
+}
+.clear-all-orders .clear-all-icon{
+    font-size:17px;
+}
+.orders-alert{
+    width: 95%;
+    height:150px;
+    overflow:auto;
     display:none;
 }
+
+.orders-alert::-webkit-scrollbar {
+    width:10px;
+  }
+  .orders-alert::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+  .orders-alert::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 .order{
-    display: flex;
-    justify-content: space-between;
-    border:1px solid grey;
-    margin-top:10px;
-    width:85%;
-    margin-left:20px;
-    border-radius:5px;
-    padding:10px;
-}
-.order-first-section{
-    display:flex;
-}
-.order-image-box img{
-    border-radius:10px;
-   width:60px;
-   height:60px;
-}
-.order-info{
+   display:grid;
+   grid-template-columns: 1.5fr 1fr 1fr 0.2fr;
+    border-bottom:1px solid #dec0de;
     margin-left:10px;
+    padding:10px 5px;
+    width:92%;
 }
-.order-info .order-name{
-    font-size:20px;
-}
-.order-quantity-box{
-    display:flex;
-    margin-top:5px;
-}
-.order-quantity-box button{
+.order button{
     background:transparent;
-    background-color:#121212;
+    border:none;
+    cursor:pointer;
+}
+.order-delete{
     color:white;
-    border:none;
-    padding:2px 10px;
-    border-radius:5px;
-    cursor:pointer;
-}
-.order-add-button{
-    margin-left:15px;
-}
-.order-quantity-box p {
     font-size:20px;
-    margin-left:15px;
+    font-weight:bolder;
 }
-.order-price-box .order-price{
-    font-size:20px;
-}
-.order-second-section button{
-    background:transparent;
-    border:none;
-    margin-top:10px;
-    cursor:pointer;
-}
-.order-second-section button .order-delete{
+.order-delete:hover{
     color:red;
-    font-size:20px;
 }
 .order-summary{
-    margin-top:50px;
+    margin-top:10px;
     border-top:1px solid grey;
 }
 .total{
