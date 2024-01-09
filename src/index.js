@@ -291,15 +291,6 @@ async function addToCart(uid,fruit){
             const cartArray = cashierDoc.data().cart;
             cartArray.push(fruit)
             await updateDoc(cashierCollection,{cart:cartArray})
-            loader.style.display = "none" 
-            fruitsDisplay.style.opacity = "1"
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Product added to cart successfully",
-                showConfirmButton: false,
-                timer: 1500
-              });
               await loadCart(uid)
               await totalAmount(uid)
             console.log("updated")
@@ -346,7 +337,7 @@ async function addToCart(uid,fruit){
           
             }else{
                 noOrders.style.display = "block";
-                orders.innerHTML = ""
+                orders.style.display = "none";
                 console.log("empty cart")
             }
              
@@ -366,34 +357,18 @@ async function addToCart(uid,fruit){
                         quantity:item.quantity
                     }
                     orders.innerHTML += `<div class="order">
-                                            <div class="order-first-section">
-                                                <div class="order-image-box">
-                                                   <img src="${eachItem.image}"/>
-                                                </div>
-                                           
-                                                <div class="order-info">
-                                                    <p class="order-name">${eachItem.name}</p>
-                                                    <div class="order-quantity-box">
-                                                        <div data-id="${eachItem.id}"><button class="order-subtract-button">-</button></div>
-                                                        <div><p>${eachItem.quantity}</p></div>
-                                                        <div data-id="${eachItem.id}"><button class="order-add-button">+</button></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="order-second-section">
-                                                <div class="order-price-box">
-                                                <p class="order-price">$${eachItem.price}.00</p>
-                                                </div>
-                                                <button data-id="${eachItem.id}"><ion-icon name="trash-bin-outline" class="order-delete"></ion-icon></button>
-                                            </div>
+                                            <p class="order-name">${eachItem.name}</p>
+                                            <p>X ${eachItem.quantity}</p>
+                                            <p class="order-price">$${eachItem.price}.00</p>
+                                            <button data-id="${eachItem.id}">
+                                            <ion-icon name="close-circle" class="order-delete"></ion-icon>
+                                            </button>
                                         </div>`
                  })
           
             }else{
-                clearAllOrders.style.display = "none"
                 noOrders.style.display = "block";
-                orders.innerHTML = ""
+                orders.style.display = "none";
                 console.log("empty cart")
             }
          
@@ -406,7 +381,6 @@ async function addToCart(uid,fruit){
 
  async function deleteAllOrders(uid){
     loadingOrder.style.display = "block";
-    orders.style.opacity = "0.5";
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -419,13 +393,13 @@ async function addToCart(uid,fruit){
             cart:[]
         })
         loadingOrder.style.display = "none";
-        orders.style.opacity = "1";
+        orders.style.display = "none";
         await loadCart(uid)
         await totalAmount(uid)
         console.log("all cleared")
     }else if(cashierDoc.exists()){
         loadingOrder.style.display = "block";
-        orders.style.opacity = "0.5";
+        orders.style.display = "none";
         console.log("all cleared")
         await updateDoc(cashierCollection,{
             cart:[]
@@ -447,7 +421,6 @@ async function addToCart(uid,fruit){
 
  async function deleteFromCart(uid,docId){
     loadingOrder.style.display = "block";
-    orders.style.opacity = "0.5";
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -461,7 +434,6 @@ async function addToCart(uid,fruit){
             cart: updatedCartData
         });
         loadingOrder.style.display = "none";
-        orders.style.opacity = "1";
         Swal.fire({
             position: "center",
             icon: "success",
@@ -482,7 +454,6 @@ async function addToCart(uid,fruit){
             cart: updatedCartData
         });
         loadingOrder.style.display = "none";
-        orders.style.opacity = "1";
         Swal.fire({
             position: "center",
             icon: "success",
