@@ -645,27 +645,38 @@ async function addToCart(uid,fruit){
                   });
             }
             else{
-                const customerCollection = collection(adminCollection,"Customers");
-            const customerDocRef =  await addDoc(customerCollection,{
-                CustomerName: customerForm.customerName.value,
-                CustomerPhone: customerForm.customerPhone.value,
-                order:[]
-            })
-            console.log("customer created successfully")
-            await updateAdminCustomer(customerDocRef,cartData,adminCollection)
-            customerForm.reset()
-            await loadCart(uid)
-            await totalAmount(uid)
-            resetLi()
-            loadingCustomer.style.display = "none"
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Order Completed",
-                showConfirmButton: false,
-                timer: 1500
-              });
-            console.log("order array updated")
+                Payment.querySelectorAll("li").forEach(async(li) => {
+                    if(li.classList.contains("active")){
+                        const subtitle = li.querySelector(".subtitle");
+                        if (subtitle) {
+                            const customerCollection = collection(adminCollection,"Customers");
+                            const customerDocRef =  await addDoc(customerCollection,{
+                                CustomerName: customerForm.customerName.value,
+                                CustomerPhone: customerForm.customerPhone.value,
+                                order:[],
+                                paymentMethod:subtitle.textContent
+                            })
+                            console.log("customer created successfully")
+                            await updateAdminCustomer(customerDocRef,cartData,adminCollection)
+                            customerForm.reset()
+                            await loadCart(uid)
+                            await totalAmount(uid)
+                            resetLi()
+                            loadingCustomer.style.display = "none"
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Order Completed",
+                                showConfirmButton: false,
+                                timer: 1500
+                              });
+                            console.log("order array updated")
+                        }
+                    }
+                    else{
+                        console.log("Choose a payment method")
+                    }
+                 })
             }
         }else if(cashierDoc.exists()){
             const cartData = cashierDoc.data().cart;

@@ -324,7 +324,7 @@ main{
 }
 .order-sidebar{
     position:fixed;
-    right:-100%;
+    right:0%;
     top:0;
     height:100vh;
     width:350px;
@@ -505,29 +505,25 @@ main{
     margin-top:20px;
 }
 .payment-section h3{
-    text-align: center;
-    font-size:30px;
+    margin-left:20px;
+    font-weight: lighter;
 } 
-.icon-cash{
-    font-size:20px;
-}
-.icon-card{
-    font-size:20px;
-
-}
 .payment-section ul{
     display:flex;
     justify-content: space-between;
-    margin-left:20px;
+    margin-left:5px;
     margin-top:10px;
 }
 .payment-section ul li{
     border:1px solid grey;
     margin:auto;
-    padding: 10px 20px;
-    border-radius:10px;
+    border-radius:5px;
     cursor:pointer;
+    padding:5px 10px;
     display:flex;
+}
+.payment-section ul li > img{
+    width:30px;
 }
 .payment-section ul li p:nth-child(2){
     font-size:18px;
