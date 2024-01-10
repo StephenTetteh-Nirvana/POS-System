@@ -404,6 +404,7 @@ main{
     margin-right:20px;
     margin-bottom:5px;
     opacity: 0.5;
+    display:none;
 }
 .clear-all-orders:hover{
     opacity:1;

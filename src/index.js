@@ -315,7 +315,8 @@ async function addToCart(uid,fruit){
             if(cartData.length > 0){
                 orders.innerHTML = '';
                 noOrders.style.display = "none";
-                orders.style.display = "block"
+                clearAllOrders.style.display = "block"
+                orders.style.display = "block";
                 cartData.forEach((item)=>{
                     const eachItem = {
                         id:item.Id,
@@ -336,6 +337,7 @@ async function addToCart(uid,fruit){
                  })
           
             }else{
+                clearAllOrders.style.display = "none"
                 noOrders.style.display = "block";
                 orders.style.display = "none";
                 console.log("empty cart")
