@@ -66,8 +66,8 @@ document.addEventListener("DOMContentLoaded",function(){
             const uid = user.uid;
             returnToHome(uid)
             fetchDocs(uid)
-            retrieveProducts()
             retrieveCashiers()
+            loadCashiers()
         }
     })
 })
@@ -76,37 +76,17 @@ document.addEventListener("DOMContentLoaded",function(){
 async function retrieveCashiers(){
      const cashierCollection = collection(db,"Cashiers")
      const colRef = await getDocs(cashierCollection)
-     let data = []
      colRef.forEach(async (document)=>{
         const Id = document.id;
         const customerCollection = collection(doc(db, "Cashiers", Id), "Customers");
         const docRef = await getDocs(customerCollection);
         console.log(Id,docRef.size)
-
-        data.push({
-            id:Id,
-            customers:docRef.size
-        })
-
-        data.sort((a, b) => a.customers - b.customers);
-
-console.log(data);
-      
         await loadCashiers(Id,docRef)
          })
 }
 
-async function loadCashiers(Id, docRef,data) {
+async function loadCashiers(Id, docRef) {
     const highestNumber = 1;
-
-
-    
-    // console.log(data)
-
-    // const highestOrder = data.sort((a,b)=>{
-    //     return a.order - b.order
-    // })
-    // console.log("highest",highestOrder)
 
     if (docRef.size > highestNumber) {
         const colRef = doc(db, "Cashiers", Id);

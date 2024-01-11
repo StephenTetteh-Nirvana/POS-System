@@ -1,6 +1,6 @@
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import {auth,db} from "/src/firebase"
-import { collection, doc,getDoc,getDocs, updateDoc,addDoc} from "firebase/firestore"
+import { collection, doc,getDoc,getDocs, updateDoc,addDoc, serverTimestamp} from "firebase/firestore"
 import Swal from "sweetalert2"
 
 const fruits = [];
@@ -19,6 +19,7 @@ const userStatus = document.querySelector(".user-status")
 const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
 const dashboard = document.querySelector("#dashboard")
+const products = document.querySelector("#products")
 const fruitsDisplay = document.querySelector(".fruits-section")
 const loader = document.querySelector(".loader-box")
 const noOrders = document.querySelector(".no-orders-alert")
@@ -72,7 +73,8 @@ document.addEventListener("DOMContentLoaded",function(){
               console.log("cashier logged in",uid)
               if(user.Role === "Cashier"){
                 users.style.display = "none";
-                dashboard.style.display = "none"
+                dashboard.style.display = "none";
+                products.style.display = "none";
               }
               userRole.classList.add("cashier")
                 role.innerText = user.Role;
@@ -80,7 +82,8 @@ document.addEventListener("DOMContentLoaded",function(){
                 userStatus.innerText = user.Username;
             }
             else{
-                console.log("user doc does not exist")
+                console.log("there is no user with this docId")
+                window.location.href = "/src/pages/Login/login.html"
             }
 
         }
@@ -92,9 +95,10 @@ document.addEventListener("DOMContentLoaded",function(){
         onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
+            fetchDocs(uid)
             loadCart(uid)
             totalAmount(uid)
-            fetchDocs(uid)
+           
           
         }else{
             console.log("no-user")
@@ -350,6 +354,8 @@ async function addToCart(uid,fruit){
                 orders.innerHTML = '';
                 noOrders.style.display = "none";
                 orders.style.display = "block"
+                clearAllOrders.style.display = "block"
+
                 cartData.forEach((item)=>{
                     const eachItem = {
                         id:item.Id,
@@ -369,6 +375,7 @@ async function addToCart(uid,fruit){
                  })
           
             }else{
+                clearAllOrders.style.display = "none"
                 noOrders.style.display = "block";
                 orders.style.display = "none";
                 console.log("empty cart")
@@ -625,7 +632,6 @@ async function addToCart(uid,fruit){
  })
 
  async function createCustomerCollection(uid){
-    loadingCustomer.style.display = "block";
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
@@ -649,12 +655,17 @@ async function addToCart(uid,fruit){
                     if(li.classList.contains("active")){
                         const subtitle = li.querySelector(".subtitle");
                         if (subtitle) {
+                            loadingCustomer.style.display = "block";
+                            const newDate = new Date();
+                            const savedDate = newDate.toDateString();
+                            console.log(savedDate)
                             const customerCollection = collection(adminCollection,"Customers");
                             const customerDocRef =  await addDoc(customerCollection,{
                                 CustomerName: customerForm.customerName.value,
                                 CustomerPhone: customerForm.customerPhone.value,
                                 order:[],
-                                paymentMethod:subtitle.textContent
+                                paymentMethod:subtitle.textContent,
+                                createdAt:savedDate
                             })
                             console.log("customer created successfully")
                             await updateAdminCustomer(customerDocRef,cartData,adminCollection)
@@ -674,7 +685,7 @@ async function addToCart(uid,fruit){
                         }
                     }
                     else{
-                        console.log("Choose a payment method")
+                        alert("Choose a payment method")
                     }
                  })
             }
@@ -692,30 +703,44 @@ async function addToCart(uid,fruit){
                   });
             } 
             else{
-            const customerCollection = collection(cashierCollection,"Customers");
-            const customerDocRef =  await addDoc(customerCollection,{
-                CustomerName: customerForm.customerName.value,
-                CustomerPhone: customerForm.customerPhone.value,
-                order:[]
-            })
-            console.log("customer created successfully")
-            await updateCashierCustomer(customerDocRef,cartData,cashierCollection)
-            customerForm.reset()
-            await loadCart(uid)
-            await totalAmount(uid)
-            resetLi()
-            loadingCustomer.style.display = "none"
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Order Completed",
-                showConfirmButton: false,
-                timer: 1500
-              });
-            console.log("order array updated")
+                Payment.querySelectorAll("li").forEach(async(li) => {
+                    if(li.classList.contains("active")){
+                        const subtitle = li.querySelector(".subtitle");
+                        if (subtitle) {
+                            loadingCustomer.style.display = "block";
+                            const newDate = new Date();
+                            const savedDate = newDate.toDateString();
+                            console.log(savedDate)
+                            const customerCollection = collection(cashierCollection,"Customers");
+                            const customerDocRef =  await addDoc(customerCollection,{
+                                CustomerName: customerForm.customerName.value,
+                                CustomerPhone: customerForm.customerPhone.value,
+                                order:[],
+                                paymentMethod:subtitle.textContent,
+                                createdAt:savedDate
+                            })
+                            console.log("customer created successfully")
+                            await updateCashierCustomer(customerDocRef,cartData,cashierCollection)
+                            customerForm.reset()
+                            await loadCart(uid)
+                            await totalAmount(uid)
+                            resetLi()
+                            loadingCustomer.style.display = "none"
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Order Completed",
+                                showConfirmButton: false,
+                                timer: 1500
+                              });
+                            console.log("order array updated")
+                        }
+                    }
+                    else{
+                        alert("Choose a payment method")
+                    }
+                 })
             }
-
-
         
     }
 }

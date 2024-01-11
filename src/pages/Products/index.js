@@ -68,7 +68,6 @@ buttonsBox.addEventListener("click",(e)=>{
         }else{
             categoryBox.classList.add("active-categoryBox");
             e.target.innerText = "Hide Category"
-
         }
        
     }

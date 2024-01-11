@@ -125,21 +125,20 @@ closePopUp.addEventListener("click",()=>{
         })
        }
 
-       function removeFromDOM(event){
-        const parentTag = event.target.closest('p')
-                const mainTag = parentTag.closest('.display-users')
-                if (mainTag) {
-                    mainTag.remove()
-                    console.log(mainTag);
-                } else {
-                    console.error("Grandparent div not found");
-                }
-       }
+    //    function removeFromDOM(event){
+    //     const parentTag = event.target.closest('p')
+    //             const mainTag = parentTag.closest('.display-users')
+    //             if (mainTag) {
+    //                 mainTag.remove()
+    //                 console.log(mainTag);
+    //             } else {
+    //                 console.error("Grandparent div not found");
+    //             }
+    //    }
         userDisplay.addEventListener("click",(event)=>{
             if(event.target.classList.contains("user-delete")){
                 const DomId = event.target.parentElement.dataset.documentId;
-                deleteCashier(event,DomId)
-                removeFromDOM(event)
+                deleteCashier(DomId)
             }
             
         })

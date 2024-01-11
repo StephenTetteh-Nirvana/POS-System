@@ -32,7 +32,7 @@
                   </li>
                 </a>
                 <a href="/src/pages/Products/products.html">
-                  <li>
+                  <li id="products">
                     <p><ion-icon class="orders" name="albums-outline"></ion-icon></p>
                     <p class="title">Products</p>
                   </li>
@@ -79,7 +79,7 @@
     <section class="popup-order-summary">
       <div class="popup-box">
         <div class="popup-heading">
-          <h1>Invoice #121455465</h1>
+          <h1>Invoice</h1>
           <div class="navigation-box">
             <button class="print-button"><ion-icon class="print" name="print"></ion-icon>Print</button>
             <p><ion-icon class="close" name="close-circle-outline"></ion-icon></p>
@@ -88,9 +88,9 @@
           <div class="billing-info">
               <h3>Billed To:</h3>
               <div>
-                <p>Name:Eren Yaeger</p>
-                <p>Contact Details:stephen123@gmail.com</p>
-                <p>Date:22nd December,2023</p>
+                <p id="billing-name">Name :</p>
+                <p id="billing-contact">Contact Details :</p>
+                <p id="billing-date">Date : </p>
             </div>
         </div>
             <ul>
@@ -105,7 +105,7 @@
           <div class="bottom-section">
               <div class="payment-box">
                 <h3>PAYMENT INFO</h3>
-                <p>Payment : <span>Cash</span></p>
+                <p>Payment : <span id="payment"></span></p>
               </div>
                   <div class="grand-total-box">
                     <h3>TOTAL</h3>

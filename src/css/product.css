@@ -89,6 +89,17 @@ main{
     box-shadow:var(--box-shadow);
     overflow:auto;
 }
+.products-container::-webkit-scrollbar{
+    width:10px;
+}
+.products-container::-webkit-scrollbar-thumb{
+    background-color: #3b3838;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.products-container::-webkit-scrollbar-thumb:hover{
+    background-color: #000;
+}
 .products-inStock,.products-OutofStock{
     display:none;
 }
@@ -116,6 +127,7 @@ main{
   margin-top:-50px;
     visibility: hidden;
     opacity:0;
+    transition:all 0.5s;
 }
 .category-box ul{
    display:flex;

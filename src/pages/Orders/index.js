@@ -1,6 +1,6 @@
 import { onAuthStateChanged,signOut } from "firebase/auth";
 import {auth,db} from '/src/firebase.js';
-import { collection,doc,getDoc,getDocs} from "firebase/firestore"
+import { collection,doc,getDoc,getDocs, serverTimestamp} from "firebase/firestore"
 
 const date = document.querySelector(".date")
 const time = document.querySelector(".time")
@@ -14,6 +14,13 @@ const grandTotal = document.querySelector("#grand-total")
 const customerLoader = document.querySelector(".customer-loader-box")
 const users = document.querySelector("#users")
 const dashboard = document.querySelector("#dashboard")
+const products = document.querySelector("#products")
+const paymentInfo = document.querySelector("#payment")
+const billingName = document.querySelector("#billing-name")
+const billingContact = document.querySelector("#billing-contact")
+const billingDate = document.querySelector("#billing-date")
+
+
 
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -42,6 +49,7 @@ document.addEventListener("DOMContentLoaded",function(){
               if(user.Role === "Cashier"){
                 users.style.display = "none";
                 dashboard.style.display = "none";
+                products.style.display = "none";
               }
             }
             else{
@@ -100,8 +108,9 @@ async function displayCustomers(uid){
         const customerInfo = {
             name:customer.data().CustomerName,
             phone:customer.data().CustomerPhone,
+          
         }
-        console.log(customerInfo)
+        paymentInfo.textContent = `${customer.payment}`
         Info.innerHTML += `<ul class="customer-info">
                            <li>${customerInfo.name}</li>
                             <li>${customerInfo.phone}</li>
@@ -109,6 +118,7 @@ async function displayCustomers(uid){
                             <button class="btn"  data-id="${customer.id}" >View</button>
                           </ul>`
         customerLoader.style.display = "none"
+        
 
     })
    }
@@ -154,13 +164,24 @@ async function displayOrders(uid,documentId){
         snapshot.forEach((customer) => {
            if(customer.id === documentId){
             console.log("id match")
+            const documentInfo = {
+                name : customer.data().CustomerName,
+                phone : customer.data().CustomerPhone,
+                payment : customer.data().paymentMethod,
+                date : customer.data().createdAt
+            }
+            console.log(documentInfo)
+            billingName.innerText += ` ${documentInfo.name}`
+            billingContact.innerText += ` ${documentInfo.phone}`
+            paymentInfo.innerText += ` ${documentInfo.payment}`
+
             const orderData = customer.data().order;
             orderData.forEach((order,index) => {
                 const orderItem = {
                     name:order.Name,
                     price:order.Price,
                     image:order.Image,
-                    quantity:order.quantity
+                    quantity:order.quantity,
                 }
                 const total = orderItem.quantity * orderItem.price;
                 sum += total; 
@@ -202,13 +223,27 @@ async function displayOrders(uid,documentId){
     }else if(cashierDoc.exists()){
         const CashiercustomerCollection = collection(cashierCollection,"Customers");
         const snapshot = await getDocs(CashiercustomerCollection)
+        let sum = 0;
         snapshot.forEach((customer) => {
            if(customer.id === documentId){
             console.log(documentId)
             console.log("id match")
+            const documentInfo = {
+                name : customer.data().CustomerName,
+                phone : customer.data().CustomerPhone,
+                payment : customer.data().paymentMethod,
+                date : customer.data().createdAt
+            }
+            console.log(documentInfo)
+            billingName.innerText += ` ${documentInfo.name}`
+            billingContact.innerText += ` ${documentInfo.phone}`
+            billingDate.innerText += ` ${documentInfo.date}`
+            paymentInfo.innerText += ` ${documentInfo.payment}`
+
+
             const orderData = customer.data().order;
             console.log(orderData)
-            orderData.forEach((order) => {
+            orderData.forEach((order,index) => {
                 const orderItem = {
                     name:order.Name,
                     price:order.Price,
@@ -216,6 +251,7 @@ async function displayOrders(uid,documentId){
                     quantity:order.quantity
                 }
                 const total = orderItem.quantity * orderItem.price;
+                sum += total; 
                 PopUpOrders.innerHTML += `<div class="invoice">
                                                 
                                             <div class="order-index">
@@ -242,6 +278,8 @@ async function displayOrders(uid,documentId){
                                             </div>`
                     loader.style.display = "none"
                     bottomInfo.style.visibility = "visible"
+                    grandTotal.innerText = `$ ${sum}.00`;
+                    console.log(sum)
             })
            }else{
             console.log("no match:",customer.id)
