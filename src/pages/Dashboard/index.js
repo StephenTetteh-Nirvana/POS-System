@@ -6,7 +6,14 @@ const date = document.querySelector(".date")
 const time = document.querySelector(".time")
 const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
+const TotalOrders = document.querySelector("#total-orders")
+const TotalCustomers = document.querySelector("#total-customers")
+
 const cashierBox = document.querySelector(".best-cashiers-box")
+
+
+let allOrders = 0;
+let allCustomers = 0;
 
 
 
@@ -37,7 +44,7 @@ document.addEventListener("DOMContentLoaded",function(){
               }
             }
             else{
-                console.log("user doc does not exist")
+                console.log("current cashier uid not detected")
             }
 
         }
@@ -68,6 +75,9 @@ document.addEventListener("DOMContentLoaded",function(){
             fetchDocs(uid)
             retrieveCashiers()
             loadCashiers()
+            totalOrders()
+            totalCustomers()
+
         }
     })
 })
@@ -80,7 +90,6 @@ async function retrieveCashiers(){
         const Id = document.id;
         const customerCollection = collection(doc(db, "Cashiers", Id), "Customers");
         const docRef = await getDocs(customerCollection);
-        console.log(Id,docRef.size)
         await loadCashiers(Id,docRef)
          })
 }
@@ -105,6 +114,65 @@ async function loadCashiers(Id, docRef) {
                                     </div>
                                 </div>`;
     }
+}
+
+async function totalOrders(){
+    const adminCollection = collection(db,"Admins");
+    const cashierCollection = collection(db,"Cashiers")
+    const adminDocs = await getDocs(adminCollection)
+    const cashierDocs = await getDocs(cashierCollection)
+
+    adminDocs.forEach(async(document)=>{
+        const Id = document.id;
+        const customerCollection = collection(doc(db, "Admins", Id), "Customers");
+        const snapshot = await getDocs(customerCollection)
+
+        snapshot.forEach((snap)=>{
+            allOrders += snap.data().order.length
+        })
+    })
+
+    
+    cashierDocs.forEach(async(document)=>{
+        const Id = document.id;
+        const customerCollection = collection(doc(db, "Cashiers", Id), "Customers");
+        const snapshot = await getDocs(customerCollection)
+
+        snapshot.forEach((snap)=>{
+            allOrders += snap.data().order.length
+        })
+
+        console.log("total orders",allOrders);
+        TotalOrders.innerText = allOrders;
+    })
+
+}
+
+async function totalCustomers(){
+    const adminCollection = collection(db,"Admins");
+    const cashierCollection = collection(db,"Cashiers")
+    const adminDocs = await getDocs(adminCollection)
+    const cashierDocs = await getDocs(cashierCollection)
+
+    adminDocs.forEach(async(document)=>{
+        const Id = document.id;
+        const customerCollection = collection(doc(db, "Admins", Id), "Customers");
+        const snapshot = await getDocs(customerCollection)
+        console.log("admin cutomers",snapshot.size)
+        allCustomers += snapshot.size;
+    })
+
+    
+    cashierDocs.forEach(async(document)=>{
+        const Id = document.id;
+        const customerCollection = collection(doc(db, "Cashiers", Id), "Customers");
+        const snapshot = await getDocs(customerCollection)
+        console.log("cashier cutomers",snapshot.size)
+        allCustomers += snapshot.size;
+        console.log("total customers",allCustomers)
+        TotalCustomers.innerText = allCustomers;
+    })
+
 }
 
 

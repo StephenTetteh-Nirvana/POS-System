@@ -32,8 +32,7 @@ const password = document.querySelector("#password")
                         setDoc(adminDoc,{
                            Role: registerForm.status.value,
                            Username: registerForm.username.value.trim(),
-                           cart:[],
-                           order:[]
+                           cart:[]
                        })
                        console.log("Admin created succesfully")
                        registerForm.reset()
@@ -53,8 +52,7 @@ const password = document.querySelector("#password")
                        setDoc(cashierDoc,{
                            Role:registerForm.status.value,
                            Username: registerForm.username.value.trim(),
-                           cart:[],
-                           order:[]
+                           cart:[]
                        })
                        console.log("Cashier created succesfully")
                        registerForm.reset()
