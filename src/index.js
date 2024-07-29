@@ -1,11 +1,12 @@
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import {auth,db} from "/src/firebase"
-import { collection, doc,getDoc,getDocs, updateDoc,addDoc, serverTimestamp} from "firebase/firestore"
+import { collection, doc,getDoc,getDocs, updateDoc,addDoc} from "firebase/firestore"
 import Swal from "sweetalert2"
 
 const fruits = [];
-const cart = [];
-let order = []
+let selectedFruits = []
+const localUserRole = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : ""
+
 
 const searchSection = document.querySelector(".second-section")
 const orderContainer = document.querySelector(".order-container")
@@ -55,6 +56,16 @@ document.addEventListener("DOMContentLoaded",function(){
     updateClock()
     setInterval(updateClock,1000)
 
+    if(localUserRole === "Cashier"){
+        users.style.display = "none";
+        dashboard.style.display = "none";
+        products.style.display = "none";
+    }else if(localUserRole === "Admin"){
+        users.style.display = "block";
+        dashboard.style.display = "block";
+        products.style.display = "block";
+    }
+
     async function fetchDocs(uid){
         try{
             const adminCollection = doc(db,"Admins",uid);
@@ -70,12 +81,6 @@ document.addEventListener("DOMContentLoaded",function(){
               userStatus.innerText = user.Username;
             }else if(cashierDoc.exists()){
               const user = cashierDoc.data()
-              console.log("cashier logged in",uid)
-              if(user.Role === "Cashier"){
-                users.style.display = "none";
-                dashboard.style.display = "none";
-                products.style.display = "none";
-              }
               userRole.classList.add("cashier")
                 role.innerText = user.Role;
                 username.innerText = user.Role;
@@ -83,39 +88,29 @@ document.addEventListener("DOMContentLoaded",function(){
             }
             else{
                 console.log("there is no user with this docId")
-                window.location.href = "/src/pages/Login/login.html"
             }
 
         }
         catch(error){
-            
+            console.log(error)
         }
     }
      
-        onAuthStateChanged(auth,(user)=>{
+    onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
             fetchDocs(uid)
-            loadCart(uid)
-            totalAmount(uid)
-           
-          
         }else{
             console.log("no-user")
-            window.location.href = "/src/pages/Login/login.html"
-
         }
         }) 
     displayFruits()
-
-       
 })
 
 searchSection.addEventListener("click",(e)=>{
    if(e.target.classList.contains("hamburger") || e.target.classList.contains("bar")){
       orderSidebar.classList.add("order-active");
       orderContainer.classList.add("hamburger-active");
-   
    }
 })
 
@@ -142,37 +137,16 @@ function resetLi(){
 }
 
 
-async function totalAmount(uid){
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
-
-    if(adminDoc.exists()){
-        const cartData = adminDoc.data().cart;
-        let sum = 0;
-        cartData.forEach((product)=>{
-            const price = product.Price;
-            const quantity = product.quantity;
-            const total = price*quantity;
-            sum += total; 
-        })
-        console.log(sum)
-        Total.innerText = `$${sum}.00`;
-    }else if(cashierDoc.exists()){
-        const cartData = cashierDoc.data().cart;
-        let sum = 0;
-        cartData.forEach((product)=>{
-            const price = product.Price;
-            const quantity = product.quantity;
-            const total = price*quantity;
-            sum += total; 
-        })
-        console.log(sum)
-        Total.innerText = `$${sum}.00`;
-
-    }
-    
+async function totalAmount(){
+    let sum = 0;
+    selectedFruits.forEach((product)=>{
+        const price = product.Price;
+        const quantity = product.quantity;
+        const total = price*quantity;
+        sum += total; 
+    })
+    console.log(sum)
+    Total.innerText = `$${sum}.00`;
  }
 
  
@@ -203,14 +177,12 @@ async function displayFruits(){
                                                   <button class="quantity-add" data-id="${singleFruit.id}">+</button>
                                                 </div>
                                              </div>
-                                            
                                        </div>`
                                        
 
     }) 
 
-    const fruitBox = document.querySelectorAll('.fruit');
-
+const fruitBox = document.querySelectorAll('.fruit');
 fruitBox.forEach((eachFruit) => {
   eachFruit.addEventListener('click', (event) => {
     if(event.target.classList.contains("quantity-subtract")){
@@ -218,12 +190,12 @@ fruitBox.forEach((eachFruit) => {
         fruitBox.forEach((fruitQuantity)=>{
            if(currentId === fruitQuantity.dataset.id){
             const inputField = fruitQuantity.querySelector('#quantityInput');
-                   if(inputField.value > 1){
-                        let quantityConvert = Number(inputField.value)
-                        quantityConvert -= 1;
-                        inputField.value = quantityConvert;
-                        console.log(currentId,quantityConvert)
-                   }    
+                if(inputField.value > 1){
+                    let quantityConvert = Number(inputField.value)
+                    quantityConvert -= 1;
+                    inputField.value = quantityConvert;
+                    console.log(currentId,quantityConvert)
+                }    
            }
         })
     }else if(event.target.classList.contains("quantity-add")){
@@ -231,10 +203,10 @@ fruitBox.forEach((eachFruit) => {
         fruitBox.forEach((fruitQuantity)=>{
            if(currentId === fruitQuantity.dataset.id){
             const inputField = fruitQuantity.querySelector('#quantityInput');
-                        let quantityConvert = Number(inputField.value)
-                        quantityConvert += 1;
-                        inputField.value = quantityConvert;
-                        console.log(currentId,quantityConvert)
+                let quantityConvert = Number(inputField.value)
+                quantityConvert += 1;
+                inputField.value = quantityConvert;
+                console.log(currentId,quantityConvert)
            }
         })
     }else{
@@ -244,7 +216,6 @@ fruitBox.forEach((eachFruit) => {
         fruitBox.forEach(async(fruitQuantity)=>{
             if(currentId === fruitQuantity.dataset.id){
              const inputField = fruitQuantity.querySelector('#quantityInput');
-
              const fruit = {
                 Id:eachFruit.dataset.id,
                 Name:eachFruit.dataset.name,
@@ -252,21 +223,24 @@ fruitBox.forEach((eachFruit) => {
                 Image:eachFruit.dataset.image,
                 quantity:inputField.value
             }
-
-            
-            onAuthStateChanged(auth,(user)=>{
-                if(user){
-                    const uid = user.uid;
-                    addToCart(uid,fruit)
-                    loadCart(uid)
-                }
-            })
+            selectedFruits.push(fruit)
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Product added to cart successfully",
+                showConfirmButton: false,
+                timer: 1000
+              });
+            await loadCart()
+            await totalAmount()
+            console.log(selectedFruits)
            }
          })  
     }
-  });
-});
+})
+})
 }
+
 
 
 async function addToCart(uid,fruit){
@@ -295,8 +269,8 @@ async function addToCart(uid,fruit){
             const cartArray = cashierDoc.data().cart;
             cartArray.push(fruit)
             await updateDoc(cashierCollection,{cart:cartArray})
-              await loadCart(uid)
-              await totalAmount(uid)
+            await loadCart(uid)
+            await totalAmount(uid)
             console.log("updated")
             console.log(cartArray)
         }
@@ -307,339 +281,75 @@ async function addToCart(uid,fruit){
 
 }
 
-  async function loadCart(uid){
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
-      
+  async function loadCart(){
     try{
-        if(adminDoc.exists()){
-            const cartData = adminDoc.data().cart;
-            if(cartData.length > 0){
-                orders.innerHTML = '';
-                noOrders.style.display = "none";
-                clearAllOrders.style.display = "block"
-                orders.style.display = "block";
-                cartData.forEach((item)=>{
-                    const eachItem = {
-                        id:item.Id,
-                        name:item.Name,
-                        price:item.Price,
-                        image:item.Image,
-                        quantity:item.quantity
-                    }
-                  
-                    orders.innerHTML += `<div class="order">
-                                            <p class="order-name">${eachItem.name}</p>
-                                            <p>X ${eachItem.quantity}</p>
-                                            <p class="order-price">$${eachItem.price}.00</p>
-                                            <button data-id="${eachItem.id}">
-                                            <ion-icon name="close-circle" class="order-delete"></ion-icon>
-                                            </button>
-                                        </div>`
-                 })
-          
+        if(selectedFruits.length > 0){
+            orders.innerHTML = '';
+            noOrders.style.display = "none";
+            clearAllOrders.style.display = "block"
+            orders.style.display = "block";
+            selectedFruits.forEach((item)=>{
+                const eachItem = {
+                    id:item.Id,
+                    name:item.Name,
+                    price:item.Price,
+                    image:item.Image,
+                    quantity:item.quantity
+                }
+                console.log(selectedFruits)
+                orders.innerHTML += `<div class="order">
+                                        <p class="order-name">${eachItem.name}</p>
+                                        <p>X ${eachItem.quantity}</p>
+                                        <p class="order-price">$${eachItem.price}.00</p>
+                                        <button data-id="${eachItem.id}">
+                                        <ion-icon name="close-circle" class="order-delete"></ion-icon>
+                                        </button>
+                                    </div>`
+                })
             }else{
                 clearAllOrders.style.display = "none"
                 noOrders.style.display = "block";
                 orders.style.display = "none";
                 console.log("empty cart")
             }
-             
-
-        }else if(cashierDoc.exists()){
-            const cartData = cashierDoc.data().cart
-            if(cartData.length > 0){
-                orders.innerHTML = '';
-                noOrders.style.display = "none";
-                orders.style.display = "block"
-                clearAllOrders.style.display = "block"
-
-                cartData.forEach((item)=>{
-                    const eachItem = {
-                        id:item.Id,
-                        name:item.Name,
-                        price:item.Price,
-                        image:item.Image,
-                        quantity:item.quantity
-                    }
-                    orders.innerHTML += `<div class="order">
-                                            <p class="order-name">${eachItem.name}</p>
-                                            <p>X ${eachItem.quantity}</p>
-                                            <p class="order-price">$${eachItem.price}.00</p>
-                                            <button data-id="${eachItem.id}">
-                                            <ion-icon name="close-circle" class="order-delete"></ion-icon>
-                                            </button>
-                                        </div>`
-                 })
-          
-            }else{
-                clearAllOrders.style.display = "none"
-                noOrders.style.display = "block";
-                orders.style.display = "none";
-                console.log("empty cart")
-            }
-         
-        }
     }
     catch(error){
         console.log("err",error.code)
     }
  }
 
- async function deleteAllOrders(uid){
-    loadingOrder.style.display = "block";
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
- 
-
-    if(adminDoc.exists()){
-        console.log("all cleared")
-        await updateDoc(adminCollection,{
-            cart:[]
-        })
-        loadingOrder.style.display = "none";
-        orders.style.display = "none";
-        await loadCart(uid)
-        await totalAmount(uid)
-        console.log("all cleared")
-    }else if(cashierDoc.exists()){
-        loadingOrder.style.display = "block";
-        orders.style.display = "none";
-        console.log("all cleared")
-        await updateDoc(cashierCollection,{
-            cart:[]
-        })
-        loadingOrder.style.display = "none";
-        orders.style.opacity = "1";
-        await loadCart(uid)
-        await totalAmount(uid)
-        console.log("all cleared")
-
-    }
- }
+ async function deleteAllOrders(){
+    selectedFruits = []
+    await loadCart()
+    await totalAmount() 
+}
  clearAllOrders.addEventListener("click",()=>{
-        onAuthStateChanged(auth,(user)=>{
-            const uid = user.uid;
-            deleteAllOrders(uid)
-        })
+    deleteAllOrders()
  })
 
- async function deleteFromCart(uid,docId){
-    loadingOrder.style.display = "block";
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
-
-    if (adminDoc.exists()) {
-        const cartData = adminDoc.data().cart;
-        const updatedCartData = cartData.filter((product) => product.Id !== docId);
-    
-        await updateDoc(adminCollection, {
-            cart: updatedCartData
-        });
-        loadingOrder.style.display = "none";
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Product removed from cart",
-            showConfirmButton: false,
-            timer: 1500
-          });
-          await totalAmount(uid)
-        await loadCart(uid)
-        console.log("Cart updated successfully");
-        console.log(cartData)
-    }
-    else if(cashierDoc.exists()){
-        const cartData = cashierDoc.data().cart;
-        const updatedCartData = cartData.filter((product) => product.Id !== docId);
-    
-        await updateDoc(cashierCollection, {
-            cart: updatedCartData
-        });
-        loadingOrder.style.display = "none";
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Product removed from cart",
-            showConfirmButton: false,
-            timer: 1500
-          });
-          await totalAmount(uid)
-        await loadCart(uid)
-        console.log("Cart updated successfully");
-        console.log(cartData)
-    }
-      
+ async function deleteFromCart(docId){
+        const updatedCartData = selectedFruits.filter((product) => product.Id !== docId);
+        selectedFruits = updatedCartData
+        await loadCart()
+        await totalAmount()
     }
 
  orders.addEventListener("click",(event)=>{
     if(event.target.classList.contains("order-delete")){
         const docId = event.target.parentElement.dataset.id;
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                const uid = user.uid;
-                deleteFromCart(uid,docId)
-            }
-        })
-
+        deleteFromCart(docId)
     }
- })
-
- async function increaseQuantity(uid,documentId){
-    loadingOrder.style.display = "block";
-    orders.style.opacity = "0.5";
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
-
-    if(adminDoc.exists()){
-        const cartData = adminDoc.data().cart;
-        cartData.forEach((product)=>{
-            try{
-                if(product.Id === documentId){
-                    console.log(product.quantity)
-                   product.quantity += 1;
-                   console.log(product.quantity)
-                }
-            
-            }
-            catch(error){
-                console.log(error)
-            }
-          
-        })
-        await updateDoc(adminCollection,{
-            cart : cartData
-           })
-        await loadCart(uid)
-        await totalAmount(uid)
-        loadingOrder.style.display = "none";
-        orders.style.opacity = "1";
-        console.log("increased quantity")
-    }else if(cashierDoc.exists()){
-        const cartData = cashierDoc.data().cart;
-        cartData.forEach((product)=>{
-            try{
-                if(product.Id === documentId){
-                    console.log(product.quantity)
-                   product.quantity += 1;
-                   console.log(product.quantity)
-                }
-            }
-            catch(error){
-                console.log(error)
-            }
-           
-        })
-        await updateDoc(cashierCollection,{
-            cart : cartData
-           })
-           await totalAmount(uid)
-           await loadCart(uid)
-           loadingOrder.style.display = "none";
-           orders.style.opacity = "1";
-        console.log("decreased quantity")
-    }
- }
-
- async function decreaseQuantity(uid,documentId){
-    loadingOrder.style.display = "block";
-    orders.style.opacity = "0.5";
-    const adminCollection = doc(db,"Admins",uid);
-    const cashierCollection = doc(db,"Cashiers",uid);
-    const adminDoc = await getDoc(adminCollection);
-    const cashierDoc = await getDoc(cashierCollection);
-
-    if(adminDoc.exists()){
-        const cartData = adminDoc.data().cart;
-        cartData.forEach((product)=>{
-            try{
-                if(product.Id === documentId){
-                    console.log(product.quantity)
-                   product.quantity -= 1;
-                   console.log(product.quantity)
-                }
-            }
-            catch(error){
-                console.log(error)
-            }
-            
-        })
-        await updateDoc(adminCollection,{
-            cart : cartData
-           })
-           await totalAmount(uid)
-           await loadCart(uid)
-           loadingOrder.style.display = "none";
-           orders.style.opacity = "1";
-           console.log("increased quantity")
-        console.log("decreased quantity")
-    }else if(cashierDoc.exists()){
-        const cartData = cashierDoc.data().cart;
-        cartData.forEach((product)=>{
-            try{
-                if(product.Id === documentId){
-                    console.log(product.quantity)
-                   product.quantity -= 1;
-                   console.log(product.quantity)
-                }
-            }
-            catch(error){
-                console.log(error)
-            }
-           
-        })
-        await updateDoc(cashierCollection,{
-            cart : cartData
-           })
-           await totalAmount(uid)
-           await loadCart(uid)
-           loadingOrder.style.display = "none";
-           orders.style.opacity = "1";
-           console.log("increased quantity")
-        console.log("decreased quantity")
-    }
- }
-
- orders.addEventListener("click",(event)=>{
-    if(event.target.classList.contains("order-add-button")){
-        const documentId = event.target.parentElement.dataset.id;
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                const uid = user.uid;
-                increaseQuantity(uid,documentId)
-            }
-        })
-    }else if(event.target.classList.contains("order-subtract-button")){
-        console.log(event.target)
-        const documentId = event.target.parentElement.dataset.id;
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                const uid = user.uid;
-                decreaseQuantity(uid,documentId)
-            }
-        })
-    }
-    
-   
  })
 
  async function createCustomerCollection(uid){
+    loadingCustomer.style.display = "block"
     const adminCollection = doc(db,"Admins",uid);
     const cashierCollection = doc(db,"Cashiers",uid);
     const adminDoc = await getDoc(adminCollection);
     const cashierDoc = await getDoc(cashierCollection);
     try{
         if(adminDoc.exists()){
-            const cartData = adminDoc.data().cart;
-            if(cartData.length === 0){
+            if(selectedFruits.length === 0){
                 loadingCustomer.style.display = "none"
                 customerForm.reset()
                 Swal.fire({
@@ -648,7 +358,7 @@ async function addToCart(uid,fruit){
                     title: "No Item Added",
                     showConfirmButton: false,
                     timer: 1500
-                  });
+                });
             }
             else{
                 Payment.querySelectorAll("li").forEach(async(li) => {
@@ -658,7 +368,6 @@ async function addToCart(uid,fruit){
                             loadingCustomer.style.display = "block";
                             const newDate = new Date();
                             const savedDate = newDate.toDateString();
-                            console.log(savedDate)
                             const customerCollection = collection(adminCollection,"Customers");
                             const customerDocRef =  await addDoc(customerCollection,{
                                 CustomerName: customerForm.customerName.value,
@@ -668,11 +377,12 @@ async function addToCart(uid,fruit){
                                 createdAt:savedDate
                             })
                             console.log("customer created successfully")
-                            await updateAdminCustomer(customerDocRef,cartData,adminCollection)
+                            await updateAdminCustomer(customerDocRef,selectedFruits)
                             customerForm.reset()
-                            await loadCart(uid)
-                            await totalAmount(uid)
                             resetLi()
+                            selectedFruits = []
+                            await loadCart()
+                            await totalAmount()
                             loadingCustomer.style.display = "none"
                             Swal.fire({
                                 position: "center",
@@ -681,12 +391,12 @@ async function addToCart(uid,fruit){
                                 showConfirmButton: false,
                                 timer: 1500
                               });
-                            console.log("order array updated")
+                        }
+                        else{
+                            console.log("Choose a payment method")
                         }
                     }
-                    else{
-                        alert("Choose a payment method")
-                    }
+                   
                  })
             }
         }else if(cashierDoc.exists()){
@@ -720,10 +430,10 @@ async function addToCart(uid,fruit){
                                 createdAt:savedDate
                             })
                             console.log("customer created successfully")
-                            await updateCashierCustomer(customerDocRef,cartData,cashierCollection)
+                            await updateCashierCustomer(customerDocRef,cartData)
                             customerForm.reset()
-                            await loadCart(uid)
-                            await totalAmount(uid)
+                            await loadCart()
+                            await totalAmount()
                             resetLi()
                             loadingCustomer.style.display = "none"
                             Swal.fire({
@@ -741,47 +451,33 @@ async function addToCart(uid,fruit){
                     }
                  })
             }
-        
     }
-}
+    }
     catch(error){
        console.log(error)
     }
 
   }
 
-  async function updateAdminCustomer(customerDocRef,cartData,adminCollection){
+  async function updateAdminCustomer(customerDocRef,selectedFruits){
        const displayCustomer = await getDoc(customerDocRef)
        if(displayCustomer.exists()){
            const orderData = displayCustomer.data().order;
-           await orderData.push(...cartData)
+           await orderData.push(...selectedFruits)
            await updateDoc(customerDocRef,{
               order:orderData
            })
-           console.log("order array update")
-           console.log(orderData)
-
-           await updateDoc(adminCollection,{
-            cart:[]
-           })
-           console.log("cart has been updated succesfully")
-
+           console.log("order has been completed succesfully")
        }
     }
 
-    async function updateCashierCustomer(customerDocRef,cartData,cashierCollection){
+    async function updateCashierCustomer(customerDocRef,selectedFruits){
         const displayCustomer = await getDoc(customerDocRef)
         if(displayCustomer.exists()){
             const orderData = displayCustomer.data().order;
-            await orderData.push(...cartData)
+            await orderData.push(...selectedFruits)
             await updateDoc(customerDocRef,{
                order:orderData
-            })
-            console.log("order array update")
-            console.log(orderData)
- 
-            await updateDoc(cashierCollection,{
-             cart:[]
             })
             console.log("cart has been updated succesfully")
         }
@@ -802,7 +498,7 @@ async function addToCart(uid,fruit){
     function logOut(){
          signOut(auth)
        .then(()=>{
-        console.log("logged out")
+        localStorage.clear()
         window.location.href = "/src/pages/Login/login.html"
        })
        .catch((error)=>{

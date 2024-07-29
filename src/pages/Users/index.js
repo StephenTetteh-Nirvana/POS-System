@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded",function(){
                                                     <li class="user ">
                                                         <p>${document.data().Username}</p>
                                                         <p class="Status admin">${document.data().Role}</p>
+                                                        <p>${document.data().createdAt}</p>
                                                     </li>
                                                 </div>`
                 }
@@ -79,7 +80,7 @@ document.addEventListener("DOMContentLoaded",function(){
                                                     <li class="user">
                                                         <p>${document.data().Username}</p>
                                                         <p class="Status cashier">${document.data().Role}</p>
-                                                        <p  data-document-id="${document.id}"><ion-icon class="user-delete" name="trash"></ion-icon></p>
+                                                        <p>${document.data().createdAt}</p>
                                                     </li>
                                                </div>`
                     
@@ -119,9 +120,7 @@ closePopUp.addEventListener("click",()=>{
             .catch((error)=>{
                 console.log(error)
             })
-           
            }
-
         })
        }
 

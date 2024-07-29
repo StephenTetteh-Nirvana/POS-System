@@ -1,17 +1,28 @@
 import {signInWithEmailAndPassword} from 'firebase/auth'
-import {auth} from "/src/firebase.js"
+import {auth,db} from "/src/firebase.js"
 import Swal from 'sweetalert2';
+import { doc,getDoc } from 'firebase/firestore';
 
 const form = document.querySelector(".form");
 const loader = document.querySelector(".loader-box")
 const password = document.querySelector("#password")
 
-function signIn(){
+async function signIn(){
     loader.style.display = "block";
     const oldValue = form.email.value;
     const newValue = oldValue + '@gmail.com';
     signInWithEmailAndPassword(auth,newValue,form.password.value)
-    .then(()=>{
+    try{
+        const user = auth.currentUser
+        const adminRef = doc(db,"Admins",user.uid)
+        const cashierRef = doc(db,"Cashiers",user.uid)
+        const AdminDoc = await getDoc(adminRef)
+        const CashierDoc = await getDoc(cashierRef)
+        if(AdminDoc.exists()){
+            localStorage.setItem("user",JSON.stringify(AdminDoc.data().Role))
+        }else if(CashierDoc.exists()){
+            localStorage.setItem("user",JSON.stringify(CashierDoc.data().Role))
+        }
         console.log("success")
         console.log(form.email.value)
         Swal.fire({
@@ -24,8 +35,8 @@ function signIn(){
           setTimeout(()=>{
             window.location.href = "/dist/index.html"
           },1500)
-    })
-    .catch((error)=>{
+    }
+    catch(error){
         console.log(error.code)
         loader.style.display = "none"
         if (error.code === 'auth/invalid-email') {
@@ -67,7 +78,7 @@ function signIn(){
                 title: "Check Your Internet Connection",
                 });
             }
-    })
+    }
 }
 
 form.addEventListener("submit",(event)=>{

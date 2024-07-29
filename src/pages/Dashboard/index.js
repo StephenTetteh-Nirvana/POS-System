@@ -8,16 +8,12 @@ const userLogout = document.querySelector("#logOut")
 const users = document.querySelector("#users")
 const TotalOrders = document.querySelector("#total-orders")
 const TotalCustomers = document.querySelector("#total-customers")
-
 const cashierBox = document.querySelector(".best-cashiers-box")
-
 
 let allOrders = 0;
 let allCustomers = 0;
 
-
-
-
+const localUserRole = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : ""
 document.addEventListener("DOMContentLoaded",function(){
     function updateClock(){
         let currentTime = new Date();
@@ -33,24 +29,11 @@ document.addEventListener("DOMContentLoaded",function(){
     updateClock()
     setInterval(updateClock,1000)
 
-    async function fetchDocs(uid){
-        try{
-            const cashierCollection = doc(db,"Cashiers",uid);
-            const cashierDoc = await getDoc(cashierCollection);
-           if(cashierDoc.exists()){
-              const user = cashierDoc.data()
-              if(user.Role === "Cashier"){
-                users.style.display = "none";
-              }
-            }
-            else{
-                console.log("current cashier uid not detected")
-            }
-
+    async function fetchDocs(){
+        if(localUserRole === "Cashier"){
+           users.style.display = "none";
         }
-        catch(error){
-            console.log(error)
-        }
+      
     }
 
     async function returnToHome(uid){

@@ -8,6 +8,9 @@ const loader = document.querySelector(".loader-box")
 const error = document.querySelector(".error-display")
 const password = document.querySelector("#password")
 
+const newDate = new Date();
+const savedDate = newDate.toDateString();
+
 
   async function registerUser(){
     if (registerForm.status.value !== "Admin" && registerForm.status.value !== "Cashier") {
@@ -18,7 +21,6 @@ const password = document.querySelector("#password")
             const oldValue = registerForm.username.value;
             const newValue = oldValue + '@gmail.com';
             loader.style.display = "block";
-            console.log(newValue)
             await createUserWithEmailAndPassword(auth,newValue,registerForm.password.value)
             onAuthStateChanged(auth,(user)=>{
                 if(user){
@@ -32,9 +34,8 @@ const password = document.querySelector("#password")
                         setDoc(adminDoc,{
                            Role: registerForm.status.value,
                            Username: registerForm.username.value.trim(),
-                           cart:[]
+                           createdAt: savedDate
                        })
-                       console.log("Admin created succesfully")
                        registerForm.reset()
                        Swal.fire({
                            position: "center",
@@ -45,16 +46,14 @@ const password = document.querySelector("#password")
                          });
                          setTimeout(()=>{
                            window.location.href = "/dist/index.html"
-                         },1500)
-                  
+                        },1500)
                    }
                    if(registerForm.status.value === "Cashier"){
                        setDoc(cashierDoc,{
                            Role:registerForm.status.value,
                            Username: registerForm.username.value.trim(),
-                           cart:[]
+                           createdAt: savedDate
                        })
-                       console.log("Cashier created succesfully")
                        registerForm.reset()
                        Swal.fire({
                            position: "center",
@@ -69,9 +68,7 @@ const password = document.querySelector("#password")
                    }
                 }
             })
-
-                      
-           
+            localStorage.setItem("user",JSON.stringify(registerForm.status.value))
         }catch(error){
            console.log(error)
            loader.style.display = "none"

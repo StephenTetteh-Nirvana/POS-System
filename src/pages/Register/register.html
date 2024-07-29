@@ -9,24 +9,23 @@
 <body>
     <main>
         <section>
-            <form class="registerForm">
-              <h3>Sign Up</h3>
-              <input type="text" placeholder="Username" name="username" autocomplete="off" required/>
-              <input type="text" placeholder="Admin/Cashier" name="status" autocomplete="off" required/>
-              <div class="error-display">
-                <ion-icon class="error-icon" name="alert-circle"></ion-icon>
-                <span class="error">Input Your Role(Admin/Cashier)</span>
-              </div>
-              <input type="password"  id="password" placeholder="Password" name="password" autocomplete="off" required/>
-              <span class="eye-box"><ion-icon class="eye" name="eye"></ion-icon></span>
-              <input type="submit" value="Register" id="submitId" name="submit">
-              <h4>Already Have An Account?<span><a class="link-two" href="/src/pages/Login/login.html">Login</a></span></h4>
-            </form>
-
-            <div class="loader-box">
-              <div class="loader"></div>
+          <form class="registerForm">
+            <h3>Sign Up</h3>
+            <input type="text" placeholder="Username" name="username" autocomplete="off" required/>
+            <input type="text" placeholder="Admin/Cashier" name="status" autocomplete="off" required/>
+            <div class="error-display">
+              <ion-icon class="error-icon" name="alert-circle"></ion-icon>
+              <span class="error">Input Your Role(Admin/Cashier)</span>
             </div>
-            
+            <input type="password"  id="password" placeholder="Password" name="password" autocomplete="off" required/>
+            <span class="eye-box"><ion-icon class="eye" name="eye"></ion-icon></span>
+            <input type="submit" value="Register" id="submitId" name="submit">
+            <h4>Already Have An Account?<span><a class="link-two" href="/src/pages/Login/login.html">Login</a></span></h4>
+          </form>
+
+          <div class="loader-box">
+            <div class="loader"></div>
+          </div>
         </section>
     </main>
     <script src="/dist/register.bundle.js"></script>

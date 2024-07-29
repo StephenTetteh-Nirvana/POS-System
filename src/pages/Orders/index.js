@@ -174,6 +174,7 @@ async function displayOrders(uid,documentId){
             billingName.innerText += ` ${documentInfo.name}`
             billingContact.innerText += ` ${documentInfo.phone}`
             billingDate.innerText += ` ${documentInfo.date}`
+
             paymentInfo.innerText += ` ${documentInfo.payment}`
 
             const orderData = customer.data().order;
