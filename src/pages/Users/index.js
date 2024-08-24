@@ -152,7 +152,7 @@ closePopUp.addEventListener("click",()=>{
           .catch((error)=>{
              console.log(error)
           })
-       }
+        }
    
        userLogout.addEventListener("click",()=>{
          logOut()

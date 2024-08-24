@@ -7,7 +7,6 @@ const fruits = [];
 let selectedFruits = []
 const localUserRole = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : ""
 
-
 const searchSection = document.querySelector(".second-section")
 const orderContainer = document.querySelector(".order-container")
 const orderSidebar = document.querySelector(".order-sidebar")
@@ -89,18 +88,19 @@ document.addEventListener("DOMContentLoaded",function(){
             else{
                 console.log("there is no user with this docId")
             }
-
+            
         }
         catch(error){
             console.log(error)
         }
     }
-     
+    
     onAuthStateChanged(auth,(user)=>{
         if(user){
             const uid = user.uid;
             fetchDocs(uid)
         }else{
+            window.location.href="/src/pages/Login/login.html"
             console.log("no-user")
         }
         }) 

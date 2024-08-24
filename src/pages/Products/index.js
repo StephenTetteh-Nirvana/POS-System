@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded",function(){
     setInterval(updateClock,1000)
 
 
+
     async function returnToHome(uid){
         const adminCollection = doc(db,"Admins",uid);
         const adminDoc = await getDoc(adminCollection);
